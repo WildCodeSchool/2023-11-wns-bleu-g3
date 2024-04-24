@@ -13,7 +13,7 @@ export default function Home() {
     <main>
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <h1 className=" text-reef">
-          {`BonjouR dsfsdFdfdfDSFSDFSDF ${user?.profile[0]?.nickname}` || "Hello, World!"}
+          {`Bonjour ${user?.profile[0]?.nickname}` || "Hello, World!"}
         </h1>
       </div>
     </main>
