@@ -41,6 +41,8 @@ services:
   frontend:
     stop_grace_period: 0s
     build: frontend
+    environment:
+      - NEXT_WEBPACK_USEPOLLING=1
     ports:
       - 3000:3000
     volumes:
