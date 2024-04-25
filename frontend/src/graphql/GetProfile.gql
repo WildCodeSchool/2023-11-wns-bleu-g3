@@ -3,7 +3,9 @@ query Profile {
     id
     email
     nickname
-    avatar
+    avatarUrl
     role
+    firstName
+    lastName
   }
 }

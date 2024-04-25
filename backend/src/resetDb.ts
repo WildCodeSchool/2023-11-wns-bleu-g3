@@ -1,3 +1,4 @@
+import { Latitude } from "graphql-scalars/typings/mocks";
 import db from "./db";
 import User from "./entities/User";
 
@@ -24,9 +25,10 @@ async function main() {
 
   const user = new User();
   Object.assign(user, {
-    nickname: "Greta Thunberg",
+    nickname: "Gretaaaaa",
     email: "greenGreta@app.com",
     password: "Visitor42@!",
+    lastName: "Thunberg",
     avatar:
       "https://e7.pngegg.com/pngimages/193/660/png-clipart-computer-icons-woman-avatar-avatar-girl-black-hair-logo-thumbnail.png",
   });
