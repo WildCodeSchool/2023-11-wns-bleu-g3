@@ -1,6 +1,10 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import User, { NewUserInput } from "../entities/User";
+import { Arg, Mutation, Query, Ctx, Resolver, Authorized } from "type-graphql";
+import User, { LoginInput, NewUserInput } from "../entities/User";
 import { GraphQLError } from "graphql";
+import { verify } from "argon2";
+import jwt from "jsonwebtoken";
+import env from "../env";
+import { Context } from "../types";
 
 @Resolver()
 class UserResolver {
@@ -15,9 +19,40 @@ class UserResolver {
     return newUserWithId;
   }
 
+  @Authorized()
   @Query(() => [User])
   async profile() {
     return User.find();
+  }
+
+  @Mutation(() => String)
+  async login(@Arg("data") data: LoginInput, @Ctx() ctx: Context) {
+    let findUser = await User.findOneBy({ email: data.emailOrNickname });
+    if (findUser === null) {
+      findUser = await User.findOneBy({ nickname: data.emailOrNickname });
+      if (findUser === null) throw new GraphQLError("Invalid Credentials");
+    }
+    const passwordVerified = await verify(
+      findUser.hashedPassword,
+      data.password
+    );
+    if (!passwordVerified) throw new GraphQLError("Invalid Credentials");
+
+    const token = jwt.sign(
+      {
+        userId: findUser.id,
+      },
+      env.JWT_PRIVATE_KEY,
+      { expiresIn: "30d" }
+    );
+
+    ctx.res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      secure: env.NODE_ENV === "development",
+    });
+
+    return token;
   }
 }
 

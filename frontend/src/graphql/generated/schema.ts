@@ -15,9 +15,15 @@ export type Scalars = {
   Float: number;
 };
 
+export type LoginInput = {
+  emailOrNickname: Scalars['String'];
+  password: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createUser: User;
+  login: Scalars['String'];
 };
 
 
@@ -25,8 +31,12 @@ export type MutationCreateUserArgs = {
   data: NewUserInput;
 };
 
+
+export type MutationLoginArgs = {
+  data: LoginInput;
+};
+
 export type NewUserInput = {
-  avatar?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
   nickname: Scalars['String'];
   password: Scalars['String'];
@@ -39,9 +49,12 @@ export type Query = {
 
 export type User = {
   __typename?: 'User';
-  avatar: Scalars['String'];
+  avatarUrl: Scalars['String'];
+  createdAt: Scalars['String'];
   email: Scalars['String'];
+  firstName: Scalars['String'];
   id: Scalars['Float'];
+  lastName: Scalars['String'];
   nickname: Scalars['String'];
   role: Scalars['String'];
 };
@@ -49,7 +62,7 @@ export type User = {
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: Array<{ __typename?: 'User', id: number, email: string, nickname: string, avatar: string, role: string }> };
+export type ProfileQuery = { __typename?: 'Query', profile: Array<{ __typename?: 'User', id: number, email: string, nickname: string, avatarUrl: string, role: string, firstName: string, lastName: string }> };
 
 
 export const ProfileDocument = gql`
@@ -58,8 +71,10 @@ export const ProfileDocument = gql`
     id
     email
     nickname
-    avatar
+    avatarUrl
     role
+    firstName
+    lastName
   }
 }
     `;

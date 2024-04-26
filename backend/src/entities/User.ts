@@ -5,14 +5,14 @@ import {
   BaseEntity,
   BeforeInsert,
   Column,
+  CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
 export enum UserRole {
   Admin = "admin",
-  Visitor = "visitor",
+  User = "user",
 }
 
 @Entity()
@@ -37,6 +37,14 @@ class User extends BaseEntity {
   @Column()
   nickname: string;
 
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  firstName?: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  lastName?: string;
+
   @Column()
   hashedPassword: string;
 
@@ -45,11 +53,24 @@ class User extends BaseEntity {
       "https://icons.veryicon.com/png/o/miscellaneous/standard/avatar-15.png",
   })
   @Field()
-  avatar: string;
+  avatarUrl: string;
 
   @Field()
-  @Column({ enum: UserRole, default: UserRole.Visitor })
+  @Column({ enum: UserRole, default: UserRole.User })
   role: UserRole;
+
+  @Column({ nullable: true, type: "varchar", unique: true })
+  emailConfirmationToken?: string | null;
+
+  @Column({ nullable: true, type: "varchar", unique: true })
+  resetPasswordToken?: string | null;
+
+  @Column({ default: false })
+  emailVerified: boolean;
+
+  @CreateDateColumn()
+  @Field()
+  createdAt: string;
 }
 
 @InputType()
@@ -62,10 +83,6 @@ export class NewUserInput {
   @Field()
   nickname: string;
 
-  @Length(2, 300)
-  @Field({ nullable: true })
-  avatar?: string;
-
   @Field()
   @IsStrongPassword()
   password: string;
@@ -73,14 +90,14 @@ export class NewUserInput {
 
 @InputType()
 export class LoginInput {
-  @IsEmail()
   @Field()
-  email: string;
+  emailOrNickname: string;
 
   @Field()
   @IsStrongPassword()
   password: string;
 }
+
 @InputType()
 export class UpdateUserInput {
   @Length(2, 30)
