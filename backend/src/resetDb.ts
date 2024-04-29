@@ -1,6 +1,7 @@
 import { Latitude } from "graphql-scalars/typings/mocks";
 import db from "./db";
 import User from "./entities/User";
+import ActivityType, { Category, Unit } from "./entities/ActivityType";
 
 export async function clearDB() {
   const runner = db.createQueryRunner();
@@ -33,6 +34,15 @@ async function main() {
       "https://e7.pngegg.com/pngimages/193/660/png-clipart-computer-icons-woman-avatar-avatar-girl-black-hair-logo-thumbnail.png",
   });
   await user.save();
+
+  const activType = new ActivityType();
+  Object.assign(activType, {
+    name: "Chemise",
+    category: Category.Clothing,
+    unit: Unit.Weight,
+    emissions: 13200,
+  });
+  await activType.save();
 
   await db.destroy();
   console.log("done !");
