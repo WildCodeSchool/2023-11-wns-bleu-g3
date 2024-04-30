@@ -1,9 +1,56 @@
-import { useState } from "react";
+import {
+  useLoginMutation,
+  useProfileQuery,
+  useSignupMutation,
+} from "@/graphql/generated/schema";
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function ModalAuthentication() {
   const [isOpen, setIsOpen] = useState(false);
   const [isRegistration, setIsRegistration] = useState(false);
   const [viewPassword, setViewPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [login] = useLoginMutation();
+  const [createUser] = useSignupMutation();
+  const { data: currentUser, client } = useProfileQuery({
+    errorPolicy: "ignore",
+  });
+  const router = useRouter();
+
+  const handleSubmitLogin = async (e: FormEvent<HTMLFormElement>) => {
+    setError("");
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const formJSON: any = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await login({ variables: { data: formJSON } });
+      setIsOpen(false);
+      router.push("/");
+    } catch (e: any) {
+      setError("Identifiants incorrects");
+    } finally {
+      client.resetStore();
+    }
+  };
+
+  const handleSubmitSignUp = async (e: FormEvent<HTMLFormElement>) => {
+    setError("");
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const formJSON: any = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await createUser({ variables: { data: formJSON } });
+      setIsOpen(false);
+      router.push("/");
+    } catch (e: any) {
+      if (e.message === "EMAIL_ALREADY_TAKEN")
+        setError("Cet e-mail est déjà pris");
+      else setError("une erreur est survenue");
+    }
+  };
 
   return (
     <>
@@ -53,13 +100,13 @@ export default function ModalAuthentication() {
                     <h3 className="text-center text-xl md:text-3xl pb-6 font-semibold">
                       Se connecter
                     </h3>
-                    <form className="my-4 text-blueGray-500 leading-relaxed w-auto md:w-80 lg:w-auto flex flex-col gap-6">
+                    <form onSubmit={handleSubmitLogin} className="my-4 text-blueGray-500 leading-relaxed w-auto md:w-80 lg:w-auto flex flex-col gap-6">
                       <div className="flex flex-col gap-1">
-                        <label htmlFor="emailOrUsername">Email ou pseudo</label>
+                        <label htmlFor="emailOrNickname">Email ou pseudo</label>
                         <input
                           type="text"
                           className="input-text"
-                          name="emailOrUsername"
+                          name="emailOrNickname"
                           placeholder="John Doe / john@doe.fr"
                         />
                       </div>
@@ -72,6 +119,7 @@ export default function ModalAuthentication() {
                             id="default-search"
                             className="input-text"
                             placeholder="••••••••"
+                            name="password"
                             required
                           />
                           <button
@@ -118,10 +166,10 @@ export default function ModalAuthentication() {
                           Mot de passe oublié ?
                         </a>
                       </div>
-
-                      <button type="submit" className="btn btn-reef">
-                        Connexion
-                      </button>
+                      {error !== "" && (
+                        <pre className="text-error">{error}</pre>
+                      )}
+                      <button className="btn btn-reef">Connexion</button>
                       <p className="text-base">
                         Vous n&apos;avez pas de compte ?{" "}
                         <button
@@ -159,13 +207,13 @@ export default function ModalAuthentication() {
                     <h3 className="text-center text-xl md:text-3xl pb-6 font-semibold">
                       S&apos;inscrire
                     </h3>
-                    <form className="my-4 text-blueGray-500 leading-relaxed w-auto :w-80 lg:w-auto flex flex-col gap-6">
+                    <form onSubmit={handleSubmitSignUp} className="my-4 text-blueGray-500 leading-relaxed w-auto :w-80 lg:w-auto flex flex-col gap-6">
                       <div className="flex flex-col gap-1">
-                        <label htmlFor="username">Pseudo</label>
+                        <label htmlFor="nickname">Pseudo</label>
                         <input
                           type="text"
                           className="input-text"
-                          name="username"
+                          name="nickname"
                           placeholder="John Doe"
                         />
                       </div>
@@ -187,6 +235,7 @@ export default function ModalAuthentication() {
                             id="default-search"
                             className="input-text"
                             placeholder="8 caractères minimum"
+                            name="password"
                             required
                           />
                           <button
