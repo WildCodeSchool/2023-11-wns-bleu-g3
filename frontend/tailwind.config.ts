@@ -1,26 +1,21 @@
-import type { Config } from "tailwindcss";
-
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
-    colors: {
-      anchor: "#282828",
-      pearl: "#DFE4EA",
-      reef: "#2D7487",
-      shore: "#C0D6D8",
-      lightPearl: "#EEF2F6",
-    },
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        anchor: "#282828",
+        pearl: "#DFE4EA",
+        reef: "#2D7487",
+        shore: "#C0D6D8",
+        lightPearl: "#EEF2F6",
+        error: "#DC3545",
+        success: "#198754",
       },
       fontFamily: {
-        poppins: ["Poppins", "sans-serif"],
+        sans: ["Poppins"],
       },
     },
   },
   plugins: [],
 };
-export default config;

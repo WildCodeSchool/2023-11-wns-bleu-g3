@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn-xs {
+  @apply px-3 py-2 text-xs font-medium rounded-lg transform active:scale-90 transition-transform;
+}
+
+.btn-sm {
+  @apply px-3 py-2 text-sm font-medium rounded-lg transform active:scale-90 transition-transform;
+}
+
+.btn {
+  @apply px-5 py-2.5 text-sm font-medium rounded-lg transform active:scale-90 transition-transform;
+}
+
+.btn-lg {
+  @apply px-5 py-3 text-base font-medium rounded-lg transform active:scale-90 transition-transform;
+}
+
+.btn-xl {
+  @apply px-6 py-3.5 text-base font-medium rounded-lg transform active:scale-90 transition-transform;
+}

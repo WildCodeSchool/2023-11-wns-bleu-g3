@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-outline-reef {
+    @apply text-anchor border border-reef hover:text-white hover:bg-reef focus:ring-2 focus:ring-opacity-50 focus:ring-reef transition ease-in-out;
+  }
+
+  .btn-outline-anchor {
+    @apply text-anchor border border-anchor hover:text-white hover:bg-anchor focus:ring-2 focus:ring-opacity-50 focus:ring-anchor transition ease-in-out;
+  }
+
+  .btn-outline-shore {
+    @apply text-anchor border border-shore hover:text-anchor hover:bg-shore focus:ring-2 focus:ring-opacity-50 focus:ring-shore transition ease-in-out;
+  }
+
+  .btn-outline-error {
+    @apply text-anchor border border-error hover:text-white hover:bg-error focus:ring-2 focus:ring-opacity-50 focus:ring-error transition ease-in-out;
+  }
+
+  .btn-outline-success {
+    @apply text-anchor border border-success hover:text-white hover:bg-success focus:ring-2 focus:ring-opacity-50 focus:ring-success transition ease-in-out;
+  }
+}
