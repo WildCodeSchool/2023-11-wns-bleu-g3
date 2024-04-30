@@ -69,7 +69,6 @@ class UserResolver {
     return user.save().then(() => true);
   }
 
-  @Authorized()
   @Query(() => [User])
   async profile() {
     return User.find();

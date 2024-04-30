@@ -6,7 +6,7 @@ import env from "./env";
 import User from "./entities/User";
 
 export const authChecker: AuthChecker<Context> = async ({ context }, roles: string[] = []) => {
-  const { headers } = context.req;
+  const { headers = {} } = context.req ?? {};
   const tokenInCookie = cookie.parse(headers.cookie ?? "").token;
   const tokenInAuthHeaders = headers.authorization?.split(" ")[1];
 
