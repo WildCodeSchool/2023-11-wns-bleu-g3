@@ -5,7 +5,7 @@ export default function LayoutVisitor({ children }: { children: any }) {
   return (
     <>
       <HeaderVisitor />
-      <main>{children}</main>
+      <main className="h-screen">{children}</main>
       <Footer />
     </>
   );
