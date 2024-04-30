@@ -99,6 +99,19 @@ export class LoginInput {
 }
 
 @InputType()
+export class ResetPasswordRequestInput {
+  @Field()
+  email: string;
+}
+
+@InputType()
+export class ResetPasswordInput {
+  @Field()
+  @IsStrongPassword()
+  password: string;
+}
+
+@InputType()
 export class UpdateUserInput {
   @Length(2, 30)
   @Field({ nullable: true })
