@@ -17,6 +17,18 @@ class ActivityTypeResolver {
   async getActivitiesTypes() {
     return ActivityType.find();
   }
+
+  @Query(() => ActivityType)
+  async getActivityTypesById(@Arg("id", () => Int) id: number) {
+    const activityType = await ActivityType.findOne({
+      where: { id },
+    });
+    if (!activityType) throw new GraphQLError("not found");
+    return activityType;
+  }
+
+  
+
 }
 
 export default ActivityTypeResolver;
