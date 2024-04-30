@@ -1,9 +1,14 @@
-import { useEffect, useState } from "react";
 import ModalAuthentication from "./modal-authentication";
 import useScroll from "@/hooks/useScroll";
 import useScreenSize from "@/hooks/useScreenSize";
 
-export default function HeaderVisitor() {
+export default function HeaderVisitor({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: any;
+}) {
   const scrollY = useScroll();
   const screenSize = useScreenSize();
 
@@ -23,7 +28,7 @@ export default function HeaderVisitor() {
             GreenFoot
           </h1>
         </div>
-        <ModalAuthentication />
+        <ModalAuthentication isOpen={isOpen} setIsOpen={setIsOpen} />
       </header>
     );
   } else {
@@ -42,7 +47,7 @@ export default function HeaderVisitor() {
             GreenFoot
           </h1>
         </div>
-        <ModalAuthentication />
+        <ModalAuthentication isOpen={isOpen} setIsOpen={setIsOpen} />
       </header>
     );
   }

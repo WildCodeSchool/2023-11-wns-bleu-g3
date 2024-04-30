@@ -6,8 +6,13 @@ import {
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 
-export default function ModalAuthentication() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function ModalAuthentication({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: any;
+}) {
   const [isRegistration, setIsRegistration] = useState(false);
   const [viewPassword, setViewPassword] = useState(false);
   const [error, setError] = useState("");
@@ -76,7 +81,7 @@ export default function ModalAuthentication() {
         </svg>
         Connexion
       </button>
-      {isOpen ? (
+      {isOpen == true ? (
         <>
           {isRegistration == false ? (
             <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
