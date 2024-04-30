@@ -13,7 +13,7 @@ export default function LayoutVisitor({
   return (
     <>
       <HeaderVisitor isOpen={isOpen} setIsOpen={setIsOpen} />
-      <main className="h-screen">{children}</main>
+      <main>{children}</main>
       <Footer />
     </>
   );

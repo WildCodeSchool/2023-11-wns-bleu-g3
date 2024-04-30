@@ -97,7 +97,6 @@ export default function UiKit() {
         />
       </div>
       <div>
-        <ModalAuthentication />
       </div>
       <div className="flex flex-col gap-2">
         <select className="select-xs select-arrow" name="" id="">
