@@ -26,7 +26,7 @@ class UserResolver {
       from: env.EMAIL_FROM,
       to: newUser.email,
       subject: "Bienvenue sur GreenFoot !",
-      text: `Bienvue sur GreenFoot ${newUser.nickname} ! Pour confirmer votre email, cliquez sur ce lien: ${env.FRONTEND_URL}/emailConfirmation?token=${token}`,
+      text: `Bienvenue sur GreenFoot ${newUser.nickname} ! Pour confirmer votre email, cliquez sur ce lien: ${env.FRONTEND_URL}?emailToken=${token}`,
     });
 
     const newUserWithId = await newUser.save();
@@ -34,7 +34,7 @@ class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async confirmEmail(@Arg("token") token: string) {
+  async confirmEmail(@Arg("emailToken") token: string) {
     const user = await User.findOneBy({ emailConfirmationToken: token });
     if (!user) throw new GraphQLError("Invalid Token");
 
@@ -55,13 +55,13 @@ class UserResolver {
       from: env.EMAIL_FROM,
       to: user.email,
       subject: "Mot de passe oublié",
-      text: `Pour réinitialiser votre mot de passe, merci de cliquer sur le lien suivant : ${env.FRONTEND_URL}/resetPassword?token=${user.resetPasswordToken}`,
+      text: `Pour réinitialiser votre mot de passe, merci de cliquer sur le lien suivant : ${env.FRONTEND_URL}?resetPasswordToken=${user.resetPasswordToken}`,
     });
     return true;
   }
 
   @Mutation(() => Boolean)
-  async resetPassword(@Arg("data", { validate: true }) data: ResetPasswordInput, @Arg("token") token: string) {
+  async resetPassword(@Arg("data", { validate: true }) data: ResetPasswordInput, @Arg("resetPasswordToken") token: string) {
     const user = await User.findOneBy({ resetPasswordToken: token });
     if (!user) throw new GraphQLError("Invalid Token");
     user.hashedPassword = await hash(data.password);
