@@ -1,11 +1,19 @@
 import Footer from "@/components/footer";
 import HeaderVisitor from "@/components/header-visitor";
 
-export default function LayoutVisitor({ children }: { children: any }) {
+export default function LayoutVisitor({
+  children,
+  isOpen,
+  setIsOpen,
+}: {
+  children: any;
+  isOpen: boolean;
+  setIsOpen: any;
+}) {
   return (
     <>
-      <HeaderVisitor />
-      <main className="h-screen">{children}</main>
+      <HeaderVisitor isOpen={isOpen} setIsOpen={setIsOpen} />
+      <main>{children}</main>
       <Footer />
     </>
   );
