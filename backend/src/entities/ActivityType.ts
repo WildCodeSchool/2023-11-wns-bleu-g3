@@ -1,5 +1,5 @@
 import { Min, Length } from "class-validator";
-import { Field, InputType, ObjectType } from "type-graphql";
+import { Field, InputType, ObjectType, Int, registerEnumType } from "type-graphql";
 import {
   BaseEntity,
   BeforeInsert,
@@ -7,70 +7,116 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 
 export enum Unit {
-  Weight = "g/CO²",
-  Distance = "g/CO² par Km",
-  Area = "g/CO² par m²",
-  Monetary = "€ dépensé",
+  Weight = "grammes de CO2",
+  PerUnit = "g CO2 par unité",
+  Distance = "g CO2 par Km",
+  Area = "g CO2 par m²",
+  Energy = "g CO2 par kWh",
+  Volume = "g CO2 par litre",
+  Monetary = "g CO2 par € dépensé",
 }
 
 export enum Category {
-  Vehicles = "Voiture",
+  Car = "Voiture",
   Plane = "Avion",
   Bus = "Bus",
-  Train = "Tram",
+  Metro = "Metro Tram",
+  Train = "TGV",
   Moto = "Moto",
   Boat = "Bateau",
   Heating = "Chauffage",
+  Cooling = "Climatisation",
+  Lighting = "Éclairage",
+  Appliances = "Appareils ménagers",
+  Water = "Eau",
+  Food = "Alimentation",
+  Waste = "Déchets",
   Clothing = "Vêtements",
   Electronics = "Électronique",
-  Others = "Autre",
+  Services = "Services",
+  Leisure = "Loisirs",
+  Renewables = "Énergies renouvelables",
+  Others = "Autres",
 }
+
+registerEnumType(Unit, {
+  name: 'Unit'
+});
+registerEnumType(Category, {
+  name: 'Category'
+});
 
 @Entity()
 @ObjectType()
 class ActivityType extends BaseEntity {
-  @Field()
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ length: 50, unique: true })
   @Field()
-  @Column()
+  name: string;
+
+  @Column({
+    type: "enum",
+    enum: Category,
+  })
+  @Field()
+  category: Category;
+
+  @Column({
+    type: "enum",
+    enum: Unit,
+  })
+  @Field()
+  unit: Unit;
+
+  @Column({ type: "int" })
+  @Field()
+  @Min(0)
+  emissions: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+}
+
+@InputType()
+export class ActivityTypeInput {
+  @Field()
   name: string;
 
   @Field()
-  @Column({
-    enum: Category,
-  })
-  category: Category;
+  category: string;
 
   @Field()
-  @Column({
-    enum: Unit,
-  })
-  unit: Unit;
+  unit: string;
 
   @Field()
-  @Column()
   @Min(0)
   emissions: number;
 }
 
-// @InputType()
-// export class ActivityTypeInput {
-//   @Field()
-//   name: string;
+@InputType()
+export class UpdateActivityTypeInput {
+  
+  @Field({ nullable: true })
+  category?: string;
 
-//   @Field()
-//   category: string;
+  @Field({ nullable: true })
+  unit?: string;
 
-//   @Field()
-//   unit: string;
+  @Field({ nullable: true })
+  @Min(0)
+  emissions?: number;
 
-//   @Field()
-//   emissions: number;
-// }
+
+}
 
 export default ActivityType;
