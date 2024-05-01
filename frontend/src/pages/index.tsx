@@ -1,8 +1,47 @@
+import ModalResetPassword from "@/components/modal-reset-password";
+import { useConfirmEmailMutation } from "@/graphql/generated/schema";
 import LayoutVisitor from "@/layouts/layout-visitor";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const emailToken = router.query.emailToken as string;
+  const requestResetPassword = router.query.resetPassword as string;
+  const resetPasswordToken = router.query.resetPasswordToken as string;
+  const[isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
+  const[isRequest, setIsRequest] = useState(false);
+
+  const [confirmEmail] = useConfirmEmailMutation();
+
+  const notify = () => toast.success("Votre adresse email a bien été confirmée !");
+
+  useEffect(() => {
+    if(emailToken){
+      confirmEmail({variables: {emailToken}}).then(()=>{
+      notify();
+      router.push("/");
+      });
+    }
+  }, [emailToken]);
+
+  useEffect(() => {
+    if(requestResetPassword === "true"){
+      setIsOpen(false)
+      setIsRequest(true);
+      setIsResetPasswordOpen(true);
+    }
+  }, [requestResetPassword]);
+
+  useEffect(() => {
+    if(resetPasswordToken){
+      setIsOpen(false)
+      setIsRequest(false);
+      setIsResetPasswordOpen(true);
+    }
+  }, [resetPasswordToken]);
 
   return (
     <LayoutVisitor isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -22,6 +61,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <ModalResetPassword isOpen={isResetPasswordOpen} setIsOpen={setIsResetPasswordOpen} isRequest={isRequest} token={resetPasswordToken}/>
     </LayoutVisitor>
   );
 }

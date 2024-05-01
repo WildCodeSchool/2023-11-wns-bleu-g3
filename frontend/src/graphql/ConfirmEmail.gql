@@ -1,0 +1,3 @@
+mutation ConfirmEmail($emailToken: String!) {
+  confirmEmail(emailToken: $emailToken)
+}
