@@ -5,6 +5,8 @@ import {
 } from "@/graphql/generated/schema";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ModalAuthentication({
   isOpen,
@@ -32,6 +34,7 @@ export default function ModalAuthentication({
     try {
       const res = await login({ variables: { data: formJSON } });
       setIsOpen(false);
+      toast.success("Vous êtes connecté");
       router.push("/");
     } catch (e: any) {
       setError("Identifiants incorrects");
