@@ -49,7 +49,6 @@ registerEnumType(VehicleDecade, {
 });
 
 
-
 // Moto 
 export enum MotoEngine {
   Engine125orless = "moins de 125cc",
