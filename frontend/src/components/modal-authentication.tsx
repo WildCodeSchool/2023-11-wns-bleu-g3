@@ -42,7 +42,7 @@ export default function ModalAuthentication({
       .then(() => {
         login({ variables: { data: formJSON } });
         setIsOpen(false);
-        router.push("/");
+        router.push("/dashboard");
       })
       .catch((errors) => {
         setError(errors ? errors.errors.join(", \n"): "Identifiants incorrects");
@@ -217,7 +217,7 @@ export default function ModalAuthentication({
                         </Link>
                       </div>
                       {error !== "" && (
-                        <pre className="text-error" data-testid="login-error">
+                        <pre className="text-error text-xs" data-testid="login-error">
                           {error}
                         </pre>
                       )}
@@ -340,7 +340,7 @@ export default function ModalAuthentication({
                         </div>
                       </div>
                       {error !== "" && (
-                        <pre className="text-error break-all" data-testid="login-error">
+                        <pre className="text-error text-xs" data-testid="login-error">
                           {error}
                         </pre>
                       )}

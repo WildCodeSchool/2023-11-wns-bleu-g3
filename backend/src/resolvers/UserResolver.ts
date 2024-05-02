@@ -57,12 +57,14 @@ class UserResolver {
     const token = crypto.randomBytes(20).toString("hex");
     user.resetPasswordToken = token;
     user.save();
+
     // await mailer.sendMail({
     //   from: env.EMAIL_FROM,
     //   to: user.email,
     //   subject: "Mot de passe oublié",
     //   text: `Pour réinitialiser votre mot de passe, merci de cliquer sur le lien suivant : ${env.FRONTEND_URL}?resetPasswordToken=${user.resetPasswordToken}`,
     // });
+
     return true;
   }
 
