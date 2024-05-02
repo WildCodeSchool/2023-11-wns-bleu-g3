@@ -97,7 +97,7 @@ class ActivityType extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column((type) => Vehicle_Attr)
+  @Column(() => Vehicle_Attr)
   @Field(() => Vehicle_Attr, { nullable: true })
   vehicleAttributes?: Vehicle_Attr;
 }
