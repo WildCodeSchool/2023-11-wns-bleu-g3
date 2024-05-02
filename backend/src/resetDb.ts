@@ -2,6 +2,11 @@ import { Latitude } from "graphql-scalars/typings/mocks";
 import db from "./db";
 import User, { UserRole } from "./entities/User";
 import ActivityType, { Category, Unit } from "./entities/ActivityType";
+import {
+  FuelType,
+  VehicleDecade,
+  VehicleType,
+} from "./entities/Enums/Vehicle_Attributes";
 
 export async function clearDB() {
   const runner = db.createQueryRunner();
@@ -45,14 +50,30 @@ async function main() {
   });
   await admin.save();
 
-  const activType = new ActivityType();
-  Object.assign(activType, {
+  const activType1 = new ActivityType();
+  Object.assign(activType1, {
     name: "Chemise",
     category: Category.Clothing,
-    unit: Unit.Weight,
+    unit: Unit.PerUnit,
     emissions: 13200,
+    vehicleAttributes: null,
   });
-  await activType.save();
+  await activType1.save();
+
+  const activType2 = new ActivityType();
+  Object.assign(activType2, {
+    name: "Voiture Eco Electrique 2020s",
+    category: Category.Car,
+    unit: Unit.Distance,
+    emissions: 66,
+    vehicleAttributes: {
+      motoEngine: null,
+      fuelType: FuelType.Electric,
+      vehicleType: VehicleType.Economic,
+      vehicleDecade: VehicleDecade.Decade2020s,
+    },
+  });
+  await activType2.save();
 
   await db.destroy();
   console.log("done !");

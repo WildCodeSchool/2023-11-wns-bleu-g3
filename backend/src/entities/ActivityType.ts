@@ -1,5 +1,11 @@
 import { Min, Length } from "class-validator";
-import { Field, InputType, ObjectType, Int, registerEnumType } from "type-graphql";
+import {
+  Field,
+  InputType,
+  ObjectType,
+  Int,
+  registerEnumType,
+} from "type-graphql";
 import {
   BaseEntity,
   BeforeInsert,
@@ -9,6 +15,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import {
+  UpdateVehicle_Attr_Input,
+  Vehicle_Attr,
+  Vehicle_Attr_Input,
+} from "./Vehicle_Attributes";
 
 export enum Unit {
   Weight = "grammes de CO2",
@@ -44,10 +55,10 @@ export enum Category {
 }
 
 registerEnumType(Unit, {
-  name: 'Unit'
+  name: "Unit",
 });
 registerEnumType(Category, {
-  name: 'Category'
+  name: "Category",
 });
 
 @Entity()
@@ -85,6 +96,10 @@ class ActivityType extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column(() => Vehicle_Attr)
+  @Field(() => Vehicle_Attr, { nullable: true })
+  vehicleAttributes?: Vehicle_Attr;
 }
 
 @InputType()
@@ -94,6 +109,9 @@ export class ActivityTypeInput {
 
   @Field()
   category: string;
+
+  @Field(() => Vehicle_Attr_Input, { nullable: true })
+  vehicleAttributes?: Vehicle_Attr_Input;
 
   @Field()
   unit: string;
@@ -105,18 +123,19 @@ export class ActivityTypeInput {
 
 @InputType()
 export class UpdateActivityTypeInput {
-  
-  @Field({ nullable: true })
-  category?: string;
+ 
+  @Field()
+  category: string;
 
-  @Field({ nullable: true })
-  unit?: string;
+  @Field(() => Vehicle_Attr_Input, { nullable: true })
+  vehicleAttributes?: Vehicle_Attr_Input;
 
-  @Field({ nullable: true })
+  @Field()
+  unit: string;
+
+  @Field()
   @Min(0)
-  emissions?: number;
-
-
+  emissions: number;
 }
 
 export default ActivityType;
