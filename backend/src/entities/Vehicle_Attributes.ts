@@ -1,4 +1,4 @@
-import { Field, InputType } from "type-graphql";
+import { Field, InputType, ObjectType } from "type-graphql";
 import { Column } from "typeorm";
 import calculateDecade, {
   FuelType,
@@ -7,62 +7,67 @@ import calculateDecade, {
   MotoEngine,
 } from "./Enums/Vehicle_Attributes";
 
+@ObjectType()
 export class Vehicle_Attr {
   @Column({
     type: "enum",
     enum: FuelType,
+    nullable: true,
   })
-  @Field({ nullable: true })
-  fuelType: FuelType;
+  @Field(() => FuelType, { nullable: true })
+  fuelType?: FuelType;
 
   @Column({
     type: "enum",
     enum: VehicleType,
+    nullable: true,
   })
-  @Field({ nullable: true })
-  vehicleType: VehicleType;
+  @Field(() => VehicleType, { nullable: true })
+  vehicleType?: VehicleType;
 
   @Column({
     type: "enum",
     enum: VehicleDecade,
+    nullable: true,
   })
-  @Field({ nullable: true })
-  vehicleDecade: VehicleDecade;
+  @Field(() => VehicleDecade, { nullable: true })
+  vehicleDecade?: VehicleDecade;
 
   @Column({
     type: "enum",
     enum: MotoEngine,
+    nullable: true,
   })
-  @Field({ nullable: true })
-  MotoEngine: MotoEngine;
+  @Field(() => MotoEngine, { nullable: true })
+  MotoEngine?: MotoEngine;
 }
 
 @InputType()
 export class Vehicle_Attr_Input {
   @Field({ nullable: true })
-  fuelType: FuelType;
+  fuelType?: FuelType;
 
   @Field({ nullable: true })
-  vehicleType: VehicleType;
+  vehicleType?: VehicleType;
 
   @Field({ nullable: true })
-  vehicleDecade: VehicleDecade;
+  vehicleDecade?: VehicleDecade;
 
   @Field({ nullable: true })
-  MotoEngine: MotoEngine;
+  MotoEngine?: MotoEngine;
 }
 
 @InputType()
 export class UpdateVehicle_Attr_Input {
   @Field({ nullable: true })
-  fuelType: FuelType;
+  fuelType?: FuelType;
 
   @Field({ nullable: true })
-  vehicleType: VehicleType;
+  vehicleType?: VehicleType;
 
   @Field({ nullable: true })
-  vehicleDecade: VehicleDecade;
+  vehicleDecade?: VehicleDecade;
 
   @Field({ nullable: true })
-  MotoEngine: MotoEngine;
+  MotoEngine?: MotoEngine;
 }

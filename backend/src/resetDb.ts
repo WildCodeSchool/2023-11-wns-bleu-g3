@@ -49,6 +49,7 @@ async function main() {
   Object.assign(activType, {
     name: "Chemise",
     category: Category.Clothing,
+    vehicleAttributes: null,
     unit: Unit.Weight,
     emissions: 13200,
   });

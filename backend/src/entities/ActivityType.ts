@@ -15,8 +15,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import calculateDecade from "./Enums/Vehicle_Attributes";
-import  { UpdateVehicle_Attr_Input, Vehicle_Attr, Vehicle_Attr_Input } from "./Vehicle_Attributes";
+import {
+  UpdateVehicle_Attr_Input,
+  Vehicle_Attr,
+  Vehicle_Attr_Input,
+} from "./Vehicle_Attributes";
 
 export enum Unit {
   Weight = "grammes de CO2",
@@ -76,9 +79,6 @@ class ActivityType extends BaseEntity {
   @Field()
   category: Category;
 
-  @Column(()=>Vehicle_Attr)
-  Vehicle_Attriutes:Vehicle_Attr
-
   @Column({
     type: "enum",
     enum: Unit,
@@ -96,6 +96,10 @@ class ActivityType extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Column((type) => Vehicle_Attr)
+  @Field(() => Vehicle_Attr, { nullable: true })
+  vehicleAttributes?: Vehicle_Attr;
 }
 
 @InputType()
@@ -106,8 +110,8 @@ export class ActivityTypeInput {
   @Field()
   category: string;
 
-  @Field(()=>Vehicle_Attr, { nullable: true })
-  Vehicle_Attriutes: Vehicle_Attr_Input
+  @Field(() => Vehicle_Attr_Input, { nullable: true })
+  vehicleAttributes?: Vehicle_Attr_Input;
 
   @Field()
   unit: string;
@@ -122,8 +126,8 @@ export class UpdateActivityTypeInput {
   @Field({ nullable: true })
   category?: string;
 
-  @Field(()=>Vehicle_Attr, { nullable: true })
-  Vehicle_Attriutes: UpdateVehicle_Attr_Input
+  @Field((type) => UpdateVehicle_Attr_Input, { nullable: true })
+  vehicleAttributes?: UpdateVehicle_Attr_Input;
 
   @Field({ nullable: true })
   unit?: string;
