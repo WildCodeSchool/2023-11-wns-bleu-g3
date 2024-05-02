@@ -189,7 +189,8 @@ export default function ModalAuthentication({
                         <pre className="text-error" data-testid="login-error">{error}</pre>
                       )}
                       <button className="btn btn-reef">Connexion</button>
-                      <p className="text-base">
+                    </form>
+                      <p className="text-base py-3">
                         Vous n&apos;avez pas de compte ?{" "}
                         <button
                           onClick={() => setIsRegistration(true)}
@@ -199,7 +200,6 @@ export default function ModalAuthentication({
                           Inscrivez-vous ici.
                         </button>
                       </p>
-                    </form>
                   </div>
                 </div>
               </div>
@@ -306,7 +306,8 @@ export default function ModalAuthentication({
                       <button className="btn btn-reef" type="submit">
                         Inscription
                       </button>
-                      <p className="text-base">
+                    </form>
+                      <p className="text-base py-3">
                         Vous avez déjà un compte ?{" "}
                         <button
                           onClick={() => setIsRegistration(false)}
@@ -315,7 +316,6 @@ export default function ModalAuthentication({
                           Connectez-vous ici.
                         </button>
                       </p>
-                    </form>
                   </div>
                 </div>
               </div>
