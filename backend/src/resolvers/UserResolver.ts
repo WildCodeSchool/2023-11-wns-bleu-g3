@@ -22,12 +22,12 @@ class UserResolver {
     const token = crypto.randomBytes(20).toString("hex");
     newUser.emailConfirmationToken = token;
 
-    await mailer.sendMail({
-      from: env.EMAIL_FROM,
-      to: newUser.email,
-      subject: "Bienvenue sur GreenFoot !",
-      text: `Bienvenue sur GreenFoot ${newUser.nickname} ! Pour confirmer votre email, cliquez sur ce lien: ${env.FRONTEND_URL}?emailToken=${token}`,
-    });
+    // await mailer.sendMail({
+    //   from: env.EMAIL_FROM,
+    //   to: newUser.email,
+    //   subject: "Bienvenue sur GreenFoot !",
+    //   text: `Bienvenue sur GreenFoot ${newUser.nickname} ! Pour confirmer votre email, cliquez sur ce lien: ${env.FRONTEND_URL}?emailToken=${token}`,
+    // });
 
     const newUserWithId = await newUser.save();
     return newUserWithId;
@@ -51,12 +51,12 @@ class UserResolver {
     const token = crypto.randomBytes(20).toString("hex");
     user.resetPasswordToken = token;
     user.save();
-    await mailer.sendMail({
-      from: env.EMAIL_FROM,
-      to: user.email,
-      subject: "Mot de passe oublié",
-      text: `Pour réinitialiser votre mot de passe, merci de cliquer sur le lien suivant : ${env.FRONTEND_URL}?resetPasswordToken=${user.resetPasswordToken}`,
-    });
+    // await mailer.sendMail({
+    //   from: env.EMAIL_FROM,
+    //   to: user.email,
+    //   subject: "Mot de passe oublié",
+    //   text: `Pour réinitialiser votre mot de passe, merci de cliquer sur le lien suivant : ${env.FRONTEND_URL}?resetPasswordToken=${user.resetPasswordToken}`,
+    // });
     return true;
   }
 

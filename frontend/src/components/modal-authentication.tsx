@@ -124,6 +124,7 @@ export default function ModalAuthentication({
                           className="input-text"
                           name="emailOrNickname"
                           placeholder="John Doe / john@doe.fr"
+                          data-testid="emailOrNickname"
                           required
                         />
                       </div>
@@ -137,6 +138,7 @@ export default function ModalAuthentication({
                             className="input-text"
                             placeholder="••••••••"
                             name="password"
+                            data-testid="password"
                             required
                           />
                           <button
@@ -184,7 +186,7 @@ export default function ModalAuthentication({
                         </Link>
                       </div>
                       {error !== "" && (
-                        <pre className="text-error">{error}</pre>
+                        <pre className="text-error" data-testid="login-error">{error}</pre>
                       )}
                       <button className="btn btn-reef">Connexion</button>
                       <p className="text-base">
@@ -235,6 +237,7 @@ export default function ModalAuthentication({
                           className="input-text"
                           name="nickname"
                           placeholder="John Doe"
+                          data-testid="signup-nickname"
                           required
                         />
                       </div>
@@ -245,6 +248,7 @@ export default function ModalAuthentication({
                           className="input-text"
                           name="email"
                           placeholder="john@doe.fr"
+                          data-testid="signup-email"
                           required
                         />
                       </div>
@@ -258,6 +262,7 @@ export default function ModalAuthentication({
                             className="input-text"
                             placeholder="8 caractères minimum"
                             name="password"
+                            data-testid="signup-password"
                             required
                           />
                           <button
