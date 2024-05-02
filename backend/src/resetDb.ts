@@ -54,9 +54,9 @@ async function main() {
   Object.assign(activType1, {
     name: "Chemise",
     category: Category.Clothing,
-    vehicleAttributes: null,
     unit: Unit.PerUnit,
     emissions: 13200,
+    vehicleAttributes: null,
   });
   await activType1.save();
 
