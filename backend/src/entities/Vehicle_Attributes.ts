@@ -39,7 +39,7 @@ export class Vehicle_Attr {
     nullable: true,
   })
   @Field({ nullable: true })
-  MotoEngine?: MotoEngine;
+  motoEngine?: MotoEngine;
 }
 
 @InputType()
@@ -54,7 +54,7 @@ export class Vehicle_Attr_Input {
   vehicleDecade?: VehicleDecade;
 
   @Field({ nullable: true })
-  MotoEngine?: MotoEngine;
+  motoEngine?: MotoEngine;
 }
 
 @InputType()
@@ -69,5 +69,5 @@ export class UpdateVehicle_Attr_Input {
   vehicleDecade?: VehicleDecade;
 
   @Field({ nullable: true })
-  MotoEngine?: MotoEngine;
+  motoEngine?: MotoEngine;
 }

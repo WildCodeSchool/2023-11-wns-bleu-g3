@@ -123,18 +123,19 @@ export class ActivityTypeInput {
 
 @InputType()
 export class UpdateActivityTypeInput {
-  @Field({ nullable: true })
-  category?: string;
+ 
+  @Field()
+  category: string;
 
-  @Field((type) => UpdateVehicle_Attr_Input, { nullable: true })
-  vehicleAttributes?: UpdateVehicle_Attr_Input;
+  @Field(() => Vehicle_Attr_Input, { nullable: true })
+  vehicleAttributes?: Vehicle_Attr_Input;
 
-  @Field({ nullable: true })
-  unit?: string;
+  @Field()
+  unit: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Min(0)
-  emissions?: number;
+  emissions: number;
 }
 
 export default ActivityType;
