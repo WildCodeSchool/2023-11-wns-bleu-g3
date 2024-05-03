@@ -18,4 +18,7 @@
   .input-text-xl {
     @apply border-2 border-pearl text-anchor text-base rounded-lg focus:ring-reef outline-reef focus:border-reef block w-full p-3.5;
   }
+  .input-text-reef {
+    @apply border-2 border-pearl text-reef font-normal text-sm rounded-lg focus:ring-reef outline-reef focus:border-reef block w-full p-3.5;
+  }
 }

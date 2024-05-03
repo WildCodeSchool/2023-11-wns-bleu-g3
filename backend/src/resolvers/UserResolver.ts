@@ -1,5 +1,11 @@
 import { Arg, Mutation, Query, Ctx, Resolver, Authorized } from "type-graphql";
-import User, { LoginInput, NewUserInput, ResetPasswordInput, ResetPasswordRequestInput } from "../entities/User";
+import User, {
+  LoginInput,
+  NewUserInput,
+  ResetPasswordInput,
+  ResetPasswordRequestInput,
+  UpdateUserInput,
+} from "../entities/User";
 import { GraphQLError } from "graphql";
 import { verify } from "argon2";
 import jwt from "jsonwebtoken";
@@ -61,7 +67,10 @@ class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async resetPassword(@Arg("data", { validate: true }) data: ResetPasswordInput, @Arg("resetPasswordToken") token: string) {
+  async resetPassword(
+    @Arg("data", { validate: true }) data: ResetPasswordInput,
+    @Arg("resetPasswordToken") token: string
+  ) {
     const user = await User.findOneBy({ resetPasswordToken: token });
     if (!user) throw new GraphQLError("Invalid Token");
     user.hashedPassword = await hash(data.password);
@@ -69,9 +78,13 @@ class UserResolver {
     return user.save().then(() => true);
   }
 
-  @Query(() => [User])
-  async profile() {
-    return User.find();
+  @Authorized()
+  @Query(() => User)
+  async profile(@Ctx() ctx: Context) {
+    if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
+    return User.findOneOrFail({
+      where: { id: ctx.currentUser.id },
+    });
   }
 
   @Mutation(() => String)
@@ -108,6 +121,23 @@ class UserResolver {
   async logout(@Ctx() ctx: Context) {
     ctx.res.clearCookie("token");
     return "ok";
+  }
+
+  @Authorized()
+  @Mutation(() => User)
+  async updateProfile(
+    @Ctx() ctx: Context,
+    @Arg("data", { validate: true }) data: UpdateUserInput
+  ) {
+    if (!ctx.currentUser)
+      throw new GraphQLError("you need to be logged in to updateyour profile");
+
+    if (data.firstName) ctx.currentUser.firstName = data.firstName;
+    if (data.lastName) ctx.currentUser.lastName = data.lastName;
+    if (data.avatarUrl) ctx.currentUser.avatarUrl = data.avatarUrl;
+    if (data.nickname) ctx.currentUser.nickname = data.nickname;
+
+    return ctx.currentUser.save();
   }
 }
 

@@ -115,11 +115,19 @@ export class ResetPasswordInput {
 export class UpdateUserInput {
   @Length(2, 30)
   @Field({ nullable: true })
+  firstName?: string;
+
+  @Length(2, 300)
+  @Field({ nullable: true })
+  lastName?: string;
+
+  @Length(2, 30)
+  @Field({ nullable: true })
   nickname?: string;
 
   @Length(2, 300)
   @Field({ nullable: true })
-  avatar?: string;
+  avatarUrl?: string;
 }
 
 export default User;

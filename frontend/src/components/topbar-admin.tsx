@@ -9,7 +9,7 @@ export default function TopbarAdmin({
 }) {
   console.log(isOpen);
   return (
-    <nav className="flex flex-row justify-between items-center p-4 bg-anchor w-full">
+    <nav className="flex flex-row justify-between items-center p-4 bg-anchor opacity-85 w-full">
       <div className="flex justify-center items-center gap-2">
         <img src="../../img/greenfoot-logo.png" alt="" className="w-14" />
 

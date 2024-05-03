@@ -1,4 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import Icon from "./icon";
+import TopbarMenu from "./topbar-menu";
 
 export default function TopbarLoggedInUser({
   isOpen,
@@ -7,7 +9,26 @@ export default function TopbarLoggedInUser({
   isOpen: any;
   setIsOpen: any;
 }) {
-  console.log(isOpen);
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const handleOpenMenu = () => {
+    setMenuIsOpen(!menuIsOpen);
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuRef]);
+
   return (
     <nav className="flex flex-row justify-between items-center p-4 bg-shore w-full">
       <div className="flex justify-center items-center gap-2">
@@ -46,10 +67,18 @@ export default function TopbarLoggedInUser({
           />
         </div>
       </form>
-      <div className="hidden md:block">
-        <button className="h-14 w-14 rounded-full bg-reef flex justify-center items-center text-xl text-white font-semibold btn hover:bg-anchor transition ease-in-out">
+      <div className="hidden md:block" ref={menuRef}>
+        <button
+          onClick={handleOpenMenu}
+          className="h-14 w-14 rounded-full bg-reef flex justify-center items-center text-xl text-white font-semibold btn hover:bg-anchor transition ease-in-out"
+        >
           GT
         </button>
+        {menuIsOpen && (
+          <div className="relative">
+            <TopbarMenu />
+          </div>
+        )}
       </div>
     </nav>
   );

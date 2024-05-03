@@ -24,7 +24,7 @@ export default function HeaderVisitor({
         <div className="flex justify-center items-center gap-2">
           <img src="../../img/greenfoot-logo.png" alt="" className="w-14" />
 
-          <h1 className="text-reef text-xl md:text-3xl font-bold drop-shadow-lg">
+          <h1 className="text-reef text-xl md:text-3xl font-bold drop-shadow-lg mb-0">
             GreenFoot
           </h1>
         </div>

@@ -35,7 +35,7 @@ async function main() {
     email: "greenGreta@app.com",
     password: "Visitor42@!",
     lastName: "Thunberg",
-    avatar:
+    avatarUrl:
       "https://e7.pngegg.com/pngimages/193/660/png-clipart-computer-icons-woman-avatar-avatar-girl-black-hair-logo-thumbnail.png",
   });
   await user.save();
