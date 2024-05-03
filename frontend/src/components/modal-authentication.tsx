@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
+import * as Yup from "yup";
 
 export default function ModalAuthentication({
   isOpen,
@@ -36,15 +37,19 @@ export default function ModalAuthentication({
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
 
-    try {
-      const res = await login({ variables: { data: formJSON } });
-      setIsOpen(false);
-      router.push("/");
-    } catch (e: any) {
-      setError("Identifiants incorrects");
-    } finally {
-      client.resetStore();
-    }
+    loginSchema
+      .validate(formJSON, { abortEarly: false })
+      .then(() => {
+        login({ variables: { data: formJSON } });
+        setIsOpen(false);
+        router.push("/dashboard");
+      })
+      .catch((errors) => {
+        setError(errors ? errors.errors.join(", \n"): "Identifiants incorrects");
+      })
+      .finally (() => {
+        client.resetStore();
+      });
   };
 
   const handleSubmitSignUp = async (e: FormEvent<HTMLFormElement>) => {
@@ -53,17 +58,43 @@ export default function ModalAuthentication({
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
 
-    try {
-      const res = await createUser({ variables: { data: formJSON } });
-      setIsOpen(false);
-      router.push("/");
-      notify();
-    } catch (e: any) {
-      if (e.message === "EMAIL_ALREADY_TAKEN")
-        setError("Cet e-mail est déjà pris");
-      else setError("une erreur est survenue");
-    }
+    signupSchema
+      .validate(formJSON, { abortEarly: false })
+      .then(() => {
+        createUser({ variables: { data: formJSON } });
+        setIsOpen(false);
+        router.push("/");
+        notify();
+      })
+      .catch((errors) => {
+        if (errors.message === "EMAIL_ALREADY_TAKEN")
+          setError("Cet e-mail est déjà pris");
+        setError(errors ? errors.errors.join(", \n"): "une erreur est survenue");
+      })
   };
+
+  const loginSchema = Yup.object().shape({
+    emailOrNickname: Yup.string().required(
+      "Vous devez renseigner un pseudo ou une adresse mail"
+    ),
+    password: Yup.string().required("Vous devez renseigner un mot de passe"),
+  });
+
+  const signupSchema = Yup.object().shape({
+    nickname: Yup.string()
+      .min(2, "votre surnom doit contenir au moins 2 caractères")
+      .max(100, "votre surnom ne peut dépasser les 100 caractères")
+      .required("Vous devez renseigner un surnom"),
+    email: Yup.string()
+      .email()
+      .required("Vous devez renseigner une adresse email valide"),
+    password: Yup.string()
+      .required("Vous devez renseigner un mot de passe")
+      .matches(
+        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        "Votre mot de passe n'est pas assez sécurisé"
+      ),
+  });
 
   return (
     <>
@@ -146,7 +177,7 @@ export default function ModalAuthentication({
                             className="btn-xs absolute top-1 right-2"
                             onClick={
                               viewPassword == true
-                                ? () => setViewPassword(false)
+                                ? () => setViewPassword(false) 
                                 : () => setViewPassword(true)
                             }
                           >
@@ -186,13 +217,18 @@ export default function ModalAuthentication({
                         </Link>
                       </div>
                       {error !== "" && (
-                        <pre className="text-error" data-testid="login-error">{error}</pre>
+                        <pre className="text-error text-xs" data-testid="login-error">
+                          {error}
+                        </pre>
                       )}
                       <button className="btn btn-reef">Connexion</button>
                       <p className="text-base">
                         Vous n&apos;avez pas de compte ?{" "}
                         <button
-                          onClick={() => setIsRegistration(true)}
+                          onClick={() => {
+                            setIsRegistration(true);
+                            setError("");
+                          }}
                           className="cursor-pointer hover:underline font-semibold"
                           type="button"
                         >
@@ -303,13 +339,21 @@ export default function ModalAuthentication({
                           </button>
                         </div>
                       </div>
+                      {error !== "" && (
+                        <pre className="text-error text-xs" data-testid="login-error">
+                          {error}
+                        </pre>
+                      )}
                       <button className="btn btn-reef" type="submit">
                         Inscription
                       </button>
                       <p className="text-base">
                         Vous avez déjà un compte ?{" "}
                         <button
-                          onClick={() => setIsRegistration(false)}
+                          onClick={() => {
+                            setIsRegistration(false);
+                            setError("");
+                          }}
                           className="cursor-pointer hover:underline font-semibold"
                         >
                           Connectez-vous ici.
