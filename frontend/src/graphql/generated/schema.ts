@@ -15,6 +15,45 @@ export type Scalars = {
   Float: number;
 };
 
+export type ActivityType = {
+  __typename?: 'ActivityType';
+  category: Scalars['String'];
+  emissions: Scalars['Float'];
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  unit: Scalars['String'];
+};
+
+export type ActivityTypeInput = {
+  category: Scalars['String'];
+  emissions: Scalars['Float'];
+  name: Scalars['String'];
+  unit: Scalars['String'];
+};
+
+export enum Category {
+  Appliances = 'Appliances',
+  Boat = 'Boat',
+  Bus = 'Bus',
+  Car = 'Car',
+  Clothing = 'Clothing',
+  Cooling = 'Cooling',
+  Electronics = 'Electronics',
+  Food = 'Food',
+  Heating = 'Heating',
+  Leisure = 'Leisure',
+  Lighting = 'Lighting',
+  Metro = 'Metro',
+  Moto = 'Moto',
+  Others = 'Others',
+  Plane = 'Plane',
+  Renewables = 'Renewables',
+  Services = 'Services',
+  Train = 'Train',
+  Waste = 'Waste',
+  Water = 'Water'
+}
+
 export type LoginInput = {
   emailOrNickname: Scalars['String'];
   password: Scalars['String'];
@@ -23,11 +62,15 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   confirmEmail: Scalars['Boolean'];
+  createActivityType: ActivityType;
   createUser: User;
+  deleteActivityType: Scalars['String'];
   login: Scalars['String'];
   logout: Scalars['String'];
   resetPassword: Scalars['Boolean'];
   resetPasswordRequest: Scalars['Boolean'];
+  updateActivityType: ActivityType;
+  updateProfile: User;
 };
 
 
@@ -36,8 +79,18 @@ export type MutationConfirmEmailArgs = {
 };
 
 
+export type MutationCreateActivityTypeArgs = {
+  data: ActivityTypeInput;
+};
+
+
 export type MutationCreateUserArgs = {
   data: NewUserInput;
+};
+
+
+export type MutationDeleteActivityTypeArgs = {
+  ActivityTypeId: Scalars['Float'];
 };
 
 
@@ -56,6 +109,17 @@ export type MutationResetPasswordRequestArgs = {
   data: ResetPasswordRequestInput;
 };
 
+
+export type MutationUpdateActivityTypeArgs = {
+  ActivityTypeId: Scalars['Float'];
+  data: UpdateActivityTypeInput;
+};
+
+
+export type MutationUpdateProfileArgs = {
+  data: UpdateUserInput;
+};
+
 export type NewUserInput = {
   email: Scalars['String'];
   nickname: Scalars['String'];
@@ -64,7 +128,16 @@ export type NewUserInput = {
 
 export type Query = {
   __typename?: 'Query';
-  profile: Array<User>;
+  getActivitiesTypes: Array<ActivityType>;
+  getActivityTypesById: ActivityType;
+  getCategories: Array<Category>;
+  getUnits: Array<Unit>;
+  profile: User;
+};
+
+
+export type QueryGetActivityTypesByIdArgs = {
+  id: Scalars['Int'];
 };
 
 export type ResetPasswordInput = {
@@ -73,6 +146,29 @@ export type ResetPasswordInput = {
 
 export type ResetPasswordRequestInput = {
   email: Scalars['String'];
+};
+
+export enum Unit {
+  Area = 'Area',
+  Distance = 'Distance',
+  Energy = 'Energy',
+  Monetary = 'Monetary',
+  PerUnit = 'PerUnit',
+  Volume = 'Volume',
+  Weight = 'Weight'
+}
+
+export type UpdateActivityTypeInput = {
+  category?: InputMaybe<Scalars['String']>;
+  emissions?: InputMaybe<Scalars['Float']>;
+  unit?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateUserInput = {
+  avatarUrl?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  nickname?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
@@ -97,7 +193,7 @@ export type ConfirmEmailMutation = { __typename?: 'Mutation', confirmEmail: bool
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: Array<{ __typename?: 'User', id: number, email: string, nickname: string, avatarUrl: string, role: string, firstName?: string | null, lastName?: string | null }> };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, email: string, nickname: string, avatarUrl: string, role: string, firstName?: string | null, lastName?: string | null } };
 
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
@@ -132,6 +228,13 @@ export type SignupMutationVariables = Exact<{
 
 
 export type SignupMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: number, nickname: string, email: string, avatarUrl: string } };
+
+export type UpdateProfileMutationVariables = Exact<{
+  data: UpdateUserInput;
+}>;
+
+
+export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'User', id: number, email: string, nickname: string, firstName?: string | null, lastName?: string | null, avatarUrl: string } };
 
 
 export const ConfirmEmailDocument = gql`
@@ -370,3 +473,41 @@ export function useSignupMutation(baseOptions?: Apollo.MutationHookOptions<Signu
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export const UpdateProfileDocument = gql`
+    mutation UpdateProfile($data: UpdateUserInput!) {
+  updateProfile(data: $data) {
+    id
+    email
+    nickname
+    firstName
+    lastName
+    avatarUrl
+  }
+}
+    `;
+export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutation, UpdateProfileMutationVariables>;
+
+/**
+ * __useUpdateProfileMutation__
+ *
+ * To run a mutation, you first call `useUpdateProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProfileMutation, { data, loading, error }] = useUpdateProfileMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileMutation, UpdateProfileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProfileMutation, UpdateProfileMutationVariables>(UpdateProfileDocument, options);
+      }
+export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfileMutation>;
+export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
+export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
