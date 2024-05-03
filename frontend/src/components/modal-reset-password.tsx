@@ -1,5 +1,4 @@
 import {
-  useProfileQuery,
   useResetPasswordMutation,
   useResetPasswordRequestMutation,
 } from "@/graphql/generated/schema";
@@ -7,6 +6,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import * as Yup from "yup";
 
 export default function ModalResetPassword({
   isOpen,
@@ -58,23 +58,34 @@ export default function ModalResetPassword({
     if (!token) return setError("lien de réinitialisation invalide");
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
-
     if (formJSON.password !== formJSON.passwordConfirmation)
       return setError("les mots de passe ne correspondent pas");
 
     delete formJSON.passwordConfirmation;
 
-    try {
-      const res = await resetPassword({
-        variables: { data: formJSON, resetPasswordToken: token },
-      });
-      setIsOpen(false);
-      router.push("/");
-      notifyResetPasswordSuccess()
-    } catch (e: any) {
-      setError("une erreur est survenue");
-    }
+    resetPasswordSchema
+      .validate(formJSON, { abortEarly: false })
+      .then(() => {
+        resetPassword({
+          variables: { data: formJSON, resetPasswordToken: token },
+        });
+        setIsOpen(false);
+        router.push("/");
+        notifyResetPasswordSuccess()
+      })
+      .catch((errors) => {
+        setError(errors ? errors.errors.join(", \n"): "une erreur est survenue");
+      })
   };
+
+  const resetPasswordSchema = Yup.object().shape({
+    password: Yup.string()
+      .required("Vous devez renseigner un mot de passe")
+      .matches(
+        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        "Votre mot de passe n'est pas assez sécurisé"
+      ),
+  });
 
   return (
     <>
@@ -249,6 +260,11 @@ export default function ModalResetPassword({
                           </button>
                         </div>
                       </div>
+                      {error !== "" && (
+                        <pre className="text-error text-xs" data-testid="login-error">
+                          {error}
+                        </pre>
+                      )}
                       <button className="btn btn-reef" type="submit">
                         Enregistrer
                       </button>
