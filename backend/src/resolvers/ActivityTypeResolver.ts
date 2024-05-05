@@ -76,7 +76,7 @@ class ActivityTypeResolver {
   }
 
   // ENUMS
-  
+
   @Query(() => [Unit])
   getUnits(): Unit[] {
     return Object.values(Unit);
@@ -87,23 +87,27 @@ class ActivityTypeResolver {
   }
 
   //vehicle enums
-
-  @Query(() => [FuelType])
-  getFuelTypes(): FuelType[] {
+  @Query(() => [String])
+  getFuelTypes() {
     return Object.values(FuelType);
   }
-  @Query(() => [VehicleDecade])
-  getVehicleDecade(): VehicleDecade[] {
+  @Query(() => [String])
+  getVehicleDecade() {
     return Object.values(VehicleDecade);
   }
-  @Query(() => [VehicleType])
-  getVehicleTypes(): VehicleType[] {
+  @Query(() => [String])
+  getVehicleTypes() {
     return Object.values(VehicleType);
   }
-  @Query(() => [MotoEngine])
-  getMotoEngines(): MotoEngine[] {
+  @Query(() => [String])
+  MotoEngine() {
     return Object.values(MotoEngine);
   }
+
+  // @Query(() => [ActivityType])
+  // async getActivitiesTypes() {
+  //   return ActivityType.find();
+  // }
 }
 
 export default ActivityTypeResolver;

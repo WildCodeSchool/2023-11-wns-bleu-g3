@@ -123,7 +123,6 @@ export class ActivityTypeInput {
 
 @InputType()
 export class UpdateActivityTypeInput {
- 
   @Field()
   category: string;
 
