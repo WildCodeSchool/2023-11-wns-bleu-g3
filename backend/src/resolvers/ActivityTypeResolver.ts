@@ -77,12 +77,12 @@ class ActivityTypeResolver {
 
   // ENUMS
 
-  @Query(() => [Unit])
-  getUnits(): Unit[] {
+  @Query(() => [String])
+  getUnits() {
     return Object.values(Unit);
   }
-  @Query(() => [Category])
-  getCategories(): Category[] {
+  @Query(() => [String])
+  getCategories() {
     return Object.values(Category);
   }
 
