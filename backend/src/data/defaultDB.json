@@ -1,105 +1,9 @@
 [
   {
-    "name": "Voiture Eco Electrique 1990s",
+    "name": "Voiture Économique Diesel 2010s",
     "category": "Car",
     "unit": "Distance",
-    "emissions": 150,
-    "vehicleAttributes": {
-      "fuelType": "Diesel",
-      "vehicleType": "Economic",
-      "vehicleDecade": "Decade1990s",
-      "motoEngine": null
-    }
-  },
-  {
-    "name": "Voiture Moyenne Inferieure 1990s",
-    "category": "Car",
-    "unit": "Distance",
-    "emissions": 160,
-    "vehicleAttributes": {
-      "fuelType": "Diesel",
-      "vehicleType": "Economic",
-      "vehicleDecade": "Decade1990s",
-      "motoEngine": null
-    }
-  },
-  {
-    "name": "Voiture Moyenne Superieure 1990s",
-    "category": "Car",
-    "unit": "Distance",
-    "emissions": 170,
-    "vehicleAttributes": {
-      "fuelType": "Diesel",
-      "vehicleType": "Luxury",
-      "vehicleDecade": "Decade1990s",
-      "motoEngine": null
-    }
-  },
-  {
-    "name": "Voiture Superieure Luxe 1990s",
-    "category": "Car",
-    "unit": "Distance",
-    "emissions": 180,
-    "vehicleAttributes": {
-      "fuelType": "Diesel",
-      "vehicleType": "Luxury",
-      "vehicleDecade": "Decade1990s",
-      "motoEngine": null
-    }
-  },
-  {
-    "name": "Voiture Eco Electrique 2000s",
-    "category": "Car",
-    "unit": "Distance",
-    "emissions": 120,
-    "vehicleAttributes": {
-      "fuelType": "Diesel",
-      "vehicleType": "Economic",
-      "vehicleDecade": "Decade2000s",
-      "motoEngine": null
-    }
-  },
-  {
-    "name": "Voiture Moyenne Inferieure 2000s",
-    "category": "Car",
-    "unit": "Distance",
-    "emissions": 130,
-    "vehicleAttributes": {
-      "fuelType": "Diesel",
-      "vehicleType": "Economic",
-      "vehicleDecade": "Decade2000s",
-      "motoEngine": null
-    }
-  },
-  {
-    "name": "Voiture Moyenne Superieure 2000s",
-    "category": "Car",
-    "unit": "Distance",
-    "emissions": 140,
-    "vehicleAttributes": {
-      "fuelType": "Diesel",
-      "vehicleType": "Luxury",
-      "vehicleDecade": "Decade2000s",
-      "motoEngine": null
-    }
-  },
-  {
-    "name": "Voiture Superieure Luxe 2000s",
-    "category": "Car",
-    "unit": "Distance",
-    "emissions": 150,
-    "vehicleAttributes": {
-      "fuelType": "Diesel",
-      "vehicleType": "Luxury",
-      "vehicleDecade": "Decade2000s",
-      "motoEngine": null
-    }
-  },
-  {
-    "name": "Voiture Eco Electrique 2010s",
-    "category": "Car",
-    "unit": "Distance",
-    "emissions": 100,
+    "emissions": 107,
     "vehicleAttributes": {
       "fuelType": "Diesel",
       "vehicleType": "Economic",
@@ -108,43 +12,7 @@
     }
   },
   {
-    "name": "Voiture Moyenne Inferieure 2010s",
-    "category": "Car",
-    "unit": "Distance",
-    "emissions": 110,
-    "vehicleAttributes": {
-      "fuelType": "Diesel",
-      "vehicleType": "Economic",
-      "vehicleDecade": "Decade2010s",
-      "motoEngine": null
-    }
-  },
-  {
-    "name": "Voiture Moyenne Superieure 2010s",
-    "category": "Car",
-    "unit": "Distance",
-    "emissions": 120,
-    "vehicleAttributes": {
-      "fuelType": "Diesel",
-      "vehicleType": "Luxury",
-      "vehicleDecade": "Decade2010s",
-      "motoEngine": null
-    }
-  },
-  {
-    "name": "Voiture Superieure Luxe 2010s",
-    "category": "Car",
-    "unit": "Distance",
-    "emissions": 130,
-    "vehicleAttributes": {
-      "fuelType": "Diesel",
-      "vehicleType": "Luxury",
-      "vehicleDecade": "Decade2010s",
-      "motoEngine": null
-    }
-  },
-  {
-    "name": "Voiture Eco Electrique 2020s",
+    "name": "Voiture Économique Diesel 2020s",
     "category": "Car",
     "unit": "Distance",
     "emissions": 82,
@@ -156,31 +24,43 @@
     }
   },
   {
-    "name": "Voiture Moyenne Inferieure 2020s",
+    "name": "Voiture Sport Diesel 2010s",
     "category": "Car",
     "unit": "Distance",
-    "emissions": 99,
+    "emissions": 130,
     "vehicleAttributes": {
       "fuelType": "Diesel",
-      "vehicleType": "Economic",
-      "vehicleDecade": "Decade2020s",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Decade2010s",
       "motoEngine": null
     }
   },
   {
-    "name": "Voiture Moyenne Superieure 2020s",
+    "name": "Voiture Sport Diesel 2020s",
     "category": "Car",
     "unit": "Distance",
     "emissions": 107,
     "vehicleAttributes": {
       "fuelType": "Diesel",
-      "vehicleType": "Luxury",
+      "vehicleType": "Sports",
       "vehicleDecade": "Decade2020s",
       "motoEngine": null
     }
   },
   {
-    "name": "Voiture Superieure Luxe 2020s",
+    "name": "Voiture Luxe Diesel 2010s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 150,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2010s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Diesel 2020s",
     "category": "Car",
     "unit": "Distance",
     "emissions": 98,

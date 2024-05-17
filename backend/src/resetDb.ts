@@ -75,6 +75,9 @@ async function main() {
   });
   await activType2.save();
 
+
+  
+
   await db.destroy();
   console.log("done !");
 }
