@@ -1,0 +1,405 @@
+[
+  {
+    "name": "Voiture Eco Electrique 1990s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 150,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Inferieure 1990s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 160,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Superieure 1990s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 170,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Superieure Luxe 1990s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 180,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Eco Electrique 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 120,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Inferieure 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 130,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Superieure 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 140,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Superieure Luxe 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 150,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Eco Electrique 2010s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 100,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2010s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Inferieure 2010s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 110,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2010s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Superieure 2010s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 120,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2010s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Superieure Luxe 2010s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 130,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2010s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Eco Electrique 2020s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 82,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Inferieure 2020s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 99,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Superieure 2020s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 107,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Superieure Luxe 2020s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 98,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Moto moins de 125 cc",
+    "category": "Moto",
+    "unit": "Distance",
+    "emissions": 83,
+    "vehicleAttributes": {
+      "motoEngine": "Engine125orless",
+      "fuelType": null,
+      "vehicleType": null,
+      "vehicleDecade": null
+    }
+  },
+  {
+    "name": "Moto 125 à 500 cc",
+    "category": "Moto",
+    "unit": "Distance",
+    "emissions": 101,
+    "vehicleAttributes": {
+      "motoEngine": "Engine125to500",
+      "fuelType": null,
+      "vehicleType": null,
+      "vehicleDecade": null
+    }
+  },
+  {
+    "name": "Moto plus de 500 cc",
+    "category": "Moto",
+    "unit": "Distance",
+    "emissions": 132,
+    "vehicleAttributes": {
+      "motoEngine": "Engine500plus",
+      "fuelType": null,
+      "vehicleType": null,
+      "vehicleDecade": null
+    }
+  },
+  {
+    "name": "Avion moins de 500km",
+    "category": "Plane",
+    "unit": "Distance",
+    "emissions": 285,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Avion 500 à 1000 km",
+    "category": "Plane",
+    "unit": "Distance",
+    "emissions": 230,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Avion 1000 à 3500 km",
+    "category": "Plane",
+    "unit": "Distance",
+    "emissions": 179,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Avion plus de 3500km",
+    "category": "Plane",
+    "unit": "Distance",
+    "emissions": 152,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "TGV",
+    "category": "Train",
+    "unit": "Distance",
+    "emissions": 3,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "TER",
+    "category": "Train",
+    "unit": "Distance",
+    "emissions": 29,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "RER",
+    "category": "Train",
+    "unit": "Distance",
+    "emissions": 7,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Métro",
+    "category": "Train",
+    "unit": "Distance",
+    "emissions": 4,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Ferry",
+    "category": "Boat",
+    "unit": "Distance",
+    "emissions": 267,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Pompe à chaleur",
+    "category": "Heating",
+    "unit": "Area",
+    "emissions": 3950,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Poêle à granulés",
+    "category": "Heating",
+    "unit": "Area",
+    "emissions": 5640,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Poêle à bois",
+    "category": "Heating",
+    "unit": "Area",
+    "emissions": 9200,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Chauffage électrique",
+    "category": "Heating",
+    "unit": "Area",
+    "emissions": 11900,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Chauffage gaz",
+    "category": "Heating",
+    "unit": "Area",
+    "emissions": 39000,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Chauffage fioul",
+    "category": "Heating",
+    "unit": "Area",
+    "emissions": 57200,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "t-shirt",
+    "category": "Clothing",
+    "unit": "PerUnit",
+    "emissions": 6430,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "chemise",
+    "category": "Clothing",
+    "unit": "PerUnit",
+    "emissions": 13200,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "paire de chaussures",
+    "category": "Clothing",
+    "unit": "PerUnit",
+    "emissions": 15000,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "jean",
+    "category": "Clothing",
+    "unit": "PerUnit",
+    "emissions": 25100,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "pull",
+    "category": "Clothing",
+    "unit": "PerUnit",
+    "emissions": 56700,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "manteau",
+    "category": "Clothing",
+    "unit": "PerUnit",
+    "emissions": 101000,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Apple",
+    "category": "Electronics",
+    "unit": "PerUnit",
+    "emissions": 62000,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Huawei",
+    "category": "Electronics",
+    "unit": "PerUnit",
+    "emissions": 71000,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Samsung",
+    "category": "Electronics",
+    "unit": "PerUnit",
+    "emissions": 49000,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Autre",
+    "category": "Electronics",
+    "unit": "PerUnit",
+    "emissions": 60000,
+    "vehicleAttributes": null
+  }
+]

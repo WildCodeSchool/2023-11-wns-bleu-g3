@@ -1,0 +1,147 @@
+[
+  {
+    "category": "Voiture diesel (essence : + 6%) (électrique : - 22%)",
+    "values": [
+      {
+        "Gamme de véhicules": "ECONOMIQUE/INFERIEURE",
+        "2010 (g de CO2 / km)": "121",
+        "2011 (g de CO2 / km)": "119",
+        "2012 (g de CO2 / km)": "115",
+        "2013 (g de CO2 / km)": "106",
+        "2014 (g de CO2 / km)": "105",
+        "2015 (g de CO2 / km)": "101",
+        "2016 (g de CO2 / km)": "100",
+        "2017 (g de CO2 / km)": "100",
+        "2018 (g de CO2 / km)": "102",
+        "2019 (g de CO2 / km)": "101",
+        "2020 (g de CO2 / km)": "82"
+      },
+      {
+        "Gamme de véhicules": "MOY-INFER",
+        "2010 (g de CO2 / km)": "133",
+        "2011 (g de CO2 / km)": "128",
+        "2012 (g de CO2 / km)": "123",
+        "2013 (g de CO2 / km)": "117",
+        "2014 (g de CO2 / km)": "113",
+        "2015 (g de CO2 / km)": "110",
+        "2016 (g de CO2 / km)": "109",
+        "2017 (g de CO2 / km)": "111",
+        "2018 (g de CO2 / km)": "111",
+        "2019 (g de CO2 / km)": "111",
+        "2020 (g de CO2 / km)": "99"
+      },
+      {
+        "Gamme de véhicules": "MOY-SUPER",
+        "2010 (g de CO2 / km)": "150",
+        "2011 (g de CO2 / km)": "143",
+        "2012 (g de CO2 / km)": "140",
+        "2013 (g de CO2 / km)": "134",
+        "2014 (g de CO2 / km)": "129",
+        "2015 (g de CO2 / km)": "124",
+        "2016 (g de CO2 / km)": "121",
+        "2017 (g de CO2 / km)": "121",
+        "2018 (g de CO2 / km)": "121",
+        "2019 (g de CO2 / km)": "120",
+        "2020 (g de CO2 / km)": "107"
+      },
+      {
+        "Gamme de véhicules": "SUPERIEURE/LUXE",
+        "2010 (g de CO2 / km)": "174",
+        "2011 (g de CO2 / km)": "167",
+        "2012 (g de CO2 / km)": "161",
+        "2013 (g de CO2 / km)": "158",
+        "2014 (g de CO2 / km)": "151",
+        "2015 (g de CO2 / km)": "145",
+        "2016 (g de CO2 / km)": "141",
+        "2017 (g de CO2 / km)": "137",
+        "2018 (g de CO2 / km)": "137",
+        "2019 (g de CO2 / km)": "129",
+        "2020 (g de CO2 / km)": "98"
+      }
+    ]
+  },
+  {
+    "category": "Moto",
+    "values": [
+      {
+        "cylindrée": "g de CO2 / km",
+        "moins de 125 cc": "83",
+        "125 à 500 cc": "101",
+        "plus de 500 cc": "132"
+      }
+    ]
+  },
+  {
+    "category": "Avion",
+    "values": [
+      {
+        "km/trajet": "g de CO2 / km",
+        "moins de 500km": "285",
+        "500 à 1000 km": "230",
+        "1000 à 3500 km": "179",
+        "plus de 3500km": "152"
+      }
+    ]
+  },
+  {
+    "category": "Train",
+    "values": [
+      {
+        "type": "g de CO2 / km",
+        "TGV": "3",
+        "TER": "29",
+        "RER": "7",
+        "Métro": "4"
+      }
+    ]
+  },
+  {
+    "category": "Bateau",
+    "values": [
+      {
+        "type": "g de CO2 / km",
+        "Ferry": "267"
+      }
+    ]
+  },
+  {
+    "category": "Chauffage",
+    "values": [
+      {
+        "Type": "g de CO2 / an / m²",
+        "Pompe à chaleur": "3950",
+        "Poêle à granulés": "5640",
+        "Poêle à bois": "9200",
+        "Chauffage électrique": "11900",
+        "Chauffage gaz": "39000",
+        "Chauffage fioul": "57200"
+      }
+    ]
+  },
+  {
+    "category": "Vêtements (-50% si produit en France) (si seconde main : - 82%)",
+    "values": [
+      {
+        "Type": "g de CO2 / vêtement",
+        "t-shirt": "6430",
+        "chemise": "13200",
+        "paire de chaussures": "15000",
+        "jean": "25100",
+        "pull": "56700",
+        "manteau": "101000"
+      }
+    ]
+  },
+  {
+    "category": "Téléphone (si seconde main : - 87 %)",
+    "values": [
+      {
+        "marque": "g de CO2 / fabrication",
+        "Apple": "62000",
+        "Huawei": "71000",
+        "Samsung": "49000",
+        "Autre": "60000"
+      }
+    ]
+  }
+]
