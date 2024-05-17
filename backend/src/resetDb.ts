@@ -6,7 +6,10 @@ import {
   FuelType,
   VehicleDecade,
   VehicleType,
+  MotoEngine,
 } from "./entities/Enums/Vehicle_Attributes";
+import fs from "fs";
+import path from "path";
 
 export async function clearDB() {
   const runner = db.createQueryRunner();
@@ -75,8 +78,46 @@ async function main() {
   });
   await activType2.save();
 
+  // Json Reader
+  const filePath = path.resolve(__dirname, "../src/data/defaultDB.json");
+  const data = fs.readFileSync(filePath, "utf-8");
+  const activityTypes = JSON.parse(data);
 
-  
+  for (const data of activityTypes) {
+    const Activity = new ActivityType();
+    Object.assign(Activity, {
+      name: data.name,
+      category: Category[data.category as keyof typeof Category],
+      unit: Unit[data.unit as keyof typeof Unit],
+      emissions: data.emissions,
+      vehicleAttributes: data.vehicleAttributes
+        ? {
+            fuelType: data.vehicleAttributes.fuelType
+              ? FuelType[
+                  data.vehicleAttributes.fuelType as keyof typeof FuelType
+                ]
+              : null,
+            vehicleType: data.vehicleAttributes.vehicleType
+              ? VehicleType[
+                  data.vehicleAttributes.vehicleType as keyof typeof VehicleType
+                ]
+              : null,
+            vehicleDecade: data.vehicleAttributes.vehicleDecade
+              ? VehicleDecade[
+                  data.vehicleAttributes
+                    .vehicleDecade as keyof typeof VehicleDecade
+                ]
+              : null,
+            motoEngine: data.vehicleAttributes.motoEngine
+              ? MotoEngine[
+                  data.vehicleAttributes.motoEngine as keyof typeof MotoEngine
+                ]
+              : null,
+          }
+        : null,
+    });
+    await Activity.save();
+  }
 
   await db.destroy();
   console.log("done !");
