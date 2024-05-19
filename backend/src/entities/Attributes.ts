@@ -29,7 +29,6 @@ registerEnumType(SecondHandClothes, {
   name: "SecondHandClothes",
 });
 
-
 registerEnumType(SecondHandPhones, {
   name: "SecondHandPhones",
 });
@@ -39,45 +38,51 @@ export class Attr {
   @Column({
     type: "enum",
     enum: MadeInFrance,
+    nullable: true,
+    default: MadeInFrance.False,
   })
-  @Field()
+  @Field({ nullable: true })
   madeInFrance: MadeInFrance;
 
   @Column({
     type: "enum",
     enum: SecondHandClothes,
+    nullable: true,
+    default: SecondHandClothes.False,
   })
-  @Field()
+  @Field({ nullable: true })
   secondHandClothes: SecondHandClothes;
 
   @Column({
     type: "enum",
     enum: SecondHandPhones,
+    nullable: true,
+    default: SecondHandPhones.False,
   })
-  @Field()
+  @Field({ nullable: true })
   secondHandPhones: SecondHandPhones;
 }
 
 @InputType()
 export class Attr_Input {
-  @Field()
+  @Field({ nullable: true })
   madeInFrance?: boolean;
 
-  @Field()
+  @Field({ nullable: true })
   secondHandClothes?: boolean;
 
-  @Field()
+  @Field({ nullable: true })
   secondHandPhones?: boolean;
 }
 
 @InputType()
 export class Update_Attr_Input {
-  @Field()
+  @Field({ nullable: true })
   madeInFrance?: boolean;
 
-  @Field()
+  @Field({ nullable: true })
   secondHandClothes?: boolean;
 
-  @Field()
+  @Field({ nullable: true })
   secondHandPhones?: boolean;
 }
