@@ -1,67 +1,83 @@
-import { Field, InputType, ObjectType } from "type-graphql";
+import {
+  Field,
+  InputType,
+  ObjectType,
+  Int,
+  registerEnumType,
+} from "type-graphql";
 import { Column } from "typeorm";
+
+export enum MadeInFrance {
+  False = 1.0,
+  True = 0.5,
+}
+
+export enum SecondHandClothes {
+  False = 1.0,
+  True = 0.5,
+}
+export enum SecondHandPhones {
+  False = 1.0,
+  True = 0.5,
+}
+
+registerEnumType(MadeInFrance, {
+  name: "MadeInFrance",
+});
+
+registerEnumType(SecondHandClothes, {
+  name: "SecondHandClothes",
+});
+
+
+registerEnumType(SecondHandPhones, {
+  name: "SecondHandPhones",
+});
 
 @ObjectType()
 export class Attr {
   @Column({
-    type: "boolean",
-    nullable: true,
-    default: false,
+    type: "enum",
+    enum: MadeInFrance,
   })
-  @Field({ nullable: true })
-  madeInFrance?: boolean;
+  @Field()
+  madeInFrance: MadeInFrance;
 
   @Column({
-    type: "boolean",
-    nullable: true,
-    default: false,
+    type: "enum",
+    enum: SecondHandClothes,
   })
-  @Field({ nullable: true })
-  secondHandClothes?: boolean;
+  @Field()
+  secondHandClothes: SecondHandClothes;
 
   @Column({
-    type: "boolean",
-    nullable: true,
-    default: false,
+    type: "enum",
+    enum: SecondHandPhones,
   })
-  @Field({ nullable: true })
-  secondHandPhone?: boolean;
+  @Field()
+  secondHandPhones: SecondHandPhones;
 }
-
-const madeInFranceCalc: { [key: string]: number } = {
-  true: 0.5,
-  false: 1.0,
-};
-
-const isSecondHandClothesCalc: { [key: string]: number } = {
-  true: 0.18,
-  false: 1.0,
-};
-const isSecondHandPhoneCalc: { [key: string]: number } = {
-  true: 0.13,
-  false: 1.0,
-};
 
 @InputType()
 export class Attr_Input {
-  @Field({ nullable: true })
+  @Field()
   madeInFrance?: boolean;
 
-  @Field({ nullable: true })
+  @Field()
   secondHandClothes?: boolean;
 
-  @Field({ nullable: true })
-  secondHandPhone?: boolean;
+  @Field()
+  secondHandPhones?: boolean;
 }
 
 @InputType()
 export class Update_Attr_Input {
-  @Field({ nullable: true })
+  @Field()
   madeInFrance?: boolean;
 
-  @Field({ nullable: true })
+  @Field()
   secondHandClothes?: boolean;
 
-  @Field({ nullable: true })
-  secondHandPhone?: boolean;
+  @Field()
+  secondHandPhones?: boolean;
 }

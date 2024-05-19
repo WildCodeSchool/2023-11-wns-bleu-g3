@@ -24,6 +24,9 @@ import {
   Attr,
   Attr_Input,
   Update_Attr_Input,
+  MadeInFrance,
+  SecondHandClothes,
+  SecondHandPhones
 } from "./Attributes"
 
 export enum Unit {
@@ -103,7 +106,7 @@ class ActivityType extends BaseEntity {
   updatedAt: Date;
 
   @Column(() => Attr)
-  @Field(() => Attr, { nullable: true })
+  @Field(() => Attr)
   attributes?: Attr;
 
   @Column(() => Vehicle_Attr)
@@ -119,7 +122,7 @@ export class ActivityTypeInput {
   @Field()
   category: string;
 
-  @Field(() => Attr_Input, { nullable: true })
+  @Field(() => Attr_Input)
   attributes?: Attr_Input;
 
   @Field(() => Vehicle_Attr_Input, { nullable: true })
@@ -138,7 +141,7 @@ export class UpdateActivityTypeInput {
   @Field()
   category: string;
 
-  @Field(() => Attr_Input, { nullable: true })
+  @Field(() => Attr_Input, )
   attributes?: Attr_Input;
 
   @Field(() => Vehicle_Attr_Input, { nullable: true })
