@@ -53,31 +53,6 @@ async function main() {
   });
   await admin.save();
 
-  const activType1 = new ActivityType();
-  Object.assign(activType1, {
-    name: "Chemise",
-    category: Category.Clothing,
-    unit: Unit.PerUnit,
-    emissions: 13200,
-    vehicleAttributes: null,
-  });
-  await activType1.save();
-
-  const activType2 = new ActivityType();
-  Object.assign(activType2, {
-    name: "Voiture Eco Electrique 2020s",
-    category: Category.Car,
-    unit: Unit.Distance,
-    emissions: 66,
-    vehicleAttributes: {
-      motoEngine: null,
-      fuelType: FuelType.Electric,
-      vehicleType: VehicleType.Economic,
-      vehicleDecade: VehicleDecade.Decade2020s,
-    },
-  });
-  await activType2.save();
-
   // Json Reader
   const filePath = path.resolve(__dirname, "../src/data/defaultDB.json");
   const data = fs.readFileSync(filePath, "utf-8");
@@ -91,30 +66,13 @@ async function main() {
       unit: Unit[data.unit as keyof typeof Unit],
       emissions: data.emissions,
       vehicleAttributes: data.vehicleAttributes
-        ? {
-            fuelType: data.vehicleAttributes.fuelType
-              ? FuelType[
-                  data.vehicleAttributes.fuelType as keyof typeof FuelType
-                ]
-              : null,
-            vehicleType: data.vehicleAttributes.vehicleType
-              ? VehicleType[
-                  data.vehicleAttributes.vehicleType as keyof typeof VehicleType
-                ]
-              : null,
-            vehicleDecade: data.vehicleAttributes.vehicleDecade
-              ? VehicleDecade[
-                  data.vehicleAttributes
-                    .vehicleDecade as keyof typeof VehicleDecade
-                ]
-              : null,
-            motoEngine: data.vehicleAttributes.motoEngine
-              ? MotoEngine[
-                  data.vehicleAttributes.motoEngine as keyof typeof MotoEngine
-                ]
-              : null,
-          }
-        : null,
+      ? {
+          fuelType: FuelType[data.vehicleAttributes.fuelType as keyof typeof FuelType] ?? null,
+          vehicleType: VehicleType[data.vehicleAttributes.vehicleType as keyof typeof VehicleType] ?? null,
+          vehicleDecade: VehicleDecade[data.vehicleAttributes.vehicleDecade as keyof typeof VehicleDecade] ?? null,
+          motoEngine: MotoEngine[data.vehicleAttributes.motoEngine as keyof typeof MotoEngine] ?? null,
+        }
+      : null,
     });
     await Activity.save();
   }
