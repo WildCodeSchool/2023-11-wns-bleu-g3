@@ -20,6 +20,14 @@ import {
   Vehicle_Attr,
   Vehicle_Attr_Input,
 } from "./Vehicle_Attributes";
+import {
+  Attr,
+  Attr_Input,
+  Update_Attr_Input,
+  MadeInFrance,
+  SecondHandClothes,
+  SecondHandPhones
+} from "./Attributes"
 
 export enum Unit {
   Weight = "grammes de CO2",
@@ -97,6 +105,10 @@ class ActivityType extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Column(() => Attr)
+  @Field(() => Attr)
+  attributes?: Attr;
+
   @Column(() => Vehicle_Attr)
   @Field(() => Vehicle_Attr, { nullable: true })
   vehicleAttributes?: Vehicle_Attr;
@@ -109,6 +121,9 @@ export class ActivityTypeInput {
 
   @Field()
   category: string;
+
+  @Field(() => Attr_Input)
+  attributes?: Attr_Input;
 
   @Field(() => Vehicle_Attr_Input, { nullable: true })
   vehicleAttributes?: Vehicle_Attr_Input;
@@ -123,12 +138,14 @@ export class ActivityTypeInput {
 
 @InputType()
 export class UpdateActivityTypeInput {
- 
   @Field()
   category: string;
 
+  @Field(() => Attr_Input, )
+  attributes?: Attr_Input;
+
   @Field(() => Vehicle_Attr_Input, { nullable: true })
-  vehicleAttributes?: Vehicle_Attr_Input;
+  vehicleAttributes?: UpdateVehicle_Attr_Input;
 
   @Field()
   unit: string;
