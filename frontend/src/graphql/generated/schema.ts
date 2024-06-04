@@ -130,6 +130,7 @@ export type Query = {
   __typename?: 'Query';
   MotoEngine: Array<Scalars['String']>;
   getActivitiesTypes: Array<ActivityType>;
+  getActivitiesTypesPagination: Array<ActivityType>;
   getActivityTypesById: ActivityType;
   getCategories: Array<Scalars['String']>;
   getFuelTypes: Array<Scalars['String']>;
@@ -137,6 +138,12 @@ export type Query = {
   getVehicleDecade: Array<Scalars['String']>;
   getVehicleTypes: Array<Scalars['String']>;
   profile: User;
+};
+
+
+export type QueryGetActivitiesTypesPaginationArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -194,6 +201,14 @@ export type Vehicle_Attr_Input = {
   vehicleDecade?: InputMaybe<Scalars['String']>;
   vehicleType?: InputMaybe<Scalars['String']>;
 };
+
+export type GetActivitiesTypesPaginationQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetActivitiesTypesPaginationQuery = { __typename?: 'Query', getActivitiesTypesPagination: Array<{ __typename?: 'ActivityType', category: string, emissions: number, id: number, name: string, unit: string }> };
 
 export type ConfirmEmailMutationVariables = Exact<{
   emailToken: Scalars['String'];
@@ -256,6 +271,51 @@ export type UpdateProfileMutationVariables = Exact<{
 export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'User', id: number, email: string, nickname: string, firstName?: string | null, lastName?: string | null, avatarUrl?: string | null } };
 
 
+export const GetActivitiesTypesPaginationDocument = gql`
+    query GetActivitiesTypesPagination($limit: Int, $offset: Int) {
+  getActivitiesTypesPagination(limit: $limit, offset: $offset) {
+    category
+    emissions
+    id
+    name
+    unit
+  }
+}
+    `;
+
+/**
+ * __useGetActivitiesTypesPaginationQuery__
+ *
+ * To run a query within a React component, call `useGetActivitiesTypesPaginationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActivitiesTypesPaginationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActivitiesTypesPaginationQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetActivitiesTypesPaginationQuery(baseOptions?: Apollo.QueryHookOptions<GetActivitiesTypesPaginationQuery, GetActivitiesTypesPaginationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetActivitiesTypesPaginationQuery, GetActivitiesTypesPaginationQueryVariables>(GetActivitiesTypesPaginationDocument, options);
+      }
+export function useGetActivitiesTypesPaginationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActivitiesTypesPaginationQuery, GetActivitiesTypesPaginationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetActivitiesTypesPaginationQuery, GetActivitiesTypesPaginationQueryVariables>(GetActivitiesTypesPaginationDocument, options);
+        }
+export function useGetActivitiesTypesPaginationSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetActivitiesTypesPaginationQuery, GetActivitiesTypesPaginationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetActivitiesTypesPaginationQuery, GetActivitiesTypesPaginationQueryVariables>(GetActivitiesTypesPaginationDocument, options);
+        }
+export type GetActivitiesTypesPaginationQueryHookResult = ReturnType<typeof useGetActivitiesTypesPaginationQuery>;
+export type GetActivitiesTypesPaginationLazyQueryHookResult = ReturnType<typeof useGetActivitiesTypesPaginationLazyQuery>;
+export type GetActivitiesTypesPaginationSuspenseQueryHookResult = ReturnType<typeof useGetActivitiesTypesPaginationSuspenseQuery>;
+export type GetActivitiesTypesPaginationQueryResult = Apollo.QueryResult<GetActivitiesTypesPaginationQuery, GetActivitiesTypesPaginationQueryVariables>;
 export const ConfirmEmailDocument = gql`
     mutation ConfirmEmail($emailToken: String!) {
   confirmEmail(emailToken: $emailToken)

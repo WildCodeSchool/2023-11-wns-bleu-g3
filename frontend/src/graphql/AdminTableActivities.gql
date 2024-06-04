@@ -1,0 +1,9 @@
+query GetActivitiesTypesPagination($limit: Int, $offset: Int) {
+  getActivitiesTypesPagination(limit: $limit, offset: $offset) {
+    category
+    emissions
+    id
+    name
+    unit
+  }
+}
