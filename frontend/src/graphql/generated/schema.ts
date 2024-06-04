@@ -17,42 +17,36 @@ export type Scalars = {
 
 export type ActivityType = {
   __typename?: 'ActivityType';
+  attributes: Attr;
   category: Scalars['String'];
   emissions: Scalars['Float'];
   id: Scalars['Int'];
   name: Scalars['String'];
   unit: Scalars['String'];
+  vehicleAttributes?: Maybe<Vehicle_Attr>;
 };
 
 export type ActivityTypeInput = {
+  attributes: Attr_Input;
   category: Scalars['String'];
   emissions: Scalars['Float'];
   name: Scalars['String'];
   unit: Scalars['String'];
+  vehicleAttributes?: InputMaybe<Vehicle_Attr_Input>;
 };
 
-export enum Category {
-  Appliances = 'Appliances',
-  Boat = 'Boat',
-  Bus = 'Bus',
-  Car = 'Car',
-  Clothing = 'Clothing',
-  Cooling = 'Cooling',
-  Electronics = 'Electronics',
-  Food = 'Food',
-  Heating = 'Heating',
-  Leisure = 'Leisure',
-  Lighting = 'Lighting',
-  Metro = 'Metro',
-  Moto = 'Moto',
-  Others = 'Others',
-  Plane = 'Plane',
-  Renewables = 'Renewables',
-  Services = 'Services',
-  Train = 'Train',
-  Waste = 'Waste',
-  Water = 'Water'
-}
+export type Attr = {
+  __typename?: 'Attr';
+  madeInFrance?: Maybe<Scalars['Float']>;
+  secondHandClothes?: Maybe<Scalars['Float']>;
+  secondHandPhones?: Maybe<Scalars['Float']>;
+};
+
+export type Attr_Input = {
+  madeInFrance?: InputMaybe<Scalars['Boolean']>;
+  secondHandClothes?: InputMaybe<Scalars['Boolean']>;
+  secondHandPhones?: InputMaybe<Scalars['Boolean']>;
+};
 
 export type LoginInput = {
   emailOrNickname: Scalars['String'];
@@ -65,6 +59,7 @@ export type Mutation = {
   createActivityType: ActivityType;
   createUser: User;
   deleteActivityType: Scalars['String'];
+  deleteProfile: Scalars['String'];
   login: Scalars['String'];
   logout: Scalars['String'];
   resetPassword: Scalars['Boolean'];
@@ -91,6 +86,11 @@ export type MutationCreateUserArgs = {
 
 export type MutationDeleteActivityTypeArgs = {
   ActivityTypeId: Scalars['Float'];
+};
+
+
+export type MutationDeleteProfileArgs = {
+  userId: Scalars['Float'];
 };
 
 
@@ -128,10 +128,14 @@ export type NewUserInput = {
 
 export type Query = {
   __typename?: 'Query';
+  MotoEngine: Array<Scalars['String']>;
   getActivitiesTypes: Array<ActivityType>;
   getActivityTypesById: ActivityType;
-  getCategories: Array<Category>;
-  getUnits: Array<Unit>;
+  getCategories: Array<Scalars['String']>;
+  getFuelTypes: Array<Scalars['String']>;
+  getUnits: Array<Scalars['String']>;
+  getVehicleDecade: Array<Scalars['String']>;
+  getVehicleTypes: Array<Scalars['String']>;
   profile: User;
 };
 
@@ -148,24 +152,17 @@ export type ResetPasswordRequestInput = {
   email: Scalars['String'];
 };
 
-export enum Unit {
-  Area = 'Area',
-  Distance = 'Distance',
-  Energy = 'Energy',
-  Monetary = 'Monetary',
-  PerUnit = 'PerUnit',
-  Volume = 'Volume',
-  Weight = 'Weight'
-}
-
 export type UpdateActivityTypeInput = {
-  category?: InputMaybe<Scalars['String']>;
-  emissions?: InputMaybe<Scalars['Float']>;
-  unit?: InputMaybe<Scalars['String']>;
+  attributes: Attr_Input;
+  category: Scalars['String'];
+  emissions: Scalars['Float'];
+  unit: Scalars['String'];
+  vehicleAttributes?: InputMaybe<Vehicle_Attr_Input>;
 };
 
 export type UpdateUserInput = {
   avatarUrl?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   nickname?: InputMaybe<Scalars['String']>;
@@ -173,7 +170,7 @@ export type UpdateUserInput = {
 
 export type User = {
   __typename?: 'User';
-  avatarUrl: Scalars['String'];
+  avatarUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
   email: Scalars['String'];
   firstName?: Maybe<Scalars['String']>;
@@ -183,6 +180,21 @@ export type User = {
   role: Scalars['String'];
 };
 
+export type Vehicle_Attr = {
+  __typename?: 'Vehicle_Attr';
+  fuelType?: Maybe<Scalars['String']>;
+  motoEngine?: Maybe<Scalars['String']>;
+  vehicleDecade?: Maybe<Scalars['String']>;
+  vehicleType?: Maybe<Scalars['String']>;
+};
+
+export type Vehicle_Attr_Input = {
+  fuelType?: InputMaybe<Scalars['String']>;
+  motoEngine?: InputMaybe<Scalars['String']>;
+  vehicleDecade?: InputMaybe<Scalars['String']>;
+  vehicleType?: InputMaybe<Scalars['String']>;
+};
+
 export type ConfirmEmailMutationVariables = Exact<{
   emailToken: Scalars['String'];
 }>;
@@ -190,10 +202,17 @@ export type ConfirmEmailMutationVariables = Exact<{
 
 export type ConfirmEmailMutation = { __typename?: 'Mutation', confirmEmail: boolean };
 
+export type DeleteProfileMutationVariables = Exact<{
+  userId: Scalars['Float'];
+}>;
+
+
+export type DeleteProfileMutation = { __typename?: 'Mutation', deleteProfile: string };
+
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, email: string, nickname: string, avatarUrl: string, role: string, firstName?: string | null, lastName?: string | null } };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, email: string, nickname: string, avatarUrl?: string | null, role: string, firstName?: string | null, lastName?: string | null } };
 
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
@@ -227,14 +246,14 @@ export type SignupMutationVariables = Exact<{
 }>;
 
 
-export type SignupMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: number, nickname: string, email: string, avatarUrl: string } };
+export type SignupMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: number, nickname: string, email: string, avatarUrl?: string | null } };
 
 export type UpdateProfileMutationVariables = Exact<{
   data: UpdateUserInput;
 }>;
 
 
-export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'User', id: number, email: string, nickname: string, firstName?: string | null, lastName?: string | null, avatarUrl: string } };
+export type UpdateProfileMutation = { __typename?: 'Mutation', updateProfile: { __typename?: 'User', id: number, email: string, nickname: string, firstName?: string | null, lastName?: string | null, avatarUrl?: string | null } };
 
 
 export const ConfirmEmailDocument = gql`
@@ -268,6 +287,37 @@ export function useConfirmEmailMutation(baseOptions?: Apollo.MutationHookOptions
 export type ConfirmEmailMutationHookResult = ReturnType<typeof useConfirmEmailMutation>;
 export type ConfirmEmailMutationResult = Apollo.MutationResult<ConfirmEmailMutation>;
 export type ConfirmEmailMutationOptions = Apollo.BaseMutationOptions<ConfirmEmailMutation, ConfirmEmailMutationVariables>;
+export const DeleteProfileDocument = gql`
+    mutation DeleteProfile($userId: Float!) {
+  deleteProfile(userId: $userId)
+}
+    `;
+export type DeleteProfileMutationFn = Apollo.MutationFunction<DeleteProfileMutation, DeleteProfileMutationVariables>;
+
+/**
+ * __useDeleteProfileMutation__
+ *
+ * To run a mutation, you first call `useDeleteProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteProfileMutation, { data, loading, error }] = useDeleteProfileMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useDeleteProfileMutation(baseOptions?: Apollo.MutationHookOptions<DeleteProfileMutation, DeleteProfileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteProfileMutation, DeleteProfileMutationVariables>(DeleteProfileDocument, options);
+      }
+export type DeleteProfileMutationHookResult = ReturnType<typeof useDeleteProfileMutation>;
+export type DeleteProfileMutationResult = Apollo.MutationResult<DeleteProfileMutation>;
+export type DeleteProfileMutationOptions = Apollo.BaseMutationOptions<DeleteProfileMutation, DeleteProfileMutationVariables>;
 export const ProfileDocument = gql`
     query Profile {
   profile {

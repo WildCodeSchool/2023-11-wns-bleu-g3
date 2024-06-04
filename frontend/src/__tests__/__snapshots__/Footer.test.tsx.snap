@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer component renders correctly 1`] = `
+<body>
+  <div>
+    <footer
+      class="bg-anchor bg-opacity-80 flex flex-col md:flex-row justify-center md:justify-between items-center p-4 gap-6 md:gap-0"
+    >
+      <div
+        class="flex flex-col md:flex-row justify-center items-center gap-2"
+      >
+        <img
+          alt=""
+          class="w-14"
+          src="../../img/greenfoot-logo.png"
+        />
+        <div
+          class="flex flex-col justify-center md:items-start items-center"
+        >
+          <h3
+            class="font-bold text-shore drop-shadow-lg text-xl md:text-3xl"
+          >
+            GreenFoot
+          </h3>
+          <h4
+            class="text-white font-normal"
+          >
+            Vers un futur viable.
+          </h4>
+        </div>
+      </div>
+      <ul
+        class="flex flex-col justify-center items-center text-white"
+      >
+        <li
+          class="cursor-pointer hover:underline"
+        >
+          <a
+            href="#"
+          >
+            Contactez-nous
+          </a>
+        </li>
+        <li
+          class="cursor-pointer hover:underline"
+        >
+          <a
+            href="#"
+          >
+            Mentions légales
+          </a>
+        </li>
+      </ul>
+    </footer>
+  </div>
+</body>
+`;

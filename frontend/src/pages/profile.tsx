@@ -1,24 +1,28 @@
+import { FormEvent, useState } from "react";
 import Icon from "@/components/icon";
 import Loading from "@/components/loading";
 import {
+  useDeleteProfileMutation,
   useProfileQuery,
   useUpdateProfileMutation,
 } from "@/graphql/generated/schema";
 import LayoutLoggedInUser from "@/layouts/layout-logged-in-user";
-import React, { FormEvent, useState } from "react";
+import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "@/components/modal";
 
 export default function Profile() {
+  const router = useRouter();
   const [error, setError] = useState("");
   const [isBeingModified, setIsBeingModified] = useState(false);
   const { data: user } = useProfileQuery({
     errorPolicy: "ignore",
   });
 
-  console.log(user);
-
   const [updateProfile] = useUpdateProfileMutation();
+
+  const [deleteProfile] = useDeleteProfileMutation();
 
   if (!user) return <Loading />;
 
@@ -40,6 +44,12 @@ export default function Profile() {
     }
   };
 
+  const handleDeleteProfile = () => {
+    deleteProfile({ variables: { userId: user.profile.id } })
+      .then(() => router.push("/"))
+      .catch(console.error);
+  };
+
   return (
     <LayoutLoggedInUser>
       <div className="mx-10">
@@ -53,7 +63,7 @@ export default function Profile() {
           </button>
         </h1>
         {isBeingModified ? (
-          <form onSubmit={handleSubmit} className="">
+          <form onSubmit={handleSubmit}>
             <div className="text-reef font-semibold grid grid-cols-2 gap-x-20 gap-y-7 gap-x">
               <label htmlFor="firstName">
                 Prénom
@@ -62,7 +72,7 @@ export default function Profile() {
                   name="firstName"
                   id="firstName"
                   className="input-text-reef"
-                  defaultValue={user.profile.firstName!}
+                  defaultValue={user.profile.firstName || ""}
                 />
               </label>
               <label htmlFor="lastName">
@@ -72,7 +82,7 @@ export default function Profile() {
                   name="lastName"
                   id="lastName"
                   className="input-text-reef"
-                  defaultValue={user.profile.lastName!}
+                  defaultValue={user.profile.lastName || ""}
                 />
               </label>
               <label htmlFor="nickname">
@@ -89,7 +99,7 @@ export default function Profile() {
               <label htmlFor="email">
                 Adresse mail
                 <input
-                  type="text"
+                  type="email"
                   className="input-text-reef"
                   defaultValue={user.profile.email}
                   required
@@ -101,29 +111,58 @@ export default function Profile() {
                   type="url"
                   name="avatarUrl"
                   id="avatarUrl"
-                  minLength={2}
-                  maxLength={255}
-                  defaultValue={user.profile.avatarUrl}
-                  required
+                  defaultValue={user.profile.avatarUrl || ""}
                   className="input-text-reef"
                 />
               </label>
             </div>
 
             {error !== "" && <pre className="text-red-700">{error}</pre>}
-            <button className="btn btn-reef mt-4">Mise à jour</button>
+            <div className="flex justify-between">
+              <button className="btn btn-reef mt-4">Mise à jour</button>
+              <Modal
+                buttonClasses="btn-lg btn-error mt-4"
+                modalButtonTitle="Supprimer mon compte"
+                content={
+                  <div className="p-4 flex flex-col justify-around h-full">
+                    <p>
+                      Êtes-vous certain.e de vouloir supprimer votre compte ?
+                    </p>
+                    <div className="flex justify-around">
+                      <button
+                        className="btn btn-outline-error"
+                        onClick={handleDeleteProfile}
+                      >
+                        Supprimer
+                      </button>
+                      <button
+                        className="btn btn-outline-reef"
+                        onClick={() => setIsBeingModified(false)}
+                      >
+                        Annuler
+                      </button>
+                    </div>
+                    <p className="font-light text-xs mt-4 text-center">
+                      Attention, cette action est irréversible et supprimera
+                      toutes vos données.
+                    </p>
+                  </div>
+                }
+              />
+            </div>
           </form>
         ) : (
           <form
             onSubmit={handleSubmit}
             className="text-reef font-semibold grid grid-cols-2 gap-x-20 gap-y-7 gap"
+            data-testid="profile-form"
           >
             <label htmlFor="firstName">
               Prénom
               <input
                 type="text"
                 className="input-text-reef"
-                value={user.profile.firstName!}
+                value={user.profile.firstName || ""}
                 readOnly
               />
             </label>
@@ -132,7 +171,7 @@ export default function Profile() {
               <input
                 type="text"
                 className="input-text-reef"
-                value={user.profile.lastName!}
+                value={user.profile.lastName || ""}
                 readOnly
               />
             </label>
@@ -148,7 +187,7 @@ export default function Profile() {
             <label htmlFor="email">
               Adresse mail
               <input
-                type="text"
+                type="email"
                 className="input-text-reef"
                 value={user.profile.email}
                 readOnly
@@ -157,7 +196,7 @@ export default function Profile() {
             <label htmlFor="avatarUrl" className="flex flex-col">
               Photo
               <img
-                src={user.profile.avatarUrl}
+                src={user.profile.avatarUrl || ""}
                 alt="Phot de profil"
                 className="h-36 w-36 mt-4 z-10 rounded-full object-cover"
               />

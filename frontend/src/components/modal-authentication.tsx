@@ -37,19 +37,21 @@ export default function ModalAuthentication({
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
 
-    loginSchema
-      .validate(formJSON, { abortEarly: false })
-      .then(() => {
-        login({ variables: { data: formJSON } });
-        setIsOpen(false);
-        router.push("/dashboard");
-      })
-      .catch((errors) => {
-        setError(errors ? errors.errors.join(", \n"): "Identifiants incorrects");
-      })
-      .finally (() => {
-        client.resetStore();
-      });
+    try {
+      await loginSchema.validate(formJSON, { abortEarly: false });
+      await login({ variables: { data: formJSON } });
+      setIsOpen(false);
+      router.push("/dashboard");
+    } catch (e: any) {
+      console.log(e);
+      if (e.message === "Invalid Credentials") {
+        setError("Identifiants incorrects");
+      } else {
+        setError(e.errors.join(", \n"));
+      }
+    } finally {
+      client.resetStore();
+    }
   };
 
   const handleSubmitSignUp = async (e: FormEvent<HTMLFormElement>) => {
@@ -58,19 +60,20 @@ export default function ModalAuthentication({
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
 
-    signupSchema
-      .validate(formJSON, { abortEarly: false })
-      .then(() => {
-        createUser({ variables: { data: formJSON } });
-        setIsOpen(false);
-        router.push("/");
-        notify();
-      })
-      .catch((errors) => {
-        if (errors.message === "EMAIL_ALREADY_TAKEN")
-          setError("Cet e-mail est déjà pris");
-        setError(errors ? errors.errors.join(", \n"): "une erreur est survenue");
-      })
+    try {
+      await signupSchema.validate(formJSON, { abortEarly: false });
+      await createUser({ variables: { data: formJSON } });
+      setIsOpen(false);
+      router.push("/");
+      notify();
+    } catch (e: any) {
+      console.log(e);
+      if (e.message === "EMAIL_ALREADY_TAKEN") {
+        setError("Cet e-mail est déjà pris");
+      } else {
+        setError(e.errors.join(", \n"));
+      }
+    } 
   };
 
   const loginSchema = Yup.object().shape({
@@ -177,7 +180,7 @@ export default function ModalAuthentication({
                             className="btn-xs absolute top-1 right-2"
                             onClick={
                               viewPassword == true
-                                ? () => setViewPassword(false) 
+                                ? () => setViewPassword(false)
                                 : () => setViewPassword(true)
                             }
                           >
@@ -217,7 +220,10 @@ export default function ModalAuthentication({
                         </Link>
                       </div>
                       {error !== "" && (
-                        <pre className="text-error text-xs" data-testid="login-error">
+                        <pre
+                          className="text-error text-xs"
+                          data-testid="login-error"
+                        >
                           {error}
                         </pre>
                       )}
@@ -340,7 +346,10 @@ export default function ModalAuthentication({
                         </div>
                       </div>
                       {error !== "" && (
-                        <pre className="text-error text-xs" data-testid="login-error">
+                        <pre
+                          className="text-error text-xs"
+                          data-testid="login-error"
+                        >
                           {error}
                         </pre>
                       )}

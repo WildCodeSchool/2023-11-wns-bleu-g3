@@ -6,7 +6,15 @@ export enum FuelType {
   Diesel = "Diesel",
   Hybrid = "Hybride",
   Electric = "Électrique",
-  Hydrogene = "Hydrogène",
+  Hydrogen = "Hydrogène",
+}
+
+export const fuelTypeCalc: { [key in FuelType]: number } = {
+  [FuelType.Petrol]: 1.06,
+  [FuelType.Diesel]: 1.00,
+  [FuelType.Hybrid]: 0.85,
+  [FuelType.Electric]: 0.78,
+  [FuelType.Hydrogen]: 0.30,
 }
 
 export enum VehicleType {
