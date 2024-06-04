@@ -52,7 +52,7 @@ class User extends BaseEntity {
     default:
       "https://icons.veryicon.com/png/o/miscellaneous/standard/avatar-15.png",
   })
-  @Field()
+  @Field({ nullable: true })
   avatarUrl: string;
 
   @Field()
@@ -113,11 +113,9 @@ export class ResetPasswordInput {
 
 @InputType()
 export class UpdateUserInput {
-  @Length(2, 30)
   @Field({ nullable: true })
   firstName?: string;
 
-  @Length(2, 300)
   @Field({ nullable: true })
   lastName?: string;
 
@@ -125,7 +123,11 @@ export class UpdateUserInput {
   @Field({ nullable: true })
   nickname?: string;
 
-  @Length(2, 300)
+  @Length(2, 30)
+  @Field({ nullable: true })
+  @IsEmail()
+  email?: string;
+
   @Field({ nullable: true })
   avatarUrl?: string;
 }

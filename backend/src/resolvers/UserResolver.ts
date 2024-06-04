@@ -132,14 +132,31 @@ class UserResolver {
     @Arg("data", { validate: true }) data: UpdateUserInput
   ) {
     if (!ctx.currentUser)
-      throw new GraphQLError("you need to be logged in to updateyour profile");
+      throw new GraphQLError("You need to be logged in to update your profile");
 
-    if (data.firstName) ctx.currentUser.firstName = data.firstName;
-    if (data.lastName) ctx.currentUser.lastName = data.lastName;
-    if (data.avatarUrl) ctx.currentUser.avatarUrl = data.avatarUrl;
-    if (data.nickname) ctx.currentUser.nickname = data.nickname;
+    if (data.firstName || data.firstName === "")
+      ctx.currentUser.firstName = data.firstName;
+    if (data.lastName || data.lastName === "")
+      ctx.currentUser.lastName = data.lastName;
+    if (data.avatarUrl || data.avatarUrl === "")
+      ctx.currentUser.avatarUrl = data.avatarUrl;
+    if (data.nickname || data.nickname === "")
+      ctx.currentUser.nickname = data.nickname;
+    if (data.email || data.email === "") ctx.currentUser.email = data.email;
 
     return ctx.currentUser.save();
+  }
+
+  @Authorized()
+  @Mutation(() => String)
+  async deleteProfile(@Arg("userId") id: number) {
+    const UserToDelete = await User.findOneBy({ id });
+
+    if (!UserToDelete) throw new GraphQLError("Not found");
+
+    await UserToDelete.remove();
+
+    return "This user has been deleted";
   }
 }
 
