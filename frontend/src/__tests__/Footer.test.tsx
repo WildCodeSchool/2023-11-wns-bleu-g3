@@ -1,10 +1,10 @@
 import { render } from "@testing-library/react";
-import Button from "@/components/Button"
+import Footer from "@/components/footer"
 
-describe("Button component", () => {
+describe("Footer component", () => {
   it("renders correctly", () => {
     const view = render(
-      <Button title="test"/>
+      <Footer/>
     );
 
     expect(view.baseElement).toMatchSnapshot();
