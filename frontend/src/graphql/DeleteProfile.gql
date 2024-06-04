@@ -1,0 +1,3 @@
+mutation DeleteProfile($userId: Float!) {
+  deleteProfile(userId: $userId)
+}

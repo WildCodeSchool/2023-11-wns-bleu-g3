@@ -386,6 +386,21 @@ export type GetActivitiesTypesPaginationQuery = {
   }>;
 };
 
+export type Vehicle_Attr = {
+  __typename?: "Vehicle_Attr";
+  fuelType?: Maybe<Scalars["String"]>;
+  motoEngine?: Maybe<Scalars["String"]>;
+  vehicleDecade?: Maybe<Scalars["String"]>;
+  vehicleType?: Maybe<Scalars["String"]>;
+};
+
+export type Vehicle_Attr_Input = {
+  fuelType?: InputMaybe<Scalars["String"]>;
+  motoEngine?: InputMaybe<Scalars["String"]>;
+  vehicleDecade?: InputMaybe<Scalars["String"]>;
+  vehicleType?: InputMaybe<Scalars["String"]>;
+};
+
 export type ConfirmEmailMutationVariables = Exact<{
   emailToken: Scalars["String"];
 }>;

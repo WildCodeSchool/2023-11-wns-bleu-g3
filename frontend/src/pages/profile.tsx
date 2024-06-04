@@ -50,6 +50,12 @@ export default function Profile() {
   };
 
   const handleDeleteProfile = () => {
+    deleteProfile({ variables: { userId: user.profile.id } })
+      .then(() => router.push("/"))
+      .catch(console.error);
+  };
+
+  const handleDeleteProfile = () => {
     deleteProfile()
       .then(() => router.reload())
       .catch(console.error);
