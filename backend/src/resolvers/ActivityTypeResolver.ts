@@ -33,6 +33,17 @@ class ActivityTypeResolver {
     return ActivityType.find();
   }
 
+  @Query(() => [ActivityType])
+  async getActivitiesTypesPagination(
+    @Arg("offset", () => Int, { nullable: true, defaultValue: 0 }) offset: number,
+    @Arg("limit", () => Int, { nullable: true, defaultValue: 9 }) limit: number
+  ) {
+    return ActivityType.find({
+      skip: offset,
+      take: limit,
+    });
+  }
+
   @Query(() => ActivityType)
   async getActivityTypesById(@Arg("id", () => Int) id: number) {
     const activityType = await ActivityType.findOne({
@@ -103,11 +114,6 @@ class ActivityTypeResolver {
   MotoEngine() {
     return Object.values(MotoEngine);
   }
-
-  // @Query(() => [ActivityType])
-  // async getActivitiesTypes() {
-  //   return ActivityType.find();
-  // }
 }
 
 export default ActivityTypeResolver;
