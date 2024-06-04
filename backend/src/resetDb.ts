@@ -37,8 +37,34 @@ async function main() {
     lastName: "Thunberg",
     avatarUrl:
       "https://e7.pngegg.com/pngimages/193/660/png-clipart-computer-icons-woman-avatar-avatar-girl-black-hair-logo-thumbnail.png",
+    createdAt: "2024-01-03T07:19:22.111Z",
   });
   await user.save();
+
+  const user1 = new User();
+  Object.assign(user1, {
+    nickname: "MarcLeVert",
+    email: "marco1234@app.com",
+    password: "Visitor42@!",
+    firstName: "Marc",
+    lastName: "LeVert",
+    avatarUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Earth_from_Space.jpg/240px-Earth_from_Space.jpg",
+    createdAt: "2024-03-12T07:19:22.111Z",
+  });
+  await user1.save();
+
+  const user2 = new User();
+  Object.assign(user2, {
+    nickname: "LilaFleurie",
+    email: "lilafleurie@app.com",
+    password: "Visitor42@!",
+    avatarUrl:
+      "https://m.media-amazon.com/images/I/61RlSyFFobL._AC_SX522_.jpg",
+    createdAt: "2024-04-20T07:19:22.111Z",
+    blocked: true,
+  });
+  await user2.save();
 
   const admin = new User();
   Object.assign(admin, {

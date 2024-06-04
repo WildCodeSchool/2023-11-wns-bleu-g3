@@ -7,8 +7,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import Activity from "./Activity";
 
 export enum UserRole {
   Admin = "admin",
@@ -68,9 +70,19 @@ class User extends BaseEntity {
   @Column({ default: false })
   emailVerified: boolean;
 
+  @Field()
+  @Column({ default: false })
+  blocked: boolean;
+
   @CreateDateColumn()
   @Field()
   createdAt: string;
+
+  @ManyToOne(() => Activity, (activity) => activity.users, {
+    cascade: true
+  })
+  @Field()
+  activities: Activity[];
 }
 
 @InputType()
