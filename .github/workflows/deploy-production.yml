@@ -1,0 +1,38 @@
+name: Test, compile and push client and server to production
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  test-client:
+    uses: WildCodeSchool/2023-11-wns-bleu-g3/.github/workflows/tests-front.yml@main
+
+  e2e-tests:
+    uses: WildCodeSchool/2023-11-wns-bleu-g3/.github/workflows/e2e.yml@main
+
+  integration-tests:
+    uses: WildCodeSchool/2023-11-wns-bleu-g3/.github/workflows/integration-tests.yml@main
+
+  build-and-push-server:
+    needs:
+      - integration-tests
+      - e2e-tests
+    uses: WildCodeSchool/2023-11-wns-bleu-g3/.github/workflows/build-backend.yml@main
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    with:
+      image_name: greenfoot/greenfoot-back
+
+  build-and-push-client:
+    needs:
+      - test-client
+      - e2e-tests
+    uses: WildCodeSchool/2023-11-wns-bleu-g3/.github/workflows/build-frontend.yml@main
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    with:
+      image_name: greenfoot/greenfoot-front
