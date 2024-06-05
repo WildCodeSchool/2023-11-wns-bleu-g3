@@ -7,7 +7,7 @@ export default function LayoutAdmin({ children }: { children: any }) {
   return (
     <>
       <TopbarAdmin isOpen={isOpen} setIsOpen={setIsOpen} />
-      <main className="flex justify-between h-full">
+      <main className="flex justify-between bg-lightPearl h-full">
         <SideAdmin isOpen={isOpen} />
         <div className="p-4 md:p-6 w-full absolute md:relative">{children}</div>
       </main>

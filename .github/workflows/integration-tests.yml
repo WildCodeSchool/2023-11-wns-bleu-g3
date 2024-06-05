@@ -1,15 +1,15 @@
-name: "test-frontend"
+name: "integration-tests"
 
 on:
   pull_request:
   workflow_call:
 
 jobs:
-  test-client:
+  integration-tests:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./frontend
+        working-directory: ./backend
     steps:
       - name: Get the code
         uses: actions/checkout@v4
@@ -17,7 +17,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Make envfile
+        run: cp .env.dev .env
       - name: Install deps
         run: npm ci
+      - name: Start test DB
+        run: npm run testDB:wait
       - name: Run tests
         run: npm test
