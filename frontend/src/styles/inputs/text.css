@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .input-text-xs {
+    @apply border-2 border-pearl text-anchor text-xs rounded-lg outline-reef focus:ring-reef focus:border-reef block w-full p-2;
+  }
+  .input-text-sm {
+    @apply border-2 border-pearl text-anchor text-sm rounded-lg focus:ring-reef outline-reef focus:border-reef block w-full p-2;
+  }
+  .input-text {
+    @apply border-2 border-pearl text-anchor text-sm rounded-lg focus:ring-reef outline-reef focus:border-reef block w-full p-2.5;
+  }
+  .input-text-lg {
+    @apply border-2 border-pearl text-anchor text-base rounded-lg focus:ring-reef outline-reef focus:border-reef block w-full p-3;
+  }
+  .input-text-xl {
+    @apply border-2 border-pearl text-anchor text-base rounded-lg focus:ring-reef outline-reef focus:border-reef block w-full p-3.5;
+  }
+  .input-text-reef {
+    @apply border-2 border-pearl text-reef font-normal text-sm rounded-lg focus:ring-reef outline-reef focus:border-reef block w-full p-3.5;
+  }
+}

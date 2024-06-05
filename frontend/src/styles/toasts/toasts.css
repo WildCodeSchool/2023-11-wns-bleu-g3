@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Toastify__toast--success {
+  @apply bg-reef text-pearl !important ;
+}

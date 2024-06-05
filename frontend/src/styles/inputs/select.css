@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .select-xs {
+    @apply block appearance-none w-full ps-4 pe-10 text-start py-1 text-sm text-anchor border-2 border-pearl rounded-lg outline-reef focus:ring-reef focus:border-pearl ;
+  }
+  .select-sm {
+    @apply block appearance-none w-full ps-4 pe-10 text-start py-1.5 text-sm text-anchor border-2 border-pearl rounded-lg outline-reef focus:ring-reef focus:border-pearl;
+  }
+  .select {
+    @apply block appearance-none w-full ps-4 pe-10 text-start py-2 text-sm text-anchor border-2 border-pearl rounded-lg outline-reef focus:ring-reef focus:border-pearl;
+  }
+  .select-lg {
+    @apply block appearance-none w-full ps-4 pe-10 text-start py-2.5 text-sm text-anchor border-2 border-pearl rounded-lg outline-reef focus:ring-reef focus:border-pearl;
+  }
+  .select-xl {
+    @apply block appearance-none w-full ps-4 pe-10 text-start py-3 text-sm text-anchor border-2 border-pearl rounded-lg outline-reef focus:ring-reef focus:border-pearl;
+  }
+}
