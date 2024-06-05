@@ -7,3 +7,5 @@ query GetActivitiesTypesPagination($limit: Int, $offset: Int) {
     unit
   }
 }
+
+
