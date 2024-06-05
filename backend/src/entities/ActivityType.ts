@@ -12,7 +12,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -115,12 +115,9 @@ class ActivityType extends BaseEntity {
   @Field(() => Vehicle_Attr, { nullable: true })
   vehicleAttributes?: Vehicle_Attr;
 
-  @ManyToOne(() => Activity, (activity) => activity.activityTypes, {
-    cascade: true,
-    onDelete: "CASCADE",
-  })
-  @Field()
-  activity: Activity[]
+  @OneToMany(() => Activity, (activity) => activity.activityType)
+  @Field(() => [Activity])
+  activities: Activity[];
 }
 
 @InputType()

@@ -67,8 +67,12 @@ class Activity extends BaseEntity {
   @Field()
   ends_at: Date;
 
-  @OneToMany(() => User, (user) => user.id)
-    users: User[]
+  @ManyToOne(() => User, (user) => user.activities, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  @Field(() => User)
+  user: User;
 
   @Column({ default: false })
   @Field()
@@ -78,8 +82,9 @@ class Activity extends BaseEntity {
   @Field()
   is_made_in_france: boolean;
 
-  @OneToMany(() => ActivityType, (activityType) => activityType.id)
-  activityTypes: ActivityType[]
+  @ManyToOne(() => ActivityType, (activityType) => activityType.activities)
+  @Field(() => ActivityType)
+  activityType: ActivityType;
 }
 
 export default Activity;

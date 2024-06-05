@@ -7,7 +7,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import Activity from "./Activity";
@@ -78,11 +78,9 @@ class User extends BaseEntity {
   @Field()
   createdAt: string;
 
-  @ManyToOne(() => Activity, (activity) => activity.users, {
-    cascade: true
-  })
-  @Field()
-  activities: Activity[];
+  @OneToMany(() => Activity, (activity) => activity.user)
+  @Field(() => [Activity])
+  activities: Activity[]
 }
 
 @InputType()
