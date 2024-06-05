@@ -40,6 +40,7 @@ jobs:
         run: npx playwright install --with-deps
       - name: Make envfiles
         run: |
+          cp .env.dev .env
           cd ../backend/ && cp .env.dev .env 
           cd ../frontend/ && cp .env.dev .env
       - name: Start app
