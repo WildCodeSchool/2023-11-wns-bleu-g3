@@ -7,8 +7,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import Activity from "./Activity";
 
 export enum UserRole {
   Admin = "admin",
@@ -68,9 +70,17 @@ class User extends BaseEntity {
   @Column({ default: false })
   emailVerified: boolean;
 
+  @Field()
+  @Column({ default: false })
+  blocked: boolean;
+
   @CreateDateColumn()
   @Field()
   createdAt: string;
+
+  @OneToMany(() => Activity, (activity) => activity.user)
+  @Field(() => [Activity])
+  activities: Activity[]
 }
 
 @InputType()
