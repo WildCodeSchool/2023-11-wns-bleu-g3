@@ -59,8 +59,6 @@ export default function Profile() {
     setIsPersonalVehicleModalOpen(true);
   };
 
-  console.log(isPersonalVehicleModalOpen);
-
   return (
     <LayoutLoggedInUser>
       <div className="mx-10">
