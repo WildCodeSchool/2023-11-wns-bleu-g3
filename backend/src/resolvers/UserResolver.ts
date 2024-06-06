@@ -165,12 +165,15 @@ class UserResolver {
     if (!ctx.currentUser)
       throw new GraphQLError("You need to be logged in to update your profile");
 
+    if (!name) throw new GraphQLError("You need add search query");
+
     const users = await User.createQueryBuilder("user")
       .where(
         "user.firstName ILIKE :name OR user.lastName ILIKE :name OR user.nickname ILIKE :name",
         { name: `%${name}%` }
       )
       .andWhere("user.id != :id", { id: ctx.currentUser.id })
+      .limit(5)
       .getMany();
     if (users.length > 0) {
       return users;
