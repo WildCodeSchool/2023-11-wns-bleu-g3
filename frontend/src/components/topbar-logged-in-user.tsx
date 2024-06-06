@@ -4,7 +4,6 @@ import TopbarMenu from "./topbar-menu";
 import Router from "next/router";
 import {
   useSearchUserLazyQuery,
-  useSearchUserQuery,
 } from "@/graphql/generated/schema";
 
 export default function TopbarLoggedInUser({
