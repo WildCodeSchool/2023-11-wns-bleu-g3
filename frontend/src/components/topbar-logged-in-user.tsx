@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "./icon";
 import TopbarMenu from "./topbar-menu";
-import Router from "next/router";
-import {
-  useSearchUserLazyQuery,
-} from "@/graphql/generated/schema";
+import { useSearchUserLazyQuery } from "@/graphql/generated/schema";
 
 export default function TopbarLoggedInUser({
   isOpen,
@@ -39,13 +36,17 @@ export default function TopbarLoggedInUser({
     const url = new URL(window.location.href);
     if (searchQuery.length) {
       url.searchParams.set("search", searchQuery);
-      if (searchQuery.length > 2) {
-        getUsers({ variables: { name: searchQuery } });
+      try {
+        if (searchQuery.length > 2) {
+          getUsers({ variables: { name: searchQuery } });
+        }
+      } catch (error) {
+        console.log(error);
       }
     } else {
       url.searchParams.delete("search");
     }
-    Router.push(url.toString());
+    // Router.replace(url.toString());
   }, [searchQuery]);
 
   return (
@@ -66,7 +67,11 @@ export default function TopbarLoggedInUser({
           <Icon name="close" size="4xl" color="reef" />
         </button>
       )}
-      <form className="w-1/3 hidden md:block">
+      <form
+        className="w-1/3 hidden md:block"
+        action="/search"
+        autoComplete="off"
+      >
         <label
           htmlFor="default-search"
           className="mb-2 text-sm font-medium text-gray-900 sr-only"
@@ -78,6 +83,7 @@ export default function TopbarLoggedInUser({
             <Icon name="search" color="reef" />
           </div>
           <input
+            name="name"
             type="search"
             className="block w-full pl-10 pr-3 py-2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Rechercher un utilisateur ..."
@@ -99,7 +105,7 @@ export default function TopbarLoggedInUser({
                   className="w-8 h-8 rounded-full"
                 />
                 <a
-                  href={`/dashboard/user/${user.id}/${user.nickname}`}
+                  href={`/user/${user.id}/${user.nickname}`}
                   className="text-gray-900 w-full py-2"
                 >
                   {user.nickname}
