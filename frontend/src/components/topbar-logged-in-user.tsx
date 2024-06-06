@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import Icon from "./icon";
 import TopbarMenu from "./topbar-menu";
 import Router from "next/router";
+import {
+  useSearchUserLazyQuery,
+  useSearchUserQuery,
+} from "@/graphql/generated/schema";
 
 export default function TopbarLoggedInUser({
   isOpen,
@@ -13,6 +17,7 @@ export default function TopbarLoggedInUser({
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [getUsers, { data: users }] = useSearchUserLazyQuery();
 
   const handleOpenMenu = () => {
     setMenuIsOpen(!menuIsOpen);
@@ -32,20 +37,22 @@ export default function TopbarLoggedInUser({
   }, [menuRef]);
 
   useEffect(() => {
-    const url = new URL(window.location.href)
+    const url = new URL(window.location.href);
     if (searchQuery.length) {
-      url.searchParams.set('search', searchQuery)
-      url.searchParams.delete('page')
+      url.searchParams.set("search", searchQuery);
+      if (searchQuery.length > 2) {
+        getUsers({ variables: { name: searchQuery } });
+      }
     } else {
-      url.searchParams.delete('search')
+      url.searchParams.delete("search");
     }
-    Router.push(url.toString())
-  }, [searchQuery])
+    Router.push(url.toString());
+  }, [searchQuery]);
 
   return (
     <nav className="flex flex-row justify-between items-center p-4 bg-shore w-full">
       <div className="flex justify-center items-center gap-2">
-        <img src="../../img/greenfoot-logo.png" alt="" className="w-14" />
+        <img src="/img/greenfoot-logo.png" alt="" className="w-14" />
 
         <h1 className="text-reef text-xl md:text-3xl font-bold drop-shadow-lg">
           GreenFoot
@@ -68,20 +75,42 @@ export default function TopbarLoggedInUser({
           Search
         </label>
         <div className="relative">
-          <div className="absolute inset-y-0 end-2 flex items-center ps-3 pointer-events-none">
+          <div className="absolute inset-y-0 right-2 flex items-center pr-3 pointer-events-none">
             <Icon name="search" color="reef" />
           </div>
           <input
             type="search"
-            id="default-search"
-            className="block input-text-sm"
+            className="block w-full pl-10 pr-3 py-2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Rechercher un utilisateur ..."
             required
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
+        {users && users.searchUser.length > 0 && searchQuery.length > 2 && (
+          <ul className="bg-white space-y-2 py-4 mt-2 rounded-lg shadow-md absolute z-10 w-[32%] mx-auto">
+            {users.searchUser.map((user) => (
+              <li
+                key={user.id}
+                className="flex items-center space-x-4 hover:bg-gray-100 px-4"
+              >
+                <img
+                  src={user.avatarUrl}
+                  alt={`${user.nickname}'s avatar`}
+                  className="w-8 h-8 rounded-full"
+                />
+                <a
+                  href={`/dashboard/user/${user.id}/${user.nickname}`}
+                  className="text-gray-900 w-full py-2"
+                >
+                  {user.nickname}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
       </form>
+
       <div className="hidden md:block" ref={menuRef}>
         <button
           onClick={handleOpenMenu}
