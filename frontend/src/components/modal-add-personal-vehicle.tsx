@@ -114,11 +114,9 @@ const ModalAddPersonalVehicle = ({
                           id="engineType"
                         >
                           <option disabled selected></option>
-                          <option>50cc</option>
-                          <option>125cc</option>
-                          <option>250cc</option>
-                          <option>500cc</option>
-                          <option>1000cc</option>
+                          <option>moins de 125cc</option>
+                          <option>125cc à 500cc</option>
+                          <option>plus de 500cc</option>
                         </select>
                       </label>
                     )}
