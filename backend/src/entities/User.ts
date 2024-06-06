@@ -7,8 +7,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import Activity from "./Activity";
 
 export enum UserRole {
   Admin = "admin",
@@ -52,7 +54,7 @@ class User extends BaseEntity {
     default:
       "https://icons.veryicon.com/png/o/miscellaneous/standard/avatar-15.png",
   })
-  @Field()
+  @Field({ nullable: true })
   avatarUrl: string;
 
   @Field()
@@ -68,9 +70,17 @@ class User extends BaseEntity {
   @Column({ default: false })
   emailVerified: boolean;
 
+  @Field()
+  @Column({ default: false })
+  blocked: boolean;
+
   @CreateDateColumn()
   @Field()
   createdAt: string;
+
+  @OneToMany(() => Activity, (activity) => activity.user)
+  @Field(() => [Activity])
+  activities: Activity[]
 }
 
 @InputType()
@@ -113,13 +123,23 @@ export class ResetPasswordInput {
 
 @InputType()
 export class UpdateUserInput {
+  @Field({ nullable: true })
+  firstName?: string;
+
+  @Field({ nullable: true })
+  lastName?: string;
+
   @Length(2, 30)
   @Field({ nullable: true })
   nickname?: string;
 
-  @Length(2, 300)
+  @Length(2, 30)
   @Field({ nullable: true })
-  avatar?: string;
+  @IsEmail()
+  email?: string;
+
+  @Field({ nullable: true })
+  avatarUrl?: string;
 }
 
 export default User;

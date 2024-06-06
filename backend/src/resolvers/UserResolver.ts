@@ -1,5 +1,11 @@
 import { Arg, Mutation, Query, Ctx, Resolver, Authorized } from "type-graphql";
-import User, { LoginInput, NewUserInput, ResetPasswordInput, ResetPasswordRequestInput } from "../entities/User";
+import User, {
+  LoginInput,
+  NewUserInput,
+  ResetPasswordInput,
+  ResetPasswordRequestInput,
+  UpdateUserInput,
+} from "../entities/User";
 import { GraphQLError } from "graphql";
 import { verify } from "argon2";
 import jwt from "jsonwebtoken";
@@ -51,17 +57,22 @@ class UserResolver {
     const token = crypto.randomBytes(20).toString("hex");
     user.resetPasswordToken = token;
     user.save();
+
     // await mailer.sendMail({
     //   from: env.EMAIL_FROM,
     //   to: user.email,
     //   subject: "Mot de passe oublié",
     //   text: `Pour réinitialiser votre mot de passe, merci de cliquer sur le lien suivant : ${env.FRONTEND_URL}?resetPasswordToken=${user.resetPasswordToken}`,
     // });
+
     return true;
   }
 
   @Mutation(() => Boolean)
-  async resetPassword(@Arg("data", { validate: true }) data: ResetPasswordInput, @Arg("resetPasswordToken") token: string) {
+  async resetPassword(
+    @Arg("data", { validate: true }) data: ResetPasswordInput,
+    @Arg("resetPasswordToken") token: string
+  ) {
     const user = await User.findOneBy({ resetPasswordToken: token });
     if (!user) throw new GraphQLError("Invalid Token");
     user.hashedPassword = await hash(data.password);
@@ -69,9 +80,13 @@ class UserResolver {
     return user.save().then(() => true);
   }
 
-  @Query(() => [User])
-  async profile() {
-    return User.find();
+  @Authorized()
+  @Query(() => User)
+  async profile(@Ctx() ctx: Context) {
+    if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
+    return User.findOneOrFail({
+      where: { id: ctx.currentUser.id },
+    });
   }
 
   @Mutation(() => String)
@@ -108,6 +123,40 @@ class UserResolver {
   async logout(@Ctx() ctx: Context) {
     ctx.res.clearCookie("token");
     return "ok";
+  }
+
+  @Authorized()
+  @Mutation(() => User)
+  async updateProfile(
+    @Ctx() ctx: Context,
+    @Arg("data", { validate: true }) data: UpdateUserInput
+  ) {
+    if (!ctx.currentUser)
+      throw new GraphQLError("You need to be logged in to update your profile");
+
+    if (data.firstName || data.firstName === "")
+      ctx.currentUser.firstName = data.firstName;
+    if (data.lastName || data.lastName === "")
+      ctx.currentUser.lastName = data.lastName;
+    if (data.avatarUrl || data.avatarUrl === "")
+      ctx.currentUser.avatarUrl = data.avatarUrl;
+    if (data.nickname || data.nickname === "")
+      ctx.currentUser.nickname = data.nickname;
+    if (data.email || data.email === "") ctx.currentUser.email = data.email;
+
+    return ctx.currentUser.save();
+  }
+
+  @Authorized()
+  @Mutation(() => String)
+  async deleteProfile(@Arg("userId") id: number) {
+    const UserToDelete = await User.findOneBy({ id });
+
+    if (!UserToDelete) throw new GraphQLError("Not found");
+
+    await UserToDelete.remove();
+
+    return "This user has been deleted";
   }
 }
 

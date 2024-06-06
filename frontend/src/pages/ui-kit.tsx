@@ -63,6 +63,12 @@ export default function UiKit() {
             placeholder="Super xl input text ..."
             required
           />
+          <input
+            type="text"
+            className="input-text-reef"
+            value="Super input reef text ..."
+            required
+          />
         </div>
         <div className="flex flex-col gap-2">
           <Modal

@@ -1,5 +1,4 @@
 import {
-  useProfileQuery,
   useResetPasswordMutation,
   useResetPasswordRequestMutation,
 } from "@/graphql/generated/schema";
@@ -7,6 +6,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import * as Yup from "yup";
 
 export default function ModalResetPassword({
   isOpen,
@@ -20,7 +20,8 @@ export default function ModalResetPassword({
   token?: string;
 }) {
   const [viewPassword, setViewPassword] = useState(false);
-  const [viewPasswordConfirmation, setViewPasswordConfirmation] = useState(false);
+  const [viewPasswordConfirmation, setViewPasswordConfirmation] =
+    useState(false);
   const [error, setError] = useState("");
   const [resetPasswordRequest] = useResetPasswordRequestMutation();
   const [resetPassword] = useResetPasswordMutation();
@@ -31,10 +32,8 @@ export default function ModalResetPassword({
       "Un email vous a été envoyé pour réinitialiser votre mot de passe."
     );
 
-    const notifyResetPasswordSuccess = () =>
-      toast.success(
-        "Votre mot de passe a bien été réinitialisé."
-      );
+  const notifyResetPasswordSuccess = () =>
+    toast.success("Votre mot de passe a bien été réinitialisé.");
 
   const handleSubmitRequest = async (e: FormEvent<HTMLFormElement>) => {
     setError("");
@@ -58,23 +57,32 @@ export default function ModalResetPassword({
     if (!token) return setError("lien de réinitialisation invalide");
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
-
     if (formJSON.password !== formJSON.passwordConfirmation)
       return setError("les mots de passe ne correspondent pas");
 
     delete formJSON.passwordConfirmation;
 
     try {
-      const res = await resetPassword({
+      await resetPasswordSchema.validate(formJSON, { abortEarly: false });
+      await resetPassword({
         variables: { data: formJSON, resetPasswordToken: token },
       });
       setIsOpen(false);
       router.push("/");
-      notifyResetPasswordSuccess()
+      notifyResetPasswordSuccess();
     } catch (e: any) {
-      setError("une erreur est survenue");
+      setError(e.errors.join(", \n"));
     }
   };
+
+  const resetPasswordSchema = Yup.object().shape({
+    password: Yup.string()
+      .required("Vous devez renseigner un mot de passe")
+      .matches(
+        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        "Votre mot de passe n'est pas assez sécurisé"
+      ),
+  });
 
   return (
     <>
@@ -148,7 +156,10 @@ export default function ModalResetPassword({
                     <h3 className="text-center text-xl md:text-3xl pb-6 font-semibold">
                       Modifier votre mot de passe
                     </h3>
-                    <form onSubmit={handleSubmitResetPassword} className="my-4 text-blueGray-500 leading-relaxed w-auto :w-80 lg:w-auto flex flex-col gap-6">
+                    <form
+                      onSubmit={handleSubmitResetPassword}
+                      className="my-4 text-blueGray-500 leading-relaxed w-auto :w-80 lg:w-auto flex flex-col gap-6"
+                    >
                       <div className="flex flex-col gap-1">
                         <label htmlFor="password">Nouveau mot de passe</label>
                         <div className="relative">
@@ -200,11 +211,17 @@ export default function ModalResetPassword({
                         </div>
                       </div>
                       <div className="flex flex-col gap-1">
-                        <label htmlFor="passwordConfirmation">Confirmation du nouveau mot de passe</label>
+                        <label htmlFor="passwordConfirmation">
+                          Confirmation du nouveau mot de passe
+                        </label>
                         <div className="relative">
                           <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"></div>
                           <input
-                            type={viewPasswordConfirmation == true ? "text" : "password"}
+                            type={
+                              viewPasswordConfirmation == true
+                                ? "text"
+                                : "password"
+                            }
                             id="default-search"
                             className="input-text"
                             placeholder="8 caractères minimum"
@@ -249,6 +266,14 @@ export default function ModalResetPassword({
                           </button>
                         </div>
                       </div>
+                      {error !== "" && (
+                        <pre
+                          className="text-error text-xs"
+                          data-testid="login-error"
+                        >
+                          {error}
+                        </pre>
+                      )}
                       <button className="btn btn-reef" type="submit">
                         Enregistrer
                       </button>

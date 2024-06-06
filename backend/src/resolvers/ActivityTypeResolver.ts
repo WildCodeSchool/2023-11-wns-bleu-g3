@@ -17,14 +17,31 @@ import {
   Unit,
   Category,
 } from "../entities/ActivityType";
+import {
+  FuelType,
+  VehicleDecade,
+  VehicleType,
+  MotoEngine,
+} from "../entities/Enums/Vehicle_Attributes";
 import { UserRole } from "../entities/User";
 
 @Resolver(ActivityType)
 class ActivityTypeResolver {
-  //queries
+  //QUERIES
   @Query(() => [ActivityType])
   async getActivitiesTypes() {
     return ActivityType.find();
+  }
+
+  @Query(() => [ActivityType])
+  async getActivitiesTypesPagination(
+    @Arg("offset", () => Int, { nullable: true, defaultValue: 0 }) offset: number,
+    @Arg("limit", () => Int, { nullable: true, defaultValue: 9 }) limit: number
+  ) {
+    return ActivityType.find({
+      skip: offset,
+      take: limit,
+    });
   }
 
   @Query(() => ActivityType)
@@ -36,8 +53,8 @@ class ActivityTypeResolver {
     return activityType;
   }
 
-  //mutations
-  @Authorized([UserRole.Admin]) 
+  //MUTATIONS
+  @Authorized([UserRole.Admin])
   @Mutation(() => ActivityType)
   async createActivityType(
     @Arg("data", { validate: true }) data: ActivityTypeInput
@@ -54,7 +71,7 @@ class ActivityTypeResolver {
     const activityTypeToDelete = await ActivityType.findOneBy({ id });
     if (!activityTypeToDelete) throw new GraphQLError("not found");
     await activityTypeToDelete.remove();
-    return "ok";
+    return "Activity successfully deleted.";
   }
 
   @Authorized([UserRole.Admin])
@@ -64,20 +81,38 @@ class ActivityTypeResolver {
     @Arg("data", { validate: true }) data: UpdateActivityTypeInput
   ) {
     const activityTypeToUpdate = await ActivityType.findOneBy({ id });
-    if (!activityTypeToUpdate) throw new GraphQLError("not found");
+    if (!activityTypeToUpdate) throw new GraphQLError("Activity not found.");
     Object.assign(activityTypeToUpdate, data);
     return await activityTypeToUpdate.save();
   }
 
-  // Enums
-  @Query(() => [Unit])
-  getUnits(): Unit[] {
+  // ENUMS
+
+  @Query(() => [String])
+  getUnits() {
     return Object.values(Unit);
   }
-
-  @Query(() => [Category])
-  getCategories(): Category[] {
+  @Query(() => [String])
+  getCategories() {
     return Object.values(Category);
+  }
+
+  //vehicle enums
+  @Query(() => [String])
+  getFuelTypes() {
+    return Object.values(FuelType);
+  }
+  @Query(() => [String])
+  getVehicleDecade() {
+    return Object.values(VehicleDecade);
+  }
+  @Query(() => [String])
+  getVehicleTypes() {
+    return Object.values(VehicleType);
+  }
+  @Query(() => [String])
+  MotoEngine() {
+    return Object.values(MotoEngine);
   }
 }
 

@@ -15,6 +15,10 @@
     @apply cursor-pointer text-anchor bg-shore transition ease-in-out hover:opacity-90 focus:ring-2 focus:ring-shore focus:ring-opacity-50;
   }
 
+  .btn-pearl {
+    @apply cursor-pointer text-anchor bg-pearl transition ease-in-out hover:opacity-90 focus:ring-2 focus:ring-shore focus:ring-opacity-50;
+  }
+
   .btn-error {
     @apply cursor-pointer text-white bg-error transition ease-in-out hover:opacity-90 focus:ring-2 focus:ring-error focus:ring-opacity-50;
   }
