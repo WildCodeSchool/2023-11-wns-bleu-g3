@@ -173,7 +173,6 @@ class UserResolver {
         { name: `%${name}%` }
       )
       .andWhere("user.id != :id", { id: ctx.currentUser.id })
-      .limit(5)
       .getMany();
     if (users.length > 0) {
       return users;
