@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { FormEvent, useState } from "react";
 import Icon from "@/components/icon";
 import Loading from "@/components/loading";
@@ -21,6 +22,8 @@ export default function Profile() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [isBeingModified, setIsBeingModified] = useState(false);
+  const [isPersonalVehicleModalOpen, setIsPersonalVehicleModalOpen] =
+    useState(false);
   const { data: user } = useProfileQuery({
     errorPolicy: "ignore",
   });
@@ -54,6 +57,12 @@ export default function Profile() {
       .then(() => router.push("/"))
       .catch(console.error);
   };
+
+  const openNewVehicleModal = () => {
+    setIsPersonalVehicleModalOpen(true);
+  };
+
+  console.log(isPersonalVehicleModalOpen);
 
   const handleDeleteProfile = () => {
     deleteProfile()
