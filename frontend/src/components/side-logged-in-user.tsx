@@ -14,7 +14,11 @@ export default function SideLoggedInUser({ isOpen }: { isOpen: any }) {
     >
       <div className=" px-3 py-4 bg-reef flex flex-col justify-between h-full">
         <ul className="flex flex-col gap-4">
-          <form className="w-full block md:hidden">
+          <form
+            className="w-full block md:hidden"
+            action="/search"
+            autoComplete="off"
+          >
             <label
               htmlFor="default-search"
               className="mb-2 text-sm font-medium text-gray-900 sr-only"
@@ -27,14 +31,14 @@ export default function SideLoggedInUser({ isOpen }: { isOpen: any }) {
               </div>
               <input
                 type="search"
-                id="default-search"
+                name="name"
                 className="block input-text-sm"
                 placeholder="Rechercher un utilisateur ..."
                 required
               />
             </div>
           </form>
-          <SideLoggedInUserItem href="#" name="Tableau de bord" />
+          <SideLoggedInUserItem href="/dashboard" name="Tableau de bord" />
           <SideLoggedInUserItem href="#" name="Ajouter une dépense" />
           <SideLoggedInUserItem href="#" name="Mes dépenses" />
           <SideLoggedInUserItem href="#" name="Donations" />
