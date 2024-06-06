@@ -2,6 +2,7 @@ import Icon from "@/components/icon";
 import { useGetActivitiesTypesPaginationQuery } from "@/graphql/generated/schema";
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const PAGE_SIZE = 8;
 
@@ -54,9 +55,9 @@ export default function TableActivities() {
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">{activity.emissions}</td>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">{activity.unit}</td>
               <td className="px-1 py-1 md:px-2 md:py-4 flex space-x-1 md:space-x-2">
-                <a href="#" className="font-medium text-anchor hover:underline">
+              <Link href={`/upd_activity/${activity.id}`} className="font-medium text-anchor hover:underline">
                   <Icon name="edit" size="" color="reef" />
-                </a>
+               </Link>
                 <a href="#" className="font-medium text-error hover:underline">
                   <Icon name="delete" size="" color="" />
                 </a>
