@@ -489,6 +489,18 @@ export type CreatePersonalVehicleMutationVariables = Exact<{
   data: NewPersonalVehicleInput;
 }>;
 
+export type DeleteProfileMutation = { __typename?: 'Mutation', deleteProfile: string };
+
+export type GetActivityTypesByIdQueryVariables = Exact<{
+  getActivityTypesById: Scalars['Int'];
+}>;
+
+
+export type GetActivityTypesByIdQuery = { __typename?: 'Query', getActivityTypesById: { __typename?: 'ActivityType', category: string, id: number, emissions: number, name: string, unit: string, attributes: { __typename?: 'Attr', madeInFrance?: number | null, secondHandClothes?: number | null, secondHandPhones?: number | null }, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, vehicleType?: string | null, vehicleDecade?: string | null, motoEngine?: string | null } | null } };
+export type DeleteProfileMutation = {
+  __typename?: "Mutation";
+  deleteProfile: string;
+};
 
 export type CreatePersonalVehicleMutation = { __typename?: 'Mutation', createPersonalVehicle: { __typename?: 'PersonalVehicle', id: number, name: string, moto_engine?: string | null, vehicle_category: string, year_of_construction?: string | null, vehicle_type?: string | null, fuel_type?: string | null } };
 
@@ -988,12 +1000,87 @@ export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<D
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument, options);
       }
+<<<<<<< HEAD
 export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
 export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
 export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
+=======
+export type DeleteProfileMutationHookResult = ReturnType<typeof useDeleteProfileMutation>;
+export type DeleteProfileMutationResult = Apollo.MutationResult<DeleteProfileMutation>;
+export type DeleteProfileMutationOptions = Apollo.BaseMutationOptions<DeleteProfileMutation, DeleteProfileMutationVariables>;
+<<<<<<< HEAD
+>>>>>>> 44dadab (gql query add)
 export const GetCategoriesDocument = gql`
     query getCategories {
   getCategories
+=======
+export const GetActivityTypesByIdDocument = gql`
+    query GetActivityTypesById($getActivityTypesById: Int!) {
+  getActivityTypesById(id: $getActivityTypesById) {
+    category
+    id
+    emissions
+    name
+    unit
+    attributes {
+      madeInFrance
+      secondHandClothes
+      secondHandPhones
+    }
+    vehicleAttributes {
+      fuelType
+      vehicleType
+      vehicleDecade
+      motoEngine
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetActivityTypesByIdQuery__
+ *
+ * To run a query within a React component, call `useGetActivityTypesByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActivityTypesByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActivityTypesByIdQuery({
+ *   variables: {
+ *      getActivityTypesById: // value for 'getActivityTypesById'
+ *   },
+ * });
+ */
+export function useGetActivityTypesByIdQuery(baseOptions: Apollo.QueryHookOptions<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables> & ({ variables: GetActivityTypesByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>(GetActivityTypesByIdDocument, options);
+      }
+export function useGetActivityTypesByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>(GetActivityTypesByIdDocument, options);
+        }
+export function useGetActivityTypesByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>(GetActivityTypesByIdDocument, options);
+        }
+export type GetActivityTypesByIdQueryHookResult = ReturnType<typeof useGetActivityTypesByIdQuery>;
+export type GetActivityTypesByIdLazyQueryHookResult = ReturnType<typeof useGetActivityTypesByIdLazyQuery>;
+export type GetActivityTypesByIdSuspenseQueryHookResult = ReturnType<typeof useGetActivityTypesByIdSuspenseQuery>;
+export type GetActivityTypesByIdQueryResult = Apollo.QueryResult<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>;
+export function useDeleteProfileMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteProfileMutation,
+    DeleteProfileMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    DeleteProfileMutation,
+    DeleteProfileMutationVariables
+  >(DeleteProfileDocument, options);
+>>>>>>> af403c1 (gql query add)
 }
     `;
 
