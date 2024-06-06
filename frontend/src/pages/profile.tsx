@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { FormEvent, useState } from "react";
 import Icon from "@/components/icon";
 import Loading from "@/components/loading";
@@ -11,11 +12,15 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "@/components/modal";
+import PersonalVehicleItem from "@/components/personal-vehicle-item";
+import ModalAddPersonalVehicle from "@/components/modal-add-personal-vehicle";
 
 export default function Profile() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [isBeingModified, setIsBeingModified] = useState(false);
+  const [isPersonalVehicleModalOpen, setIsPersonalVehicleModalOpen] =
+    useState(false);
   const { data: user } = useProfileQuery({
     errorPolicy: "ignore",
   });
@@ -49,6 +54,12 @@ export default function Profile() {
       .then(() => router.push("/"))
       .catch(console.error);
   };
+
+  const openNewVehicleModal = () => {
+    setIsPersonalVehicleModalOpen(true);
+  };
+
+  console.log(isPersonalVehicleModalOpen);
 
   return (
     <LayoutLoggedInUser>
@@ -198,11 +209,33 @@ export default function Profile() {
               <img
                 src={user.profile.avatarUrl || ""}
                 alt="Phot de profil"
-                className="h-36 w-36 mt-4 z-10 rounded-full object-cover"
+                className="h-72 w-72 mt-4 ml-6 z-10 rounded-full object-cover"
               />
             </label>
+            <div className="my-6">
+              <h2 className="mb-4">Mes véhicules personnels</h2>
+              <PersonalVehicleItem />
+              <div className="flex justify-end items-center gap-4">
+                <p
+                  className="text-anchor opacity-90 text-lg cursor-pointer"
+                  onClick={openNewVehicleModal}
+                >
+                  Ajouter un véhicule
+                </p>
+                <div
+                  onClick={openNewVehicleModal}
+                  className="bg-anchor opacity-85 rounded-full object-cover h-10 w-10 text-2xl text-lightPearl flex justify-center items-center cursor-pointer"
+                >
+                  +
+                </div>
+              </div>
+            </div>
           </form>
         )}
+        <ModalAddPersonalVehicle
+          isPersonalVehicleModalOpen={isPersonalVehicleModalOpen}
+          setIsPersonalVehicleModalOpen={setIsPersonalVehicleModalOpen}
+        />
       </div>
     </LayoutLoggedInUser>
   );
