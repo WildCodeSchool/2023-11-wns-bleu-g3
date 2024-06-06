@@ -158,6 +158,26 @@ class UserResolver {
 
     return "This user has been deleted";
   }
+
+  @Authorized()
+  @Query(() => [User])
+  async searchUser(@Ctx() ctx: Context, @Arg("name") name: string) {
+    if (!ctx.currentUser)
+      throw new GraphQLError("You need to be logged in to update your profile");
+
+    const users = await User.createQueryBuilder("user")
+      .where(
+        "user.firstName ILIKE :name OR user.lastName ILIKE :name OR user.nickname ILIKE :name",
+        { name: `%${name}%` }
+      )
+      .andWhere("user.id != :id", { id: ctx.currentUser.id })
+      .getMany();
+    if (users.length > 0) {
+      return users;
+    } else {
+      throw new GraphQLError("Users not found");
+    }
+  }
 }
 
 export default UserResolver;
