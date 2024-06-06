@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "./icon";
 import TopbarMenu from "./topbar-menu";
+import Router from "next/router";
 
 export default function TopbarLoggedInUser({
   isOpen,
@@ -11,6 +12,7 @@ export default function TopbarLoggedInUser({
 }) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleOpenMenu = () => {
     setMenuIsOpen(!menuIsOpen);
@@ -28,6 +30,17 @@ export default function TopbarLoggedInUser({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [menuRef]);
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    if (searchQuery.length) {
+      url.searchParams.set('search', searchQuery)
+      url.searchParams.delete('page')
+    } else {
+      url.searchParams.delete('search')
+    }
+    Router.push(url.toString())
+  }, [searchQuery])
 
   return (
     <nav className="flex flex-row justify-between items-center p-4 bg-shore w-full">
@@ -64,6 +77,8 @@ export default function TopbarLoggedInUser({
             className="block input-text-sm"
             placeholder="Rechercher un utilisateur ..."
             required
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </form>
