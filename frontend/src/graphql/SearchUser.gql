@@ -1,6 +1,8 @@
 query SearchUser($name: String!) {
   searchUser(name: $name) {
     id
+    firstName
+    lastName
     avatarUrl
     nickname
   }

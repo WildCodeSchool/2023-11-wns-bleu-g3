@@ -287,7 +287,7 @@ export type SearchUserQueryVariables = Exact<{
 }>;
 
 
-export type SearchUserQuery = { __typename?: 'Query', searchUser: Array<{ __typename?: 'User', id: number, avatarUrl?: string | null, nickname: string }> };
+export type SearchUserQuery = { __typename?: 'Query', searchUser: Array<{ __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, avatarUrl?: string | null, nickname: string }> };
 
 export type SignupMutationVariables = Exact<{
   data: NewUserInput;
@@ -584,6 +584,8 @@ export const SearchUserDocument = gql`
     query SearchUser($name: String!) {
   searchUser(name: $name) {
     id
+    firstName
+    lastName
     avatarUrl
     nickname
   }
