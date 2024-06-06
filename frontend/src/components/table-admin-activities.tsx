@@ -55,7 +55,7 @@ export default function TableActivities() {
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">{activity.emissions}</td>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">{activity.unit}</td>
               <td className="px-1 py-1 md:px-2 md:py-4 flex space-x-1 md:space-x-2">
-              <Link href={`/upd_activity/${activity.id}`} className="font-medium text-anchor hover:underline">
+              <Link href={`/admin/upd_activity/${activity.id}`} className="font-medium text-anchor hover:underline">
                   <Icon name="edit" size="" color="reef" />
                </Link>
                 <a href="#" className="font-medium text-error hover:underline">
