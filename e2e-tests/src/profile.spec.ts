@@ -35,7 +35,8 @@ test("can see user info", async ({ page }) => {
   await page.getByTestId("password").fill("Visitor42@!");
   await page.locator("form").getByRole("button", { name: "Connexion" }).click();
 
-  await page.goto("/profile", { waitUntil: "domcontentloaded" });
+  await page.waitForURL("/dashboard", { timeout: 120000 });
+  await page.goto("/profile");
 
   await page.getByRole("heading", { name: "Mon compte" });
 
