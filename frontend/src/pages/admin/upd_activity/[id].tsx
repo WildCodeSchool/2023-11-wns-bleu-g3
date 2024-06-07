@@ -26,7 +26,7 @@ export default function ProductDetails() {
   const { data: d } = useGetCategoriesQuery();
   const cats = d?.getCategories || [];
 
-  const { data: d2 } = useGetFuelTypesQuery(); //diesel par default
+  const { data: d2 } = useGetFuelTypesQuery();
   const fuels = d2?.getFuelTypes || [];
 
   const { data: d3 } = useGetUnitsQuery();
@@ -46,7 +46,7 @@ export default function ProductDetails() {
 
   return (
     <LayoutAdmin>
-      <form className="max-w-3xl mx-auto mt-5 p-5">
+      <form className="max-w-3xl mx-auto mt-4 p-5">
         <div>
           <p className="pb-2 text-lg font-medium text-gray-700">
             Modifie type activité
@@ -116,7 +116,9 @@ export default function ProductDetails() {
           >
             <option selected>{activity?.unit || ""}</option>
             {units.map((unit) => (
-              <option value={unit} key={unit}>{unit}</option>
+              <option value={unit} key={unit}>
+                {unit}
+              </option>
             ))}
           </select>
         </div>
@@ -133,10 +135,31 @@ export default function ProductDetails() {
               id="category"
               name="category"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              defaultValue={activity?.unit || ""}
+              defaultValue={activity?.vehicleAttributes?.vehicleType || ""}
             >
               {vehiclestypes.map((type) => (
-                <option value="US">{type}</option>
+                <option value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {selectedOption === "Voiture" && (
+          <div className="mb-3">
+            <label
+              htmlFor="firstName"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Carburant
+            </label>
+            <select
+              id="fuel"
+              name="fuel"
+              className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              defaultValue={activity?.vehicleAttributes?.fuelType || ""}
+            >
+              {vehiclestypes.map((fuels) => (
+                <option value={fuels}>{fuels}</option>
               ))}
             </select>
           </div>
@@ -154,7 +177,7 @@ export default function ProductDetails() {
               id="category"
               name="category"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              defaultValue={activity?.unit || ""}
+              defaultValue={activity?.vehicleAttributes?.vehicleDecade || ""}
             >
               {decades.map((decade) => (
                 <option value="US">{decade}</option>
