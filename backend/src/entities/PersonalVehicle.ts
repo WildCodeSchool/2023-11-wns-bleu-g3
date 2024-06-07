@@ -42,7 +42,7 @@ class PersonalVehicle extends BaseEntity {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => User, (user) => user.activities, {
+  @ManyToOne(() => User, (user) => user.personalVehicles, {
     cascade: true,
     onDelete: "CASCADE",
   })

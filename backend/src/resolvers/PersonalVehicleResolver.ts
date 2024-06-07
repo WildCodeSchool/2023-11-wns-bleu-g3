@@ -1,5 +1,6 @@
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import PersonalVehicle, { NewPersonalVehicleInput } from "../entities/PersonalVehicle";
+import { GraphQLError } from "graphql";
 
 @Resolver()
 class PersonalVehicleResolver {
@@ -10,6 +11,15 @@ class PersonalVehicleResolver {
 
     const newPersonalVehicle = await newVehicle.save();
     return newPersonalVehicle;
+  }
+
+  @Query(() => [PersonalVehicle])
+  async getPersonalVehicles(@Arg("userId") userId: number) {
+    if (!userId) throw new GraphQLError("User not found.");
+    return PersonalVehicle.find({
+      relations: {user: true},
+      where: { user: {id: userId} },
+    });
   }
 }
 
