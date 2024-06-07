@@ -253,6 +253,31 @@ export type DeleteProfileMutationVariables = Exact<{
 
 export type DeleteProfileMutation = { __typename?: 'Mutation', deleteProfile: string };
 
+export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCategoriesQuery = { __typename?: 'Query', getCategories: Array<string> };
+
+export type GetFuelTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetFuelTypesQuery = { __typename?: 'Query', getFuelTypes: Array<string> };
+
+export type GetUnitsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUnitsQuery = { __typename?: 'Query', getUnits: Array<string> };
+
+export type GetVehicleDecadeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetVehicleDecadeQuery = { __typename?: 'Query', getVehicleDecade: Array<string> };
+
+export type GetVehicleTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetVehicleTypesQuery = { __typename?: 'Query', getVehicleTypes: Array<string> };
+
 export type GetActivityTypesByIdQueryVariables = Exact<{
   getActivityTypesById: Scalars['Int'];
 }>;
@@ -517,6 +542,191 @@ export function useDeleteProfileMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteProfileMutationHookResult = ReturnType<typeof useDeleteProfileMutation>;
 export type DeleteProfileMutationResult = Apollo.MutationResult<DeleteProfileMutation>;
 export type DeleteProfileMutationOptions = Apollo.BaseMutationOptions<DeleteProfileMutation, DeleteProfileMutationVariables>;
+export const GetCategoriesDocument = gql`
+    query getCategories {
+  getCategories
+}
+    `;
+
+/**
+ * __useGetCategoriesQuery__
+ *
+ * To run a query within a React component, call `useGetCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+      }
+export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
+export function useGetCategoriesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
+export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
+export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
+export type GetCategoriesSuspenseQueryHookResult = ReturnType<typeof useGetCategoriesSuspenseQuery>;
+export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
+export const GetFuelTypesDocument = gql`
+    query getFuelTypes {
+  getFuelTypes
+}
+    `;
+
+/**
+ * __useGetFuelTypesQuery__
+ *
+ * To run a query within a React component, call `useGetFuelTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFuelTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFuelTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetFuelTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetFuelTypesQuery, GetFuelTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFuelTypesQuery, GetFuelTypesQueryVariables>(GetFuelTypesDocument, options);
+      }
+export function useGetFuelTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFuelTypesQuery, GetFuelTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFuelTypesQuery, GetFuelTypesQueryVariables>(GetFuelTypesDocument, options);
+        }
+export function useGetFuelTypesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetFuelTypesQuery, GetFuelTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetFuelTypesQuery, GetFuelTypesQueryVariables>(GetFuelTypesDocument, options);
+        }
+export type GetFuelTypesQueryHookResult = ReturnType<typeof useGetFuelTypesQuery>;
+export type GetFuelTypesLazyQueryHookResult = ReturnType<typeof useGetFuelTypesLazyQuery>;
+export type GetFuelTypesSuspenseQueryHookResult = ReturnType<typeof useGetFuelTypesSuspenseQuery>;
+export type GetFuelTypesQueryResult = Apollo.QueryResult<GetFuelTypesQuery, GetFuelTypesQueryVariables>;
+export const GetUnitsDocument = gql`
+    query getUnits {
+  getUnits
+}
+    `;
+
+/**
+ * __useGetUnitsQuery__
+ *
+ * To run a query within a React component, call `useGetUnitsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUnitsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUnitsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUnitsQuery(baseOptions?: Apollo.QueryHookOptions<GetUnitsQuery, GetUnitsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUnitsQuery, GetUnitsQueryVariables>(GetUnitsDocument, options);
+      }
+export function useGetUnitsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUnitsQuery, GetUnitsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUnitsQuery, GetUnitsQueryVariables>(GetUnitsDocument, options);
+        }
+export function useGetUnitsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUnitsQuery, GetUnitsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUnitsQuery, GetUnitsQueryVariables>(GetUnitsDocument, options);
+        }
+export type GetUnitsQueryHookResult = ReturnType<typeof useGetUnitsQuery>;
+export type GetUnitsLazyQueryHookResult = ReturnType<typeof useGetUnitsLazyQuery>;
+export type GetUnitsSuspenseQueryHookResult = ReturnType<typeof useGetUnitsSuspenseQuery>;
+export type GetUnitsQueryResult = Apollo.QueryResult<GetUnitsQuery, GetUnitsQueryVariables>;
+export const GetVehicleDecadeDocument = gql`
+    query getVehicleDecade {
+  getVehicleDecade
+}
+    `;
+
+/**
+ * __useGetVehicleDecadeQuery__
+ *
+ * To run a query within a React component, call `useGetVehicleDecadeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVehicleDecadeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVehicleDecadeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetVehicleDecadeQuery(baseOptions?: Apollo.QueryHookOptions<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>(GetVehicleDecadeDocument, options);
+      }
+export function useGetVehicleDecadeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>(GetVehicleDecadeDocument, options);
+        }
+export function useGetVehicleDecadeSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>(GetVehicleDecadeDocument, options);
+        }
+export type GetVehicleDecadeQueryHookResult = ReturnType<typeof useGetVehicleDecadeQuery>;
+export type GetVehicleDecadeLazyQueryHookResult = ReturnType<typeof useGetVehicleDecadeLazyQuery>;
+export type GetVehicleDecadeSuspenseQueryHookResult = ReturnType<typeof useGetVehicleDecadeSuspenseQuery>;
+export type GetVehicleDecadeQueryResult = Apollo.QueryResult<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>;
+export const GetVehicleTypesDocument = gql`
+    query getVehicleTypes {
+  getVehicleTypes
+}
+    `;
+
+/**
+ * __useGetVehicleTypesQuery__
+ *
+ * To run a query within a React component, call `useGetVehicleTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVehicleTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVehicleTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetVehicleTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>(GetVehicleTypesDocument, options);
+      }
+export function useGetVehicleTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>(GetVehicleTypesDocument, options);
+        }
+export function useGetVehicleTypesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>(GetVehicleTypesDocument, options);
+        }
+export type GetVehicleTypesQueryHookResult = ReturnType<typeof useGetVehicleTypesQuery>;
+export type GetVehicleTypesLazyQueryHookResult = ReturnType<typeof useGetVehicleTypesLazyQuery>;
+export type GetVehicleTypesSuspenseQueryHookResult = ReturnType<typeof useGetVehicleTypesSuspenseQuery>;
+export type GetVehicleTypesQueryResult = Apollo.QueryResult<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>;
 export const GetActivityTypesByIdDocument = gql`
     query GetActivityTypesById($getActivityTypesById: Int!) {
   getActivityTypesById(id: $getActivityTypesById) {
