@@ -28,12 +28,12 @@ class UserResolver {
     const token = crypto.randomBytes(20).toString("hex");
     newUser.emailConfirmationToken = token;
 
-    // await mailer.sendMail({
-    //   from: env.EMAIL_FROM,
-    //   to: newUser.email,
-    //   subject: "Bienvenue sur GreenFoot !",
-    //   text: `Bienvenue sur GreenFoot ${newUser.nickname} ! Pour confirmer votre email, cliquez sur ce lien: ${env.FRONTEND_URL}?emailToken=${token}`,
-    // });
+    await mailer.sendMail({
+      from: env.EMAIL_FROM,
+      to: newUser.email,
+      subject: "Bienvenue sur GreenFoot !",
+      text: `Bienvenue sur GreenFoot ${newUser.nickname} ! Pour confirmer votre email, cliquez sur ce lien: ${env.FRONTEND_URL}?emailToken=${token}`,
+    });
 
     const newUserWithId = await newUser.save();
     return newUserWithId;
@@ -58,12 +58,12 @@ class UserResolver {
     user.resetPasswordToken = token;
     user.save();
 
-    // await mailer.sendMail({
-    //   from: env.EMAIL_FROM,
-    //   to: user.email,
-    //   subject: "Mot de passe oublié",
-    //   text: `Pour réinitialiser votre mot de passe, merci de cliquer sur le lien suivant : ${env.FRONTEND_URL}?resetPasswordToken=${user.resetPasswordToken}`,
-    // });
+    await mailer.sendMail({
+      from: env.EMAIL_FROM,
+      to: user.email,
+      subject: "Mot de passe oublié",
+      text: `Pour réinitialiser votre mot de passe, merci de cliquer sur le lien suivant : ${env.FRONTEND_URL}?resetPasswordToken=${user.resetPasswordToken}`,
+    });
 
     return true;
   }
@@ -158,6 +158,28 @@ class UserResolver {
     await UserToDelete.remove();
 
     return "This user has been deleted";
+  }
+
+  @Authorized()
+  @Query(() => [User])
+  async searchUser(@Ctx() ctx: Context, @Arg("name") name: string) {
+    if (!ctx.currentUser)
+      throw new GraphQLError("You need to be logged in to update your profile");
+
+    if (!name) throw new GraphQLError("You need add search query");
+
+    const users = await User.createQueryBuilder("user")
+      .where(
+        "user.firstName ILIKE :name OR user.lastName ILIKE :name OR user.nickname ILIKE :name",
+        { name: `%${name}%` }
+      )
+      .andWhere("user.id != :id", { id: ctx.currentUser.id })
+      .getMany();
+    if (users.length > 0) {
+      return users;
+    } else {
+      throw new GraphQLError("Users not found");
+    }
   }
 }
 

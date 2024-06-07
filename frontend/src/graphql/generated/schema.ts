@@ -19,10 +19,28 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTimeISO: any;
+};
+
+export type Activity = {
+  __typename?: "Activity";
+  activityType: ActivityType;
+  ends_at: Scalars["DateTimeISO"];
+  id: Scalars["Int"];
+  is_made_in_france: Scalars["Boolean"];
+  is_reccurent: Scalars["Boolean"];
+  is_secondhand: Scalars["Boolean"];
+  name: Scalars["String"];
+  quantity: Scalars["Float"];
+  reccurence_count?: Maybe<Scalars["Float"]>;
+  reccurence_interval?: Maybe<Scalars["String"]>;
+  starts_at: Scalars["DateTimeISO"];
+  user: User;
 };
 
 export type ActivityType = {
   __typename?: "ActivityType";
+  activities: Array<Activity>;
   attributes: Attr;
   category: Scalars["String"];
   emissions: Scalars["Float"];
@@ -134,6 +152,7 @@ export type Query = {
   getVehicleDecade: Array<Scalars["String"]>;
   getVehicleTypes: Array<Scalars["String"]>;
   profile: User;
+  searchUser: Array<User>;
 };
 
 export type QueryGetActivitiesTypesPaginationArgs = {
@@ -143,6 +162,10 @@ export type QueryGetActivitiesTypesPaginationArgs = {
 
 export type QueryGetActivityTypesByIdArgs = {
   id: Scalars["Int"];
+};
+
+export type QuerySearchUserArgs = {
+  name: Scalars["String"];
 };
 
 export type ResetPasswordInput = {
@@ -171,7 +194,9 @@ export type UpdateUserInput = {
 
 export type User = {
   __typename?: "User";
+  activities: Array<Activity>;
   avatarUrl?: Maybe<Scalars["String"]>;
+  blocked: Scalars["Boolean"];
   createdAt: Scalars["String"];
   email: Scalars["String"];
   firstName?: Maybe<Scalars["String"]>;
@@ -274,6 +299,22 @@ export type ResetPasswordRequestMutationVariables = Exact<{
 export type ResetPasswordRequestMutation = {
   __typename?: "Mutation";
   resetPasswordRequest: boolean;
+};
+
+export type SearchUserQueryVariables = Exact<{
+  name: Scalars["String"];
+}>;
+
+export type SearchUserQuery = {
+  __typename?: "Query";
+  searchUser: Array<{
+    __typename?: "User";
+    id: number;
+    firstName?: string | null;
+    lastName?: string | null;
+    avatarUrl?: string | null;
+    nickname: string;
+  }>;
 };
 
 export type SignupMutationVariables = Exact<{
@@ -738,6 +779,85 @@ export type ResetPasswordRequestMutationResult =
 export type ResetPasswordRequestMutationOptions = Apollo.BaseMutationOptions<
   ResetPasswordRequestMutation,
   ResetPasswordRequestMutationVariables
+>;
+export const SearchUserDocument = gql`
+  query SearchUser($name: String!) {
+    searchUser(name: $name) {
+      id
+      firstName
+      lastName
+      avatarUrl
+      nickname
+    }
+  }
+`;
+
+/**
+ * __useSearchUserQuery__
+ *
+ * To run a query within a React component, call `useSearchUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchUserQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useSearchUserQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    SearchUserQuery,
+    SearchUserQueryVariables
+  > &
+    (
+      | { variables: SearchUserQueryVariables; skip?: boolean }
+      | { skip: boolean }
+    )
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<SearchUserQuery, SearchUserQueryVariables>(
+    SearchUserDocument,
+    options
+  );
+}
+export function useSearchUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SearchUserQuery,
+    SearchUserQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<SearchUserQuery, SearchUserQueryVariables>(
+    SearchUserDocument,
+    options
+  );
+}
+export function useSearchUserSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    SearchUserQuery,
+    SearchUserQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useSuspenseQuery<SearchUserQuery, SearchUserQueryVariables>(
+    SearchUserDocument,
+    options
+  );
+}
+export type SearchUserQueryHookResult = ReturnType<typeof useSearchUserQuery>;
+export type SearchUserLazyQueryHookResult = ReturnType<
+  typeof useSearchUserLazyQuery
+>;
+export type SearchUserSuspenseQueryHookResult = ReturnType<
+  typeof useSearchUserSuspenseQuery
+>;
+export type SearchUserQueryResult = Apollo.QueryResult<
+  SearchUserQuery,
+  SearchUserQueryVariables
 >;
 export const SignupDocument = gql`
   mutation Signup($data: NewUserInput!) {
