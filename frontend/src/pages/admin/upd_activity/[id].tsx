@@ -100,7 +100,6 @@ export default function ProductDetails() {
             defaultValue={activity?.emissions || ""}
           />
         </div>
-
         <div className="mb-3">
           <label
             htmlFor="firstName"
