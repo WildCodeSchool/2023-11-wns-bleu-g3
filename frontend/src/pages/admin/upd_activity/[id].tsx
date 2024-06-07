@@ -46,7 +46,7 @@ export default function ProductDetails() {
 
   return (
     <LayoutAdmin>
-      <form className="max-w-3xl mx-auto mt-4 p-5">
+      <form className="max-w-3xl mx-auto mt-3 p-5">
         <div>
           <p className="pb-2 text-lg font-medium text-gray-700">
             Modifie type activité
@@ -55,16 +55,16 @@ export default function ProductDetails() {
             {activity?.name || ""}
           </h1>
           <br />
-          <p className="text-sm text-gray-600 mb-1">
+          <p className="text-sm text-gray-600 mb-4">
             Vous avez la possibilité de modifier les caractéristiques de cette
             type d'activité, comme la catégorie, le valeur de émission de CO
             <sub>2</sub> et l'unité pour la mesure.
           </p>
-          <br />
+          
         </div>
         <div className="mb-3">
           <label
-            htmlFor="firstName"
+            htmlFor="category"
             className="block mb-2 text-sm font-medium text-gray-900"
           >
             Catégorie
@@ -87,15 +87,15 @@ export default function ProductDetails() {
         </div>
         <div className="mb-3">
           <label
-            htmlFor="lastName"
+            htmlFor="emissions"
             className="block mb-2 text-sm font-medium text-gray-900"
           >
             Emissions CO<sub>2</sub>
           </label>
           <input
             type="text"
-            name="lastName"
-            id="lastName"
+            name="emissions"
+            id="emissions"
             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
             defaultValue={activity?.emissions || ""}
           />
@@ -109,8 +109,8 @@ export default function ProductDetails() {
             Unité Mesure
           </label>
           <select
-            id="category"
-            name="category"
+            id="unit"
+            name="unit"
             className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             defaultValue={activity?.unit || ""}
           >
@@ -123,7 +123,7 @@ export default function ProductDetails() {
           </select>
         </div>
 
-        {selectedOption === "Voiture" && (
+        {(activity?.category === "Voiture" || selectedOption === "Voiture") && (
           <div className="mb-3">
             <label
               htmlFor="firstName"
@@ -144,7 +144,7 @@ export default function ProductDetails() {
           </div>
         )}
 
-        {selectedOption === "Voiture" && (
+        {(activity?.category === "Voiture" || selectedOption === "Voiture") && (
           <div className="mb-3">
             <label
               htmlFor="firstName"
@@ -158,14 +158,14 @@ export default function ProductDetails() {
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               defaultValue={activity?.vehicleAttributes?.fuelType || ""}
             >
-              {vehiclestypes.map((fuels) => (
-                <option value={fuels}>{fuels}</option>
+              {fuels.map((fuel) => (
+                <option value={fuel}>{fuel}</option>
               ))}
             </select>
           </div>
         )}
 
-        {selectedOption === "Voiture" && (
+        {(activity?.category === "Voiture" || selectedOption === "Voiture") && (
           <div className="mb-3">
             <label
               htmlFor="firstName"
