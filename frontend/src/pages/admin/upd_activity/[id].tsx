@@ -180,7 +180,7 @@ export default function ProductDetails() {
               defaultValue={activity?.vehicleAttributes?.vehicleDecade || ""}
             >
               {decades.map((decade) => (
-                <option value="US">{decade}</option>
+                <option value={decade}>{decade}</option>
               ))}
             </select>
           </div>
