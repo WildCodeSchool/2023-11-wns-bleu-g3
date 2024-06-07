@@ -1,12 +1,19 @@
 import LayoutAdmin from "@/layouts/layout-admin";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useState } from "react";
 
-import { useGetActivityTypesByIdQuery } from "@/graphql/generated/schema";
+import {
+  useGetActivityTypesByIdQuery,
+  useGetCategoriesQuery,
+  useGetFuelTypesQuery,
+  useGetUnitsQuery,
+  useGetVehicleDecadeQuery,
+  useGetVehicleTypesQuery,
+} from "@/graphql/generated/schema";
 
 export default function ProductDetails() {
   const router = useRouter();
-
   const { id } = router.query;
 
   const { data } = useGetActivityTypesByIdQuery({
@@ -15,6 +22,27 @@ export default function ProductDetails() {
   });
 
   const activity = data?.getActivityTypesById;
+
+  const { data: d } = useGetCategoriesQuery();
+  const cats = d?.getCategories || [];
+
+  const { data: d2 } = useGetFuelTypesQuery(); //diesel par default
+  const fuels = d2?.getFuelTypes || [];
+
+  const { data: d3 } = useGetUnitsQuery();
+  const units = d3?.getUnits || [];
+
+  const { data: d4 } = useGetVehicleDecadeQuery();
+  const decades = d4?.getVehicleDecade || [];
+
+  const { data: d5 } = useGetVehicleTypesQuery();
+  const vehiclestypes = d5?.getVehicleTypes || [];
+
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const optionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value);
+  };
 
   return (
     <LayoutAdmin>
@@ -45,13 +73,16 @@ export default function ProductDetails() {
             id="category"
             name="category"
             className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-            defaultValue={activity?.category || ""}
+            defaultValue={activity?.category}
+            value={selectedOption}
+            onChange={optionChange}
           >
             <option selected>{activity?.category || ""}</option>
-            <option value="US">United States</option>
-            <option value="CA">Canada</option>
-            <option value="FR">France</option>
-            <option value="DE">Germany</option>
+            {cats.map((cat) => (
+              <option value={cat} key={cat}>
+                {cat}
+              </option>
+            ))}
           </select>
         </div>
         <div className="mb-3">
@@ -69,7 +100,7 @@ export default function ProductDetails() {
             defaultValue={activity?.emissions || ""}
           />
         </div>
-        
+
         <div className="mb-3">
           <label
             htmlFor="firstName"
@@ -84,14 +115,54 @@ export default function ProductDetails() {
             defaultValue={activity?.unit || ""}
           >
             <option selected>{activity?.unit || ""}</option>
-            <option value="US">United States</option>
-            <option value="CA">Canada</option>
-            <option value="FR">France</option>
-            <option value="DE">Germany</option>
+            {units.map((unit) => (
+              <option value={unit} key={unit}>{unit}</option>
+            ))}
           </select>
         </div>
-        
-        
+
+        {selectedOption === "Voiture" && (
+          <div className="mb-3">
+            <label
+              htmlFor="firstName"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Type Voiture
+            </label>
+            <select
+              id="category"
+              name="category"
+              className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              defaultValue={activity?.unit || ""}
+            >
+              {vehiclestypes.map((type) => (
+                <option value="US">{type}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {selectedOption === "Voiture" && (
+          <div className="mb-3">
+            <label
+              htmlFor="firstName"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Décennie Voiture
+            </label>
+            <select
+              id="category"
+              name="category"
+              className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              defaultValue={activity?.unit || ""}
+            >
+              {decades.map((decade) => (
+                <option value="US">{decade}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
         <button
           type="submit"
           className="text-lightPearl bg-reef hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 py-2.5 text-center"
