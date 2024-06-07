@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import ModalAuthentication from "./modal-authentication";
 import useScroll from "@/hooks/useScroll";
 import useScreenSize from "@/hooks/useScreenSize";
@@ -22,7 +23,11 @@ export default function HeaderVisitor({
         } top-0`}
       >
         <div className="flex justify-center items-center gap-2">
-          <img src="../../img/greenfoot-logo.png" alt="" className="w-14" />
+          <img
+            src="../../img/greenfoot-logo.png"
+            alt="Logo Greenfoot"
+            className="w-14"
+          />
 
           <h1 className="text-reef text-xl md:text-3xl font-bold drop-shadow-lg mb-0">
             GreenFoot

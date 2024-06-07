@@ -8,7 +8,7 @@ import { ToastContainer } from "react-toastify";
 function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
-      <div className="flex flex-col h-screen justify-between">
+      <div className="flex flex-col h-screen justify-between bg-lightPearl">
         <Component {...pageProps} />
       </div>
       <ToastContainer
