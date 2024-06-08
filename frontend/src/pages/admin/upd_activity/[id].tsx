@@ -1,7 +1,7 @@
 import LayoutAdmin from "@/layouts/layout-admin";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   useGetActivityTypesByIdQuery,
@@ -11,6 +11,7 @@ import {
   useGetVehicleDecadeQuery,
   useGetVehicleTypesQuery,
 } from "@/graphql/generated/schema";
+import Activities from "../activities";
 
 export default function ProductDetails() {
   const router = useRouter();
@@ -38,7 +39,15 @@ export default function ProductDetails() {
   const { data: d5 } = useGetVehicleTypesQuery();
   const vehiclestypes = d5?.getVehicleTypes || [];
 
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState(
+    activity?.category || ""
+  );
+
+  useEffect(() => {
+    if (activity?.category) {
+      setSelectedOption(activity.category);
+    }
+  }, [activity]);
 
   const optionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
@@ -60,7 +69,6 @@ export default function ProductDetails() {
             type d'activité, comme la catégorie, le valeur de émission de CO
             <sub>2</sub> et l'unité pour la mesure.
           </p>
-          
         </div>
         <div className="mb-3">
           <label
@@ -73,11 +81,10 @@ export default function ProductDetails() {
             id="category"
             name="category"
             className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-            defaultValue={activity?.category}
             value={selectedOption}
             onChange={optionChange}
           >
-            <option selected>{activity?.category || ""}</option>
+            
             {cats.map((cat) => (
               <option value={cat} key={cat}>
                 {cat}
@@ -102,7 +109,7 @@ export default function ProductDetails() {
         </div>
         <div className="mb-3">
           <label
-            htmlFor="firstName"
+            htmlFor="unit"
             className="block mb-2 text-sm font-medium text-gray-900"
           >
             Unité Mesure
@@ -113,26 +120,24 @@ export default function ProductDetails() {
             className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             defaultValue={activity?.unit || ""}
           >
-            <option selected>{activity?.unit || ""}</option>
+            
             {units.map((unit) => (
-              <option value={unit} key={unit}>
-                {unit}
-              </option>
+              <option value={unit}>{unit}</option>
             ))}
           </select>
         </div>
 
-        {(activity?.category === "Voiture" || selectedOption === "Voiture") && (
+        {selectedOption === "Voiture" ? (
           <div className="mb-3">
             <label
-              htmlFor="firstName"
+              htmlFor="vehicletype"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
               Type Voiture
             </label>
             <select
-              id="category"
-              name="category"
+              id="vehicletype"
+              name="vehicletype"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               defaultValue={activity?.vehicleAttributes?.vehicleType || ""}
             >
@@ -141,19 +146,19 @@ export default function ProductDetails() {
               ))}
             </select>
           </div>
-        )}
+        ) : null}
 
-        {(activity?.category === "Voiture" || selectedOption === "Voiture") && (
+        {selectedOption === "Voiture" ? (
           <div className="mb-3">
             <label
-              htmlFor="firstName"
+              htmlFor="fuelType"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
               Carburant
             </label>
             <select
-              id="fuel"
-              name="fuel"
+              id="fuelType"
+              name="fuelType"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               defaultValue={activity?.vehicleAttributes?.fuelType || ""}
             >
@@ -162,19 +167,19 @@ export default function ProductDetails() {
               ))}
             </select>
           </div>
-        )}
+        ) : null}
 
-        {(activity?.category === "Voiture" || selectedOption === "Voiture") && (
+        {selectedOption === "Voiture" ? (
           <div className="mb-3">
             <label
-              htmlFor="firstName"
+              htmlFor="vehicleDecade"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
               Décennie Voiture
             </label>
             <select
-              id="category"
-              name="category"
+              id="vehicleDecade"
+              name="vehicleDecade"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               defaultValue={activity?.vehicleAttributes?.vehicleDecade || ""}
             >
@@ -183,7 +188,7 @@ export default function ProductDetails() {
               ))}
             </select>
           </div>
-        )}
+        ) : null}
 
         <button
           type="submit"
