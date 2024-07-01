@@ -21,6 +21,16 @@ export class FollowerResolver {
     if (ctx.currentUser.id === userId)
       throw new GraphQLError("You cannot follow yourself");
 
+    if (
+      await Follow.findOne({
+        where: {
+          follower: ctx.currentUser,
+          user: userToFollow,
+        },
+      })
+    )
+      throw new GraphQLError("You are already following this person");
+
     const follow = Follow.create({
       follower: ctx.currentUser,
       user: userToFollow,
