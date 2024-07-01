@@ -163,7 +163,7 @@ class UserResolver {
   @Query(() => [User])
   async searchUser(@Ctx() ctx: Context, @Arg("name") name: string) {
     if (!ctx.currentUser)
-      throw new GraphQLError("You need to be logged in to update your profile");
+      throw new GraphQLError("You need to be logged in to search user");
 
     if (!name) throw new GraphQLError("You need add search query");
 
