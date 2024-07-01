@@ -1,5 +1,11 @@
 import { registerEnumType } from "type-graphql";
 
+export enum VehicleCategory {
+  Car = "Voiture",
+  Motorbike = "Moto/scooter",
+  Bike = "Vélo électrique",
+}
+
 // Car
 export enum FuelType {
   Petrol = "Essence",

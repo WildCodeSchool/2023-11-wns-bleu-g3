@@ -11,6 +11,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import Activity from "./Activity";
+import PersonalVehicle from "./PersonalVehicle";
 
 export enum UserRole {
   Admin = "admin",
@@ -79,8 +80,12 @@ class User extends BaseEntity {
   createdAt: string;
 
   @OneToMany(() => Activity, (activity) => activity.user)
-  @Field(() => [Activity])
-  activities: Activity[]
+  @Field(() => [Activity], { nullable: true })
+  activities?: Activity[]
+
+  @OneToMany(() => PersonalVehicle, (personalVehicle) => personalVehicle.user)
+  @Field(() => [PersonalVehicle], { nullable: true })
+  personalVehicles?: PersonalVehicle[]
 }
 
 @InputType()

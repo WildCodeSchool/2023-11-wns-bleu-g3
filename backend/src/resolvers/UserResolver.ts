@@ -85,6 +85,7 @@ class UserResolver {
   async profile(@Ctx() ctx: Context) {
     if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
     return User.findOneOrFail({
+      relations: { personalVehicles: true },
       where: { id: ctx.currentUser.id },
     });
   }
