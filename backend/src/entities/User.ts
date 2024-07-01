@@ -11,6 +11,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import Activity from "./Activity";
+import { Follow } from "./Follow";
 import PersonalVehicle from "./PersonalVehicle";
 
 export enum UserRole {
@@ -82,6 +83,14 @@ class User extends BaseEntity {
   @OneToMany(() => Activity, (activity) => activity.user)
   @Field(() => [Activity], { nullable: true })
   activities?: Activity[]
+
+  @OneToMany(() => Follow, (follow) => follow.follower)
+  @Field(() => [Follow])
+  following: Follow[];
+
+  @OneToMany(() => Follow, (follow) => follow.user)
+  @Field(() => [Follow])
+  followers: Follow[];
 
   @OneToMany(() => PersonalVehicle, (personalVehicle) => personalVehicle.user)
   @Field(() => [PersonalVehicle], { nullable: true })
