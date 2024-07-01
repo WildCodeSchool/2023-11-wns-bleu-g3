@@ -40,4 +40,28 @@ export class FollowerResolver {
 
     return follow;
   }
+
+  @Authorized()
+  @Mutation(() => String)
+  async unfollow(
+    @Arg("userId") userId: number,
+    @Ctx() ctx: Context
+  ): Promise<String> {
+    if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
+    if (!userId) throw new GraphQLError("User id to unfollow requiried");
+
+    const userToUnfollow = await User.findOne({ where: { id: userId } });
+    if (!userToUnfollow) throw new GraphQLError("User to unfollow not found");
+
+    const unfollow = await Follow.findOneBy({
+      follower: ctx.currentUser,
+      user: userToUnfollow,
+    });
+
+    if (!unfollow) throw new GraphQLError("You don't follow this user");
+
+    await unfollow.remove();
+
+    return "User unfollow successfully";
+  }
 }
