@@ -14,11 +14,11 @@ export enum MadeInFrance {
 
 export enum SecondHandClothes {
   False = 1.0,
-  True = 0.5,
+  True = 0.18,
 }
 export enum SecondHandPhones {
   False = 1.0,
-  True = 0.5,
+  True = 0.13,
 }
 
 registerEnumType(MadeInFrance, {
