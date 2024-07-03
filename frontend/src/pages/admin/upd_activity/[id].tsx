@@ -84,7 +84,6 @@ export default function ProductDetails() {
             value={selectedOption}
             onChange={optionChange}
           >
-            
             {cats.map((cat) => (
               <option value={cat} key={cat}>
                 {cat}
@@ -120,7 +119,6 @@ export default function ProductDetails() {
             className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             defaultValue={activity?.unit || ""}
           >
-            
             {units.map((unit) => (
               <option value={unit}>{unit}</option>
             ))}
