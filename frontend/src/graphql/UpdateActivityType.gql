@@ -1,0 +1,19 @@
+mutation UpdateActivityType($activityTypeId: Float!, $data: UpdateActivityTypeInput!) {
+  updateActivityType(ActivityTypeId: $activityTypeId, data: $data) {
+    emissions
+    unit
+    category
+    vehicleAttributes {
+      fuelType
+      vehicleType
+      vehicleDecade
+      motoEngine
+    }
+    attributes {
+      madeInFrance
+      secondHandClothes
+      secondHandPhones
+    }
+    id
+  }
+}

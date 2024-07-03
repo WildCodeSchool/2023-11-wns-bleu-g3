@@ -1,26 +1,30 @@
 import LayoutAdmin from "@/layouts/layout-admin";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 import {
+  UpdateActivityTypeDocument,
   useGetActivityTypesByIdQuery,
   useGetCategoriesQuery,
   useGetFuelTypesQuery,
   useGetUnitsQuery,
   useGetVehicleDecadeQuery,
   useGetVehicleTypesQuery,
-  
+  useUpdateActivityTypeMutation,
 } from "@/graphql/generated/schema";
-import Activities from "../activities";
+
+import { updateSourceFile } from "typescript";
 
 export default function UpdateActivity() {
   const router = useRouter();
-  const { id } = router.query;
+  const { activId: activIdStr } = router.query;
+
+  const activId = parseInt(activIdStr as string);
 
   const { data } = useGetActivityTypesByIdQuery({
-    variables: { getActivityTypesById: parseInt(id as string) },
-    skip: typeof id === "undefined",
+    variables: { getActivityTypesById: activId },
+    skip: typeof activId === "undefined",
   });
 
   const activity = data?.getActivityTypesById;
@@ -54,9 +58,31 @@ export default function UpdateActivity() {
     setSelectedOption(event.target.value);
   };
 
+  // update mutation
+
+  const [updateActivityType] = useUpdateActivityTypeMutation();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const formJSON: any = Object.fromEntries(formData.entries());
+    console.log("form data:", formJSON);
+
+    updateActivityType({
+      variables: { activityTypeId: activId, data: formJSON },
+      refetchQueries: [
+        { query: UpdateActivityTypeDocument, variables: { activId } },
+      ],
+    })
+      .then((res) =>
+        router.push(`/upd_activity/${res.data?.updateActivityType.id}`)
+      )
+      .catch(console.error);
+  };
+
   return (
     <LayoutAdmin>
-      <form className="max-w-3xl mx-auto mt-3 p-5">
+      <form className="max-w-3xl mx-auto mt-3 p-5" onSubmit={handleSubmit}>
         <div>
           <p className="pb-2 text-lg font-medium text-gray-700">
             Modifie type activité
@@ -66,9 +92,9 @@ export default function UpdateActivity() {
           </h1>
           <br />
           <p className="text-sm text-gray-600 mb-4">
-            Vous avez la possibilité de modifier les caractéristiques de cette
-            type d'activité, comme la catégorie, le valeur de émission de CO
-            <sub>2</sub> et l'unité pour la mesure.
+            Vous avez la possibilité de modifier les caractéristiques de ce type
+            d'activité, comme la catégorie, la valeur d'émission de CO
+            <sub>2</sub> et l'unité de mesure.
           </p>
         </div>
         <div className="mb-3">
@@ -189,10 +215,7 @@ export default function UpdateActivity() {
           </div>
         ) : null}
 
-        <button
-          type="submit"
-          className="text-lightPearl bg-reef hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 py-2.5 text-center"
-        >
+        <button className="text-lightPearl bg-reef hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 py-2.5 text-center">
           Modifier
         </button>
       </form>
