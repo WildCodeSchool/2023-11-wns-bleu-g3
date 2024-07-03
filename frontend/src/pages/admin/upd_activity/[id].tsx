@@ -10,10 +10,11 @@ import {
   useGetUnitsQuery,
   useGetVehicleDecadeQuery,
   useGetVehicleTypesQuery,
+  
 } from "@/graphql/generated/schema";
 import Activities from "../activities";
 
-export default function ProductDetails() {
+export default function UpdateActivity() {
   const router = useRouter();
   const { id } = router.query;
 
