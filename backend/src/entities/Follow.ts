@@ -15,5 +15,5 @@ export class Follow extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.followers)
   @Field(() => User)
-  user: User;
+  following: User;
 }
