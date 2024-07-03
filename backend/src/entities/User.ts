@@ -82,7 +82,7 @@ class User extends BaseEntity {
 
   @OneToMany(() => Activity, (activity) => activity.user)
   @Field(() => [Activity], { nullable: true })
-  activities?: Activity[]
+  activities?: Activity[]; 
 
   @OneToMany(() => Follow, (follow) => follow.follower)
   @Field(() => [Follow])
@@ -94,7 +94,7 @@ class User extends BaseEntity {
 
   @OneToMany(() => PersonalVehicle, (personalVehicle) => personalVehicle.user)
   @Field(() => [PersonalVehicle], { nullable: true })
-  personalVehicles?: PersonalVehicle[]
+  personalVehicles?: PersonalVehicle[];
 }
 
 @InputType()
