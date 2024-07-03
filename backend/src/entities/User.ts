@@ -87,7 +87,7 @@ class User extends BaseEntity {
   @Field(() => [Follow])
   following: Follow[];
 
-  @OneToMany(() => Follow, (follow) => follow.user)
+  @OneToMany(() => Follow, (follow) => follow.following)
   @Field(() => [Follow])
   followers: Follow[];
 }
