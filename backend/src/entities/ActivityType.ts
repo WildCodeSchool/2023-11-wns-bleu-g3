@@ -162,5 +162,3 @@ export class UpdateActivityTypeInput {
 }
 
 export default ActivityType;
-
-
