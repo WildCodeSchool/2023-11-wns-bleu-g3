@@ -1,0 +1,20 @@
+query GetActivityTypesById($getActivityTypesById: Int!) {
+  getActivityTypesById(id: $getActivityTypesById) {
+    category
+    id
+    emissions
+    name
+    unit
+    attributes {
+      madeInFrance
+      secondHandClothes
+      secondHandPhones
+    }
+    vehicleAttributes {
+      fuelType
+      vehicleType
+      vehicleDecade
+      motoEngine
+    }
+  }
+}

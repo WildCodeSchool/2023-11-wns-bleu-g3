@@ -12,6 +12,7 @@ import {
 } from "typeorm";
 import Activity from "./Activity";
 import { Follow } from "./Follow";
+import PersonalVehicle from "./PersonalVehicle";
 
 export enum UserRole {
   Admin = "admin",
@@ -90,6 +91,14 @@ class User extends BaseEntity {
   @OneToMany(() => Follow, (follow) => follow.following)
   @Field(() => [Follow])
   followers: Follow[];
+
+  @Field(() => [Activity], { nullable: true })
+  activities?: Activity[]
+
+  @OneToMany(() => PersonalVehicle, (personalVehicle) => personalVehicle.user)
+  @Field(() => [PersonalVehicle], { nullable: true })
+  personalVehicles?: PersonalVehicle[]
+
 }
 
 @InputType()
