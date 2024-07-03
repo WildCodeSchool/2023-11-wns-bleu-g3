@@ -65,24 +65,24 @@ export class Attr {
 
 @InputType()
 export class Attr_Input {
-  @Field(() => MadeInFrance, { nullable: true })
+  @Field( { nullable: true })
   madeInFrance?: SecondHandClothes;
 
-  @Field(() => SecondHandClothes, { nullable: true })
+  @Field( { nullable: true })
   secondHandClothes?: SecondHandClothes;
 
-  @Field(() => SecondHandPhones, { nullable: true })
+  @Field( { nullable: true })
   secondHandPhones?: SecondHandClothes;
 }
 
 @InputType()
 export class Update_Attr_Input {
-  @Field(() => MadeInFrance, { nullable: true })
+  @Field({ nullable: true })
   madeInFrance?: MadeInFrance;
 
-  @Field(() => SecondHandClothes, { nullable: true })
+  @Field({ nullable: true })
   secondHandClothes?: SecondHandClothes;
 
-  @Field(() => SecondHandPhones, { nullable: true })
+  @Field({ nullable: true })
   secondHandPhones?: SecondHandClothes;
 }

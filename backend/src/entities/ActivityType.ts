@@ -128,7 +128,7 @@ export class ActivityTypeInput {
   @Field()
   category: string;
 
-  @Field(() => Attr_Input)
+  @Field(() => Attr_Input, { nullable: true })
   attributes?: Attr_Input;
 
   @Field(() => Vehicle_Attr_Input, { nullable: true })
@@ -148,9 +148,9 @@ export class UpdateActivityTypeInput {
   category: string;
 
   @Field(() => Update_Attr_Input, { nullable: true })
-  attributes?: Attr_Input;
+  attributes?: Update_Attr_Input;
 
-  @Field(() => Vehicle_Attr_Input, { nullable: true })
+  @Field(() =>  UpdateVehicle_Attr_Input, { nullable: true })
   vehicleAttributes?: UpdateVehicle_Attr_Input;
 
   @Field()
@@ -162,5 +162,3 @@ export class UpdateActivityTypeInput {
 }
 
 export default ActivityType;
-
-
