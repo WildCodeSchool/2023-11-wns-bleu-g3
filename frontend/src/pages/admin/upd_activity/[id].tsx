@@ -20,6 +20,7 @@ import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { updateSourceFile } from "typescript";
 
 export default function UpdateActivity() {
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const { id } = router.query;
@@ -67,9 +68,15 @@ export default function UpdateActivity() {
   const [updateActivityType] = useUpdateActivityTypeMutation();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    setError("");
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
+
+    if (!/^\d*\.?\d*$/.test(formJSON.emissions) || formJSON.emissions === "") {
+      setError("Ton champ emissions ne comporte que des chiffres");
+      return;
+    }
 
     const object: UpdateActivityTypeInput = {
       category: formJSON.category as string,
@@ -93,11 +100,11 @@ export default function UpdateActivity() {
           },
         ],
       });
-
+      setError("");
       router.push(`/admin/activities`);
-    } catch (error) {
+    } catch (e) {
+      setError("une erreur est survenue");
       console.error("Error :", error);
-      throw error;
     }
   };
 
@@ -150,7 +157,9 @@ export default function UpdateActivity() {
             type="text"
             name="emissions"
             id="emissions"
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+            className={`shadow-sm bg-gray-50 border ${
+              error ? "border-red-700" : "border-gray-300"
+            } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3`}
             defaultValue={activity?.emissions || ""}
           />
         </div>
@@ -236,8 +245,19 @@ export default function UpdateActivity() {
           </div>
         ) : null}
 
-        <button className="text-lightPearl bg-reef hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 py-2.5 text-center">
+        {error !== "" && <pre className="text-red-700">{error}</pre>}
+        <button
+          type="submit"
+          className="text-lightPearl bg-reef hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 py-2.5 text-center"
+        >
           Modifier
+        </button>
+        <button
+          type="button"
+          onClick={() => router.push("/admin/activities")}
+          className="text-lightPearl bg-anchor hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 ml-3 py-2.5 text-center"
+        >
+          Annuller
         </button>
       </form>
     </LayoutAdmin>
