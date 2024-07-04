@@ -107,17 +107,17 @@ class ActivityType extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column(() => Attr)
-  @Field(() => Attr)
-  attributes?: Attr;
+  // @Column(() => Attr)
+  // @Field(() => Attr)
+  // attributes?: Attr;
 
-  @Column(() => Vehicle_Attr)
-  @Field(() => Vehicle_Attr, { nullable: true })
-  vehicleAttributes?: Vehicle_Attr;
+  // @Column(() => Vehicle_Attr)
+  // @Field(() => Vehicle_Attr, { nullable: true })
+  // vehicleAttributes?: Vehicle_Attr;
 
-  @OneToMany(() => Activity, (activity) => activity.activityType)
-  @Field(() => [Activity])
-  activities: Activity[];
+  // @OneToMany(() => Activity, (activity) => activity.activityType)
+  // @Field(() => [Activity])
+  // activities: Activity[];
 }
 
 @InputType()

@@ -27,17 +27,7 @@ services:
       - ./backend/src:/app/src
     env_file:
       - ./global.env
-
-  # upload-service:
-  #   stop_grace_period: 0s
-  #   build: file-upload-service
-  #   ports:
-  #     - 8000:8000
-  #   volumes:
-  #     - ./file-upload-service/files:/app/files
-  #   env_file:
-  #     - ./global.env
-
+      
   frontend:
     stop_grace_period: 0s
     build: frontend

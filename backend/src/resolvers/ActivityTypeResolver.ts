@@ -71,7 +71,7 @@ class ActivityTypeResolver {
     const activityTypeToDelete = await ActivityType.findOneBy({ id });
     if (!activityTypeToDelete) throw new GraphQLError("not found");
     await activityTypeToDelete.remove();
-    return "Activity successfully deleted.";
+    return "Activity type successfully deleted.";
   }
 
   @Authorized([UserRole.Admin])
@@ -81,7 +81,7 @@ class ActivityTypeResolver {
     @Arg("data", { validate: true }) data: UpdateActivityTypeInput
   ) {
     const activityTypeToUpdate = await ActivityType.findOneBy({ id });
-    if (!activityTypeToUpdate) throw new GraphQLError("Activity not found.");
+    if (!activityTypeToUpdate) throw new GraphQLError("Activity type not found.");
     Object.assign(activityTypeToUpdate, data);
     return await activityTypeToUpdate.save();
   }
@@ -98,22 +98,22 @@ class ActivityTypeResolver {
   }
 
   //vehicle enums
-  @Query(() => [String])
-  getFuelTypes() {
-    return Object.values(FuelType);
-  }
-  @Query(() => [String])
-  getVehicleDecade() {
-    return Object.values(VehicleDecade);
-  }
-  @Query(() => [String])
-  getVehicleTypes() {
-    return Object.values(VehicleType);
-  }
-  @Query(() => [String])
-  MotoEngine() {
-    return Object.values(MotoEngine);
-  }
+  // @Query(() => [String])
+  // getFuelTypes() {
+  //   return Object.values(FuelType);
+  // }
+  // @Query(() => [String])
+  // getVehicleDecade() {
+  //   return Object.values(VehicleDecade);
+  // }
+  // @Query(() => [String])
+  // getVehicleTypes() {
+  //   return Object.values(VehicleType);
+  // }
+  // @Query(() => [String])
+  // MotoEngine() {
+  //   return Object.values(MotoEngine);
+  // }
 }
 
 export default ActivityTypeResolver;
