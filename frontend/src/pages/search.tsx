@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export default function Search() {
   const searchParams = useSearchParams();
   const { data: users } = useSearchUserQuery({
-    variables: { name: searchParams.get("name") },
+    variables: { name: searchParams.get("name") || "" },
   });
 
   console.log(users);
@@ -28,7 +28,7 @@ export default function Search() {
           >
             <div className="relative flex items-center gap-4 pt-0 pb-8 mx-0 mt-4 overflow-hidden text-gray-700 bg-transparent shadow-none rounded-xl bg-clip-border">
               <img
-                src={user.avatarUrl}
+                src={user.avatarUrl || ""}
                 alt="Tania Andrew"
                 className="relative inline-block h-[58px] w-[58px] !rounded-full  object-cover object-center"
               />
