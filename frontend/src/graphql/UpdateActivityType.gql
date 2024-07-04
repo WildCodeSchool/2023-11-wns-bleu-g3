@@ -1,5 +1,9 @@
-mutation UpdateActivityType($activityTypeId: Float!, $data: UpdateActivityTypeInput!) {
+mutation UpdateActivityType(
+  $activityTypeId: Float!
+  $data: UpdateActivityTypeInput!
+) {
   updateActivityType(ActivityTypeId: $activityTypeId, data: $data) {
+    id
     emissions
     unit
     category
@@ -14,6 +18,5 @@ mutation UpdateActivityType($activityTypeId: Float!, $data: UpdateActivityTypeIn
       secondHandClothes
       secondHandPhones
     }
-    id
   }
 }

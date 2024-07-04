@@ -2,9 +2,11 @@ import LayoutAdmin from "@/layouts/layout-admin";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
-
+import Activities from "../activities";
 import {
+  GetActivityTypesByIdDocument,
   UpdateActivityTypeDocument,
+  UpdateActivityTypeInput,
   useGetActivityTypesByIdQuery,
   useGetCategoriesQuery,
   useGetFuelTypesQuery,
@@ -13,18 +15,18 @@ import {
   useGetVehicleTypesQuery,
   useUpdateActivityTypeMutation,
 } from "@/graphql/generated/schema";
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
 import { updateSourceFile } from "typescript";
 
 export default function UpdateActivity() {
   const router = useRouter();
-  const { activId: activIdStr } = router.query;
 
-  const activId = parseInt(activIdStr as string);
+  const { id } = router.query;
 
   const { data } = useGetActivityTypesByIdQuery({
-    variables: { getActivityTypesById: activId },
-    skip: typeof activId === "undefined",
+    variables: { getActivityTypesById: parseInt(id as string) },
+    skip: typeof id === "undefined",
   });
 
   const activity = data?.getActivityTypesById;
@@ -60,24 +62,43 @@ export default function UpdateActivity() {
 
   // update mutation
 
+  // const activId = parseInt( id as string);
+
   const [updateActivityType] = useUpdateActivityTypeMutation();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
+
+    const object: UpdateActivityTypeInput = {
+      category: formJSON.category as string,
+      emissions: parseFloat(formJSON.emissions as string),
+      unit: formJSON.unit as string,
+      vehicleAttributes: {
+        vehicleType: formJSON.vehicletype as string,
+        fuelType: formJSON.fuelType as string,
+        vehicleDecade: formJSON.vehicleDecade as string,
+      },
+    };
     console.log("form data:", formJSON);
 
-    updateActivityType({
-      variables: { activityTypeId: activId, data: formJSON },
-      refetchQueries: [
-        { query: UpdateActivityTypeDocument, variables: { activId } },
-      ],
-    })
-      .then((res) =>
-        router.push(`/upd_activity/${res.data?.updateActivityType.id}`)
-      )
-      .catch(console.error);
+    try {
+      await updateActivityType({
+        variables: { activityTypeId: parseFloat(id as string), data: object },
+        refetchQueries: [
+          {
+            query: GetActivityTypesByIdDocument,
+            variables: { getActivityTypesById: parseInt(id as string) },
+          },
+        ],
+      });
+
+      router.push(`/admin/activities`);
+    } catch (error) {
+      console.error("Error :", error);
+      throw error;
+    }
   };
 
   return (

@@ -35,7 +35,7 @@ export type Activity = {
 export type ActivityType = {
   __typename?: 'ActivityType';
   activities: Array<Activity>;
-  attributes: Attr;
+  attributes?: Maybe<Attr>;
   category: Scalars['String'];
   emissions: Scalars['Float'];
   id: Scalars['Int'];
@@ -374,7 +374,7 @@ export type GetActivityTypesByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetActivityTypesByIdQuery = { __typename?: 'Query', getActivityTypesById: { __typename?: 'ActivityType', category: string, id: number, emissions: number, name: string, unit: string, attributes: { __typename?: 'Attr', madeInFrance?: number | null, secondHandClothes?: number | null, secondHandPhones?: number | null }, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, vehicleType?: string | null, vehicleDecade?: string | null, motoEngine?: string | null } | null } };
+export type GetActivityTypesByIdQuery = { __typename?: 'Query', getActivityTypesById: { __typename?: 'ActivityType', category: string, id: number, emissions: number, name: string, unit: string, attributes?: { __typename?: 'Attr', madeInFrance?: number | null, secondHandClothes?: number | null, secondHandPhones?: number | null } | null, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, vehicleType?: string | null, vehicleDecade?: string | null, motoEngine?: string | null } | null } };
 
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -428,7 +428,7 @@ export type UpdateActivityTypeMutationVariables = Exact<{
 }>;
 
 
-export type UpdateActivityTypeMutation = { __typename?: 'Mutation', updateActivityType: { __typename?: 'ActivityType', emissions: number, unit: string, category: string, id: number, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, vehicleType?: string | null, vehicleDecade?: string | null, motoEngine?: string | null } | null, attributes: { __typename?: 'Attr', madeInFrance?: number | null, secondHandClothes?: number | null, secondHandPhones?: number | null } } };
+export type UpdateActivityTypeMutation = { __typename?: 'Mutation', updateActivityType: { __typename?: 'ActivityType', id: number, emissions: number, unit: string, category: string, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, vehicleType?: string | null, vehicleDecade?: string | null, motoEngine?: string | null } | null, attributes?: { __typename?: 'Attr', madeInFrance?: number | null, secondHandClothes?: number | null, secondHandPhones?: number | null } | null } };
 
 export type UpdateProfileMutationVariables = Exact<{
   data: UpdateUserInput;
@@ -1079,6 +1079,7 @@ export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, S
 export const UpdateActivityTypeDocument = gql`
     mutation UpdateActivityType($activityTypeId: Float!, $data: UpdateActivityTypeInput!) {
   updateActivityType(ActivityTypeId: $activityTypeId, data: $data) {
+    id
     emissions
     unit
     category
@@ -1093,7 +1094,6 @@ export const UpdateActivityTypeDocument = gql`
       secondHandClothes
       secondHandPhones
     }
-    id
   }
 }
     `;
