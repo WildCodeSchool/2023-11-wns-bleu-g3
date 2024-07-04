@@ -100,7 +100,7 @@ export default function TopbarLoggedInUser({
                 className="flex items-center space-x-4 hover:bg-gray-100 px-4"
               >
                 <img
-                  src={user.avatarUrl}
+                  src={user.avatarUrl || ""}
                   alt={`${user.nickname}'s avatar`}
                   className="w-8 h-8 rounded-full"
                 />
