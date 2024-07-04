@@ -1,5 +1,11 @@
 import { registerEnumType } from "type-graphql";
 
+export enum VehicleCategory {
+  Car = "Voiture",
+  Motorbike = "Moto/scooter",
+  Bike = "Vélo électrique",
+}
+
 // Car
 export enum FuelType {
   Petrol = "Essence",
@@ -53,7 +59,7 @@ registerEnumType(MotoEngine, {
   name: "MotoEngine",
 });
 
-//this function calculates the vehhicleDecade enum based on the year selected by the user
+//this function calculates the vehicleDecade enum based on the year selected by the user
 export default function calculateDecade(year: number): VehicleDecade {
   if (year < 1990) {
     return VehicleDecade.Collection;

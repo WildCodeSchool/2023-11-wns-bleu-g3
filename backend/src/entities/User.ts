@@ -7,8 +7,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import Activity from "./Activity";
+import { Follow } from "./Follow";
+import PersonalVehicle from "./PersonalVehicle";
 
 export enum UserRole {
   Admin = "admin",
@@ -68,9 +72,31 @@ class User extends BaseEntity {
   @Column({ default: false })
   emailVerified: boolean;
 
+  @Field()
+  @Column({ default: false })
+  blocked: boolean;
+
   @CreateDateColumn()
   @Field()
   createdAt: string;
+
+  @OneToMany(() => Activity, (activity) => activity.user)
+  @Field(() => [Activity], { nullable: true })
+  activities?: Activity[]; 
+
+  @OneToMany(() => Follow, (follow) => follow.follower)
+  @Field(() => [Follow])
+  following: Follow[];
+
+  @OneToMany(() => Follow, (follow) => follow.following)
+  @Field(() => [Follow])
+  followers: Follow[];
+
+
+
+  @OneToMany(() => PersonalVehicle, (personalVehicle) => personalVehicle.user)
+  @Field(() => [PersonalVehicle], { nullable: true })
+  personalVehicles?: PersonalVehicle[];
 }
 
 @InputType()

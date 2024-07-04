@@ -12,6 +12,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -20,6 +21,7 @@ import {
   Vehicle_Attr,
   Vehicle_Attr_Input,
 } from "./Vehicle_Attributes";
+import Activity from "./Activity";
 import {
   Attr,
   Attr_Input,
@@ -33,7 +35,7 @@ export enum Unit {
   Weight = "grammes de CO2",
   PerUnit = "g CO2 par unité",
   Distance = "g CO2 par Km",
-  Area = "g CO2 par m²",
+  Area = "g CO2 par m² par an",
   Energy = "g CO2 par kWh",
   Volume = "g CO2 par litre",
   Monetary = "g CO2 par € dépensé",
@@ -112,6 +114,10 @@ class ActivityType extends BaseEntity {
   @Column(() => Vehicle_Attr)
   @Field(() => Vehicle_Attr, { nullable: true })
   vehicleAttributes?: Vehicle_Attr;
+
+  @OneToMany(() => Activity, (activity) => activity.activityType)
+  @Field(() => [Activity])
+  activities: Activity[];
 }
 
 @InputType()
