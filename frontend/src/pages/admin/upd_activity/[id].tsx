@@ -27,8 +27,8 @@ export default function UpdateActivity() {
   const { id } = router.query;
 
   const { data } = useGetActivityTypesByIdQuery({
-    variables: { getActivityTypesById: activId },
-    skip: typeof activId === "undefined",
+    variables: { getActivityTypesById: parseInt(id as string) },
+    skip: typeof id === "undefined",
   });
 
   const activity = data?.getActivityTypesById;
