@@ -56,7 +56,7 @@ export default function ModalBin({ operation }: { operation: any }) {
                     />
                   </svg>
                   <h3 className="mb-5 text-md font-normal text-anchor ">
-                    Êtes-vous certain de de vouloir supprimer cette type
+                    Êtes-vous certain de de vouloir supprimer ce type
                     d'activité? Attention, cette action est irréversible.
                   </h3>
                   <button
