@@ -66,13 +66,13 @@ export class Attr {
 @InputType()
 export class Attr_Input {
   @Field({ nullable: true })
-  madeInFrance?: SecondHandClothes;
+  madeInFrance?: MadeInFrance;
 
   @Field({ nullable: true })
   secondHandClothes?: SecondHandClothes;
 
   @Field({ nullable: true })
-  secondHandPhones?: SecondHandClothes;
+  secondHandPhones?: SecondHandPhones;
 }
 
 @InputType()
@@ -84,5 +84,5 @@ export class Update_Attr_Input {
   secondHandClothes?: SecondHandClothes;
 
   @Field({ nullable: true })
-  secondHandPhones?: SecondHandClothes;
+  secondHandPhones?: SecondHandPhones;
 }

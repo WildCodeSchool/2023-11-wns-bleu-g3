@@ -256,7 +256,7 @@ export default function UpdateActivity() {
           onClick={() => router.push("/admin/activities")}
           className="text-lightPearl bg-anchor hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 ml-3 py-2.5 text-center"
         >
-          Annuller
+          Annuler
         </button>
       </form>
     </LayoutAdmin>
