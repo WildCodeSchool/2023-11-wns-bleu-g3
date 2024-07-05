@@ -11,10 +11,19 @@ export default function TopbarAdmin({
   return (
     <nav className="flex flex-row justify-between items-center p-4 bg-anchor opacity-85 w-full">
       <div className="flex justify-center items-center gap-2">
-        <img src="../../img/greenfoot-logo.png" alt="" className="w-14" />
+        <a href="/admin/dashboard">
+          <img
+            src="../../img/greenfoot-logo.png"
+            alt="greenfoot logo"
+            className="w-14"
+          />
+        </a>
 
         <h1 className="text-white text-xl md:text-3xl font-bold drop-shadow-lg">
-          GreenFoot <br className="md:hidden" /> BackOffice
+          <a href="/admin/dashboard">
+            {" "}
+            GreenFoot <br className="md:hidden" /> BackOffice
+          </a>
         </h1>
       </div>
       <div className="hidden md:block">

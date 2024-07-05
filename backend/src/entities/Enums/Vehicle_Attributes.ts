@@ -17,11 +17,11 @@ export enum FuelType {
 
 export const fuelTypeCalc: { [key in FuelType]: number } = {
   [FuelType.Petrol]: 1.06,
-  [FuelType.Diesel]: 1.00,
+  [FuelType.Diesel]: 1.0,
   [FuelType.Hybrid]: 0.85,
   [FuelType.Electric]: 0.78,
-  [FuelType.Hydrogen]: 0.30,
-}
+  [FuelType.Hydrogen]: 0.3,
+};
 
 export enum VehicleType {
   Economic = "Economique",

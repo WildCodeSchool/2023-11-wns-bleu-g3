@@ -14,7 +14,7 @@ export class Vehicle_Attr {
     enum: FuelType,
     nullable: true,
   })
-  @Field( { nullable: true })
+  @Field({ nullable: true })
   fuelType?: FuelType;
 
   @Column({
@@ -22,7 +22,7 @@ export class Vehicle_Attr {
     enum: VehicleType,
     nullable: true,
   })
-  @Field( { nullable: true })
+  @Field({ nullable: true })
   vehicleType?: VehicleType;
 
   @Column({
@@ -30,7 +30,7 @@ export class Vehicle_Attr {
     enum: VehicleDecade,
     nullable: true,
   })
-  @Field( { nullable: true })
+  @Field({ nullable: true })
   vehicleDecade?: VehicleDecade;
 
   @Column({
