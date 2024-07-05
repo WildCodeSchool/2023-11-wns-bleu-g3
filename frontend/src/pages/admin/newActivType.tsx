@@ -46,8 +46,8 @@ export default function newActivType() {
     setSelectedOption(event.target.value);
   };
 
-  // update mutation
-  // const activId = parseInt( id as string);
+  // create mutation
+  
   const [updateActivityType] = useUpdateActivityTypeMutation();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
