@@ -1,11 +1,9 @@
 import LayoutAdmin from "@/layouts/layout-admin";
 import TableActivities from "@/components/table-admin-activities";
 
-
 export default function Activities() {
   return (
     <LayoutAdmin>
-    
       <div className="m-auto w-4/5">
         <h2 className="text-2xl  font-semibold mt-5">Liste Type Activités</h2>
         <br />
@@ -16,8 +14,7 @@ export default function Activities() {
         </p>
         <p>Vous pouvez les visualiser, les modifier ou les supprimer.</p>
       </div>
-    <TableActivities/>
-      
+      <TableActivities />
     </LayoutAdmin>
   );
 }

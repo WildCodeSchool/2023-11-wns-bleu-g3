@@ -42,7 +42,7 @@ export class Attr {
     default: MadeInFrance.False,
   })
   @Field({ nullable: true })
-  madeInFrance: MadeInFrance;
+  madeInFrance?: MadeInFrance;
 
   @Column({
     type: "enum",
@@ -51,7 +51,7 @@ export class Attr {
     default: SecondHandClothes.False,
   })
   @Field({ nullable: true })
-  secondHandClothes: SecondHandClothes;
+  secondHandClothes?: SecondHandClothes;
 
   @Column({
     type: "enum",
@@ -60,29 +60,29 @@ export class Attr {
     default: SecondHandPhones.False,
   })
   @Field({ nullable: true })
-  secondHandPhones: SecondHandPhones;
+  secondHandPhones?: SecondHandPhones;
 }
 
 @InputType()
 export class Attr_Input {
   @Field({ nullable: true })
-  madeInFrance?: boolean;
+  madeInFrance?: MadeInFrance;
 
   @Field({ nullable: true })
-  secondHandClothes?: boolean;
+  secondHandClothes?: SecondHandClothes;
 
   @Field({ nullable: true })
-  secondHandPhones?: boolean;
+  secondHandPhones?: SecondHandPhones;
 }
 
 @InputType()
 export class Update_Attr_Input {
   @Field({ nullable: true })
-  madeInFrance?: boolean;
+  madeInFrance?: MadeInFrance;
 
   @Field({ nullable: true })
-  secondHandClothes?: boolean;
+  secondHandClothes?: SecondHandClothes;
 
   @Field({ nullable: true })
-  secondHandPhones?: boolean;
+  secondHandPhones?: SecondHandPhones;
 }

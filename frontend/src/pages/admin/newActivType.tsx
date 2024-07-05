@@ -2,7 +2,7 @@ import LayoutAdmin from "@/layouts/layout-admin";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
-import Activities from "../activities";
+// import Activities from "../activities";
 import {
   GetActivityTypesByIdDocument,
   UpdateActivityTypeDocument,
@@ -19,18 +19,11 @@ import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
 import { updateSourceFile } from "typescript";
 
-export default function UpdateActivity() {
+export default function newActivType() {
   const [error, setError] = useState("");
   const router = useRouter();
 
   const { id } = router.query;
-
-  const { data } = useGetActivityTypesByIdQuery({
-    variables: { getActivityTypesById: parseInt(id as string) },
-    skip: typeof id === "undefined",
-  });
-
-  const activity = data?.getActivityTypesById;
 
   const { data: d } = useGetCategoriesQuery();
   const cats = d?.getCategories || [];
@@ -47,15 +40,7 @@ export default function UpdateActivity() {
   const { data: d5 } = useGetVehicleTypesQuery();
   const vehiclestypes = d5?.getVehicleTypes || [];
 
-  const [selectedOption, setSelectedOption] = useState(
-    activity?.category || ""
-  );
-
-  useEffect(() => {
-    if (activity?.category) {
-      setSelectedOption(activity.category);
-    }
-  }, [activity]);
+  const [selectedOption, setSelectedOption] = useState("");
 
   const optionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
@@ -63,7 +48,6 @@ export default function UpdateActivity() {
 
   // update mutation
   // const activId = parseInt( id as string);
-
   const [updateActivityType] = useUpdateActivityTypeMutation();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -109,19 +93,22 @@ export default function UpdateActivity() {
 
   return (
     <LayoutAdmin>
-      <form className="max-w-3xl mx-auto mt-3 p-5" onSubmit={handleSubmit}>
+      <form
+        className="max-w-3xl mx-auto mt-3 p-5"
+        //   onSubmit={handleSubmit}
+      >
         <div>
-          <p className="pb-2 text-lg font-medium text-gray-700">
-            Modifie type activité
-          </p>
-          <h1 className="text-3xl font-bold underline text-reef">
-            {activity?.name || ""}
+          <h1 className="text-3xl font-bold  text-reef">
+            Créer Nouveau Type d'Activité
           </h1>
+
           <br />
           <p className="text-sm text-gray-600 mb-4">
-            Vous avez la possibilité de modifier les caractéristiques de ce type
-            d'activité, comme la catégorie, la valeur d'émission de CO
-            <sub>2</sub> et l'unité de mesure.
+            Vous avez la possibilité de créer un nouveau type d'activité.
+            Assurez-vous de bien remplir les valeurs pour la catégorie, la
+            valeur d'émission de CO<sub>2</sub>, et l'unité de mesure, en
+            veillant à ce que ces attributs soient conformes aux valeurs les
+            plus acceptables par la communauté écologique.
           </p>
         </div>
         <div className="mb-3">
@@ -137,7 +124,9 @@ export default function UpdateActivity() {
             className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             value={selectedOption}
             onChange={optionChange}
+            defaultValue="default"
           >
+            <option value="default" hidden></option>
             {cats.map((cat) => (
               <option value={cat} key={cat}>
                 {cat}
@@ -159,7 +148,6 @@ export default function UpdateActivity() {
             className={`shadow-sm bg-gray-50 border ${
               error ? "border-red-700" : "border-gray-300"
             } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3`}
-            defaultValue={activity?.emissions || ""}
           />
         </div>
         <div className="mb-3">
@@ -173,8 +161,9 @@ export default function UpdateActivity() {
             id="unit"
             name="unit"
             className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-            defaultValue={activity?.unit || ""}
+            defaultValue="default"
           >
+            <option value="default" hidden></option>
             {units.map((unit) => (
               <option value={unit}>{unit}</option>
             ))}
@@ -193,8 +182,9 @@ export default function UpdateActivity() {
               id="vehicletype"
               name="vehicletype"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              defaultValue={activity?.vehicleAttributes?.vehicleType || ""}
+              defaultValue="default"
             >
+              <option value="default" hidden></option>
               {vehiclestypes.map((type) => (
                 <option value={type}>{type}</option>
               ))}
@@ -214,8 +204,9 @@ export default function UpdateActivity() {
               id="fuelType"
               name="fuelType"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              defaultValue={activity?.vehicleAttributes?.fuelType || ""}
+              defaultValue="default"
             >
+              <option value="default" hidden></option>
               {fuels.map((fuel) => (
                 <option value={fuel}>{fuel}</option>
               ))}
@@ -235,8 +226,9 @@ export default function UpdateActivity() {
               id="vehicleDecade"
               name="vehicleDecade"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              defaultValue={activity?.vehicleAttributes?.vehicleDecade || ""}
+              defaultValue="default"
             >
+              <option value="default" hidden></option>
               {decades.map((decade) => (
                 <option value={decade}>{decade}</option>
               ))}
@@ -249,14 +241,14 @@ export default function UpdateActivity() {
           type="submit"
           className="text-lightPearl bg-reef hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 py-2.5 text-center"
         >
-          Modifier
+          Confirmer
         </button>
         <button
           type="button"
           onClick={() => router.push("/admin/activities")}
           className="text-lightPearl bg-anchor hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 ml-3 py-2.5 text-center"
         >
-          Annuler
+          Annuller
         </button>
       </form>
     </LayoutAdmin>
