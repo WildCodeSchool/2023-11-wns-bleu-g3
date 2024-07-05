@@ -337,6 +337,13 @@ export type CreatePersonalVehicleMutationVariables = Exact<{
 
 export type CreatePersonalVehicleMutation = { __typename?: 'Mutation', createPersonalVehicle: { __typename?: 'PersonalVehicle', id: number, name: string, moto_engine?: string | null, vehicle_category: string, year_of_construction?: number | null, vehicle_type?: string | null, fuel_type?: string | null, user: { __typename?: 'User', id: number } } };
 
+export type DeleteActivityTypeMutationVariables = Exact<{
+  activityTypeId: Scalars['Float'];
+}>;
+
+
+export type DeleteActivityTypeMutation = { __typename?: 'Mutation', deleteActivityType: string };
+
 export type DeleteProfileMutationVariables = Exact<{
   userId: Scalars['Float'];
 }>;
@@ -556,6 +563,37 @@ export function useCreatePersonalVehicleMutation(baseOptions?: Apollo.MutationHo
 export type CreatePersonalVehicleMutationHookResult = ReturnType<typeof useCreatePersonalVehicleMutation>;
 export type CreatePersonalVehicleMutationResult = Apollo.MutationResult<CreatePersonalVehicleMutation>;
 export type CreatePersonalVehicleMutationOptions = Apollo.BaseMutationOptions<CreatePersonalVehicleMutation, CreatePersonalVehicleMutationVariables>;
+export const DeleteActivityTypeDocument = gql`
+    mutation DeleteActivityType($activityTypeId: Float!) {
+  deleteActivityType(ActivityTypeId: $activityTypeId)
+}
+    `;
+export type DeleteActivityTypeMutationFn = Apollo.MutationFunction<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>;
+
+/**
+ * __useDeleteActivityTypeMutation__
+ *
+ * To run a mutation, you first call `useDeleteActivityTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteActivityTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteActivityTypeMutation, { data, loading, error }] = useDeleteActivityTypeMutation({
+ *   variables: {
+ *      activityTypeId: // value for 'activityTypeId'
+ *   },
+ * });
+ */
+export function useDeleteActivityTypeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>(DeleteActivityTypeDocument, options);
+      }
+export type DeleteActivityTypeMutationHookResult = ReturnType<typeof useDeleteActivityTypeMutation>;
+export type DeleteActivityTypeMutationResult = Apollo.MutationResult<DeleteActivityTypeMutation>;
+export type DeleteActivityTypeMutationOptions = Apollo.BaseMutationOptions<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>;
 export const DeleteProfileDocument = gql`
     mutation DeleteProfile($userId: Float!) {
   deleteProfile(userId: $userId)

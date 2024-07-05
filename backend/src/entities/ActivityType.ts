@@ -108,7 +108,7 @@ class ActivityType extends BaseEntity {
   updatedAt: Date;
 
   @Column(() => Attr)
-  @Field(() => Attr)
+  @Field(() => Attr, { nullable: true })
   attributes?: Attr;
 
   @Column(() => Vehicle_Attr)
@@ -150,7 +150,7 @@ export class UpdateActivityTypeInput {
   @Field(() => Update_Attr_Input, { nullable: true })
   attributes?: Update_Attr_Input;
 
-  @Field(() =>  UpdateVehicle_Attr_Input, { nullable: true })
+  @Field(() => UpdateVehicle_Attr_Input, { nullable: true })
   vehicleAttributes?: UpdateVehicle_Attr_Input;
 
   @Field()

@@ -1,14 +1,23 @@
 import Icon from "@/components/icon";
-import { useGetActivitiesTypesPaginationQuery } from "@/graphql/generated/schema";
+import {
+  useDeleteActivityTypeMutation,
+  useGetActivitiesTypesPaginationQuery,
+} from "@/graphql/generated/schema";
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import ModalBin from "./modalBin";
+import { useRouter } from "next/router";
 
 const PAGE_SIZE = 8;
 
 export default function TableActivities() {
+  const router = useRouter();
+  // pagination offset limit
   const [page, setPage] = useState(0);
   const [notEndPage, setNotEndPage] = useState(true);
+
+  const [deleteActiv] = useDeleteActivityTypeMutation();
 
   const { data, loading, error } = useGetActivitiesTypesPaginationQuery({
     variables: {
@@ -95,9 +104,15 @@ export default function TableActivities() {
                 >
                   <Icon name="edit" size="" color="reef" />
                 </Link>
-                <a href="#" className="font-medium text-error hover:underline">
-                  <Icon name="delete" size="" color="" />
-                </a>
+                <ModalBin
+                  operation={() =>
+                    deleteActiv({
+                      variables: {
+                        activityTypeId: activity.id,
+                      },
+                    }).then(() => window.location.reload())
+                  }
+                />
               </td>
             </tr>
           ))}
