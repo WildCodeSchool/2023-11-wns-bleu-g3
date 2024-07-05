@@ -55,7 +55,7 @@ export default function Profile() {
       .catch(console.error);
   };
 
-  if (screenSize.width > 1025) {
+  if (screenSize.width > 768) {
     return (
       <LayoutLoggedInUser>
         <div className="mx-10">
