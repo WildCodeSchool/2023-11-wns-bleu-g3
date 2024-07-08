@@ -102,7 +102,6 @@ export default function UpdateActivity() {
         vehicleDecade: formJSON.vehicleDecade as string,
       },
     };
-
     console.log("form data:", formJSON);
 
     try {
@@ -173,7 +172,9 @@ export default function UpdateActivity() {
             name="emissions"
             id="emissions"
             className={`shadow-sm bg-gray-50 border ${
-              error.errorInput === "emissions" ? "border-red-700" : "border-gray-300"
+              error.errorInput === "emissions"
+                ? "border-red-700"
+                : "border-gray-300"
             } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3`}
             defaultValue={activity?.emissions || ""}
           />
