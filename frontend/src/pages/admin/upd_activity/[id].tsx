@@ -89,6 +89,7 @@ export default function UpdateActivity() {
         vehicleDecade: formJSON.vehicleDecade as string,
       },
     };
+    
     console.log("form data:", formJSON);
 
     try {
@@ -97,7 +98,7 @@ export default function UpdateActivity() {
         refetchQueries: [
           {
             query: GetActivityTypesByIdDocument,
-            variables: { getActivityTypesById: parseInt(id as string) },
+            variables: { getActivityTypesById: parseFloat(id as string) },
           },
         ],
       });
