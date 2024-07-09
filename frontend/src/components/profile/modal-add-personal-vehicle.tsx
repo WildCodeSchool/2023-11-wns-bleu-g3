@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from "react";
-import Icon from "./icon";
+import Icon from "../icon";
 import {
   useCreatePersonalVehicleMutation,
   useProfileQuery,

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
-import PersonalVehicleItem from "../personal-vehicle-item";
-import ModalAddPersonalVehicle from "../modal-add-personal-vehicle";
+import PersonalVehicleItem from "./personal-vehicle-item";
+import ModalAddPersonalVehicle from "./modal-add-personal-vehicle";
 
 const MobileProfile = ({
   user,
@@ -34,7 +34,7 @@ const MobileProfile = ({
           <img
             src={user.profile.avatarUrl || ""}
             alt="Phot de profil"
-            className="h-72 w-72 mt-4 ml-6 z-10 rounded-full object-cover"
+            className="h-72 w-72 mt-4 ml-6 rounded-full object-cover"
           />
         </label>
         <label htmlFor="firstName">
