@@ -1,0 +1,8 @@
+{
+  "name": "green-foot",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "docker compose up --build"
+  },
+  "license": "ISC"
+}
