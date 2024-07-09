@@ -1,5 +1,10 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Icon from "./icon";
+import {
+  useCreatePersonalVehicleMutation,
+  useProfileQuery,
+} from "@/graphql/generated/schema";
+import { useRouter } from "next/router";
 
 const ModalAddPersonalVehicle = ({
   isPersonalVehicleModalOpen,
@@ -9,11 +14,29 @@ const ModalAddPersonalVehicle = ({
   setIsPersonalVehicleModalOpen: any;
 }) => {
   const [selectedVehicle, setSelectedVehicle] = useState("");
+  const [createPersonalVehicle] = useCreatePersonalVehicleMutation();
+  const { data: user } = useProfileQuery({
+    errorPolicy: "ignore",
+  });
+  const router = useRouter();
 
   const handleVehicleChange = (event: any) => {
     setSelectedVehicle(event.target.value);
   };
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const formJSON: any = Object.fromEntries(formData.entries());
+    formJSON.user = { id: user?.profile.id };
+
+    createPersonalVehicle({ variables: { data: formJSON } })
+      .then((res) => {
+        setIsPersonalVehicleModalOpen(false);
+        router.reload();
+      })
+      .catch(console.error);
+  };
   return (
     <div>
       {isPersonalVehicleModalOpen && (
@@ -29,94 +52,98 @@ const ModalAddPersonalVehicle = ({
                 </button>
                 <div className="flex flex-col p-4 gap-6">
                   <h2 className="text-center">Ajouter un véhicule</h2>
-                  <form className="text-reef font-semibold flex flex-col gap-6">
-                    <label htmlFor="vehicleName">
+                  <form
+                    onSubmit={handleSubmit}
+                    className="text-reef font-semibold flex flex-col gap-6"
+                  >
+                    <label htmlFor="name">
                       Nom
                       <input
                         type="text"
-                        name="vehicleName"
-                        id="vehicleName"
+                        name="name"
+                        id="name"
                         className="input-text-reef"
                       />
                     </label>
-                    <label htmlFor="vehicleType">
+                    <label htmlFor="vehicle_category">
                       Type de véhicule
                       <select
                         className="select-xl select-arrow font-normal"
-                        name="vehicleType"
-                        id="vehicleType"
+                        name="vehicle_category"
+                        id="vehicle_category"
                         value={selectedVehicle}
                         onChange={handleVehicleChange}
                       >
                         <option disabled value=""></option>
                         <option value="Voiture">Voiture</option>
-                        <option value="Moto">Moto</option>
+                        <option value="Moto/scooter">Moto/Scooter</option>
                         <option value="Vélo électrique">Vélo électrique</option>
                       </select>
                     </label>
 
                     {selectedVehicle === "Voiture" && (
                       <>
-                        <label htmlFor="fuelType">
+                        <label htmlFor="fuel_type">
                           Type de carburant
                           <select
                             className="select-xl select-arrow font-normal"
-                            name="fuelType"
-                            id="fuelType"
+                            name="fuel_type"
+                            id="fuel_type"
                           >
                             <option disabled selected></option>
-                            <option>Essence</option>
-                            <option>Diesel</option>
-                            <option>Électrique</option>
-                            <option>Hybride</option>
-                            <option>Hydrogène</option>
+                            <option value="Essence">Essence</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Électrique">Électrique</option>
+                            <option value="Hybride">Hybride</option>
+                            <option value="Hydrogène">Hydrogène</option>
                           </select>
                         </label>
 
-                        <label htmlFor="carRange">
+                        <label htmlFor="vehicle_type">
                           Gamme
                           <select
                             className="select-xl select-arrow font-normal"
-                            name="carRange"
-                            id="carRange"
+                            name="vehicle_type"
+                            id="vehicle_type"
                           >
                             <option disabled selected></option>
-                            <option>Économique</option>
-                            <option>Sportive</option>
-                            <option>Luce</option>
+                            <option value="Economique">Économique</option>
+                            <option value="Sportif">Sportive</option>
+                            <option value="Luxe">Luxe</option>
                           </select>
                         </label>
 
-                        <label htmlFor="constructionYear">
+                        <label htmlFor="year_of_construction">
                           Année de construction
                           <select
                             className="select-xl select-arrow font-normal"
-                            name="constructionYear"
-                            id="constructionYear"
+                            name="year_of_construction"
+                            id="year_of_construction"
                           >
                             <option disabled selected></option>
-                            <option>Avant 1989</option>
-                            <option>1990-1999</option>
-                            <option>2000-2009</option>
-                            <option>2010-2019</option>
-                            <option>Après 2020</option>
+                            <option value="Avant 90s">Avant 1989</option>
+                            <option value="Avant 2000">1990-1999</option>
+                            <option value="2000s">2000-2009</option>
+                            <option value="2010s">2010-2019</option>
+                            <option value="2020s">Après 2020</option>
                           </select>
                         </label>
                       </>
                     )}
 
-                    {selectedVehicle === "Moto" && (
-                      <label htmlFor="engineType">
+                    {selectedVehicle === "Moto/scooter" && (
+                      <label htmlFor="moto_engine">
                         Type de cylindrée
                         <select
                           className="select-xl select-arrow font-normal"
-                          name="engineType"
-                          id="engineType"
+                          name="moto_engine"
+                          id="moto_engine"
                         >
                           <option disabled selected></option>
-                          <option>moins de 125cc</option>
-                          <option>125cc à 500cc</option>
-                          <option>plus de 500cc</option>
+                          <option value="moins de 125cc">Moins de 125cc</option>
+                          <option value="125cc a 500cc">125cc à 500cc</option>
+                          <option value="Plus de 500cc">Plus de 500cc</option>
+                          <option value="Électrique">Électrique</option>
                         </select>
                       </label>
                     )}
