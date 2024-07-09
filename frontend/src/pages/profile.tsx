@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import Icon from "@/components/icon";
 import Loading from "@/components/loading";
 import {
-  useDeleteProfileMutation,
+  useDeleteUserMutation,
   useProfileQuery,
   useUpdateProfileMutation,
 } from "@/graphql/generated/schema";
@@ -27,7 +27,7 @@ export default function Profile() {
 
   const [updateProfile] = useUpdateProfileMutation();
 
-  const [deleteProfile] = useDeleteProfileMutation();
+  const [deleteProfile] = useDeleteUserMutation();
 
   if (!user) return <Loading />;
 
@@ -50,7 +50,7 @@ export default function Profile() {
   };
 
   const handleDeleteProfile = () => {
-    deleteProfile({ variables: { userId: user.profile.id } })
+    deleteProfile()
       .then(() => router.push("/"))
       .catch(console.error);
   };

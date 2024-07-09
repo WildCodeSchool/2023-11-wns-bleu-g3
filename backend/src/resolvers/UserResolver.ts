@@ -150,13 +150,31 @@ class UserResolver {
 
   @Authorized()
   @Mutation(() => String)
-  async deleteProfile(@Arg("userId") id: number) {
-    const UserToDelete = await User.findOneBy({ id });
+  async deleteUser(
+    @Ctx() ctx: Context,
+    @Arg("userId", { nullable: true }) id?: number
+  ) {
+    if (!ctx.currentUser) return new GraphQLError("You must be authenticated");
 
-    if (!UserToDelete) throw new GraphQLError("Not found");
+    if (!id) {
+      const userToDelete = await User.findOneBy({ id: ctx.currentUser.id });
+      if (!userToDelete) throw new GraphQLError("User not found");
 
-    await UserToDelete.remove();
+      await userToDelete.remove();
+      ctx.res.clearCookie("token");
+      return "User deleted and logged out successfully";
+    }
 
+    if (ctx.currentUser.role !== "admin") {
+      return new GraphQLError(
+        "You do not have permission to delete other users"
+      );
+    }
+
+    const userToDelete = await User.findOneBy({ id });
+    if (!userToDelete) throw new GraphQLError("User not found");
+
+    await userToDelete.remove();
     return "This user has been deleted";
   }
 
