@@ -29,22 +29,41 @@ export default function Dashboard() {
     },
   };
 
-  //example
-  const percentage = "48%";
+  //examples
+  const percentage = "73%";
+
+  const notifs = [
+    {
+      message: "NicoEcolo vient de signalé la publication de AntoineArbre. ❌",
+      date: "03/04/2024",
+    },
+    {
+      message: "PhilipeForet vient de faire une contribuition de 35€. 🎉",
+      date: "03/04/2024",
+    },
+  ];
 
   return (
     <LayoutAdmin>
       <div className="max-w-[95rem] xl m-auto h-auto mt-14 ">
-        <div className="flex flex-wrap justify-between ">
+        <div className="flex  justify-between ">
           <div className="w-[60%]">
             <div className="bg-white shadow-lg rounded-lg p-6 h-[35vh]">
               <div className="flex">
                 <img
                   src="../../img/bluepiggy.png"
                   alt="petit couchon mignon"
-                  className="w-14"
+                  className="w-[8rem]"
                 />
-                <h2 className="text-xl font-semibold mb-4">Donations</h2>
+                <div className="m-4 pb-2">
+                  <h2 className="text-xl font-semibold mt-4">
+                    Donations totales: 3450€
+                  </h2>
+                  <p className="text-lg py-2 ">
+                    <span className="text-lg font-semibold ">Objectif: </span>{" "}
+                    10000€ au 01/01/2025
+                  </p>
+                </div>
               </div>
 
               <div className="w-full rounded-full bg-pearl mt-5">
@@ -55,12 +74,27 @@ export default function Dashboard() {
                   {percentage}
                 </div>
               </div>
+              <div className="flex justify-between">
+                <div className="m-4 p-2 ">
+                  <h2 className="text-xl">Contributions</h2>
+                  <p>53 contributions</p>
+                </div>
+                <div className="m-4 p-2 ">
+                  <h2 className="text-xl">Nº Greenfooters</h2>
+                  <p>87 Inscriptions Totales</p>
+                </div>
+                <div className="m-4 p-2 ">
+                  <h2 className="text-xl">Réseau Social</h2>
+                  <p>233 Publications totales</p>
+                </div>
+              </div>
             </div>
           </div>
           <div className="w-[38%]  ">
             <div className="bg-white shadow-lg rounded-lg p-6  h-[35vh]">
               <h2 className="text-lg font-semibold mb-4">
-                Consummation Moyenne Utlisateurs GreenFoot
+                Consummation de CO
+                <sub>2</sub> Moyenne Utlisateurs GreenFoot
               </h2>
               <div className="mt-4 h-[22vh] w-[25vw]  items-start justify-left">
                 <Doughnut data={data} options={options} />
@@ -71,7 +105,41 @@ export default function Dashboard() {
         <div className="mt-6">
           <div className="bg-white shadow-lg rounded-lg p-6 h-[35vh]">
             <h2 className="text-xl font-semibold mb-4">Notifications</h2>
-            <p>coming soon...</p>
+            {notifs.map((notif) => (
+              <a
+                href="#"
+                className="block w-full p-2 mt-5 bg-pearl border border-gray-200 rounded-lg shadow-lg hover:bg-gray-100"
+              >
+                {" "}
+                <div className="flex justify-between">
+                  <p className="pl-4 font-normal text-anchor ">
+                    {notif.message}
+                  </p>
+                  <button
+                    type="button"
+                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                    data-modal-hide="default-modal"
+                  >
+                    <svg
+                      className="w-3 h-3"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 14 14"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                      />
+                    </svg>
+                    <span className="sr-only">Close modal</span>
+                  </button>
+                </div>
+              </a>
+            ))}
           </div>
         </div>
       </div>

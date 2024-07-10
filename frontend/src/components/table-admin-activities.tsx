@@ -33,7 +33,7 @@ export default function TableActivities() {
   }, [data]);
 
   if (loading) {
-    return <p>Chargement...</p>;
+    return <p className="mt-3 text-center justify-center align-middle m-auto">Chargement...</p>;
   }
 
   if (error) {
