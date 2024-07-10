@@ -7,8 +7,5 @@ mutation CreatePersonalVehicle($data: NewPersonalVehicleInput!) {
     year_of_construction
     vehicle_type
     fuel_type
-    user {
-      id
-    }
   }
 }
