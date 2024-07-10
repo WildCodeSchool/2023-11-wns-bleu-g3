@@ -33,7 +33,7 @@ const ModalAddPersonalVehicle = ({
     createPersonalVehicle({ variables: { data: formJSON } })
       .then((res) => {
         setIsPersonalVehicleModalOpen(false);
-        router.reload();
+        // router.reload();
       })
       .catch(console.error);
   };

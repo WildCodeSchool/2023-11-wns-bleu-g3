@@ -10,11 +10,11 @@ import LayoutLoggedInUser from "@/layouts/layout-logged-in-user";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DesktopUpdateProfile from "@/components/profile/desktop-updateProfile";
+import DesktopUpdateProfile from "@/components/profile/desktop-update-profile";
 import DesktopProfile from "@/components/profile/desktop-profile";
 import useScreenSize from "@/hooks/useScreenSize";
 import MobileProfile from "@/components/profile/mobile-profile";
-import MobileUpdateProfile from "@/components/profile/mobile-updateProfile";
+import MobileUpdateProfile from "@/components/profile/mobile-update-profile";
 
 export default function Profile() {
   const screenSize = useScreenSize();

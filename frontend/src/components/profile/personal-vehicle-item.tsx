@@ -17,7 +17,7 @@ const PersonalVehicleItem = () => {
 
   const { data } = useGetPersonalVehiclesQuery({
     variables: {
-      userId: currentUser.profile.id,
+      userId: currentUser?.profile.id,
     },
   });
 

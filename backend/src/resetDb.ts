@@ -37,9 +37,10 @@ async function main() {
     nickname: "Gretaaaaa",
     email: "greenGreta@app.com",
     password: "Visitor42@!",
+    firstName: "Greta",
     lastName: "Thunberg",
     avatarUrl:
-      "https://e7.pngegg.com/pngimages/193/660/png-clipart-computer-icons-woman-avatar-avatar-girl-black-hair-logo-thumbnail.png",
+      "https://cdn-s-www.estrepublicain.fr/images/829E79B4-6141-4B09-A1A4-C8CA53D382BE/NW_raw/greta-thunberg-a-caen-ce-dimanche-photo-jean-francois-monier-afp-1563726733.jpg",
     createdAt: "2024-01-03T07:19:22.111Z",
   });
   await user.save();
@@ -62,8 +63,7 @@ async function main() {
     nickname: "LilaFleurie",
     email: "lilafleurie@app.com",
     password: "Visitor42@!",
-    avatarUrl:
-      "https://m.media-amazon.com/images/I/61RlSyFFobL._AC_SX522_.jpg",
+    avatarUrl: "https://m.media-amazon.com/images/I/61RlSyFFobL._AC_SX522_.jpg",
     createdAt: "2024-04-20T07:19:22.111Z",
     blocked: true,
   });
@@ -92,13 +92,26 @@ async function main() {
       unit: Unit[data.unit as keyof typeof Unit],
       emissions: data.emissions,
       vehicleAttributes: data.vehicleAttributes
-      ? {
-          fuelType: FuelType[data.vehicleAttributes.fuelType as keyof typeof FuelType] ?? null,
-          vehicleType: VehicleType[data.vehicleAttributes.vehicleType as keyof typeof VehicleType] ?? null,
-          vehicleDecade: VehicleDecade[data.vehicleAttributes.vehicleDecade as keyof typeof VehicleDecade] ?? null,
-          motoEngine: MotoEngine[data.vehicleAttributes.motoEngine as keyof typeof MotoEngine] ?? null,
-        }
-      : null,
+        ? {
+            fuelType:
+              FuelType[
+                data.vehicleAttributes.fuelType as keyof typeof FuelType
+              ] ?? null,
+            vehicleType:
+              VehicleType[
+                data.vehicleAttributes.vehicleType as keyof typeof VehicleType
+              ] ?? null,
+            vehicleDecade:
+              VehicleDecade[
+                data.vehicleAttributes
+                  .vehicleDecade as keyof typeof VehicleDecade
+              ] ?? null,
+            motoEngine:
+              MotoEngine[
+                data.vehicleAttributes.motoEngine as keyof typeof MotoEngine
+              ] ?? null,
+          }
+        : null,
     });
     await Activity.save();
   }

@@ -126,9 +126,6 @@ export class UpdatePersonalVehicleInput {
 
   @Field({ nullable: true })
   moto_engine?: MotoEngine;
-
-  @Field(() => ObjectId)
-  user: ObjectId;
 }
 
 export default PersonalVehicle;
