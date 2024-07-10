@@ -258,7 +258,6 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
-  MotoEngine: Array<Scalars['String']>;
   getActivitiesTypes: Array<ActivityType>;
   getActivitiesTypesPagination: Array<ActivityType>;
   getActivityTypesById: ActivityType;
@@ -268,6 +267,7 @@ export type Query = {
   getFollowing: Array<User>;
   getFollowingByUser: Array<User>;
   getFuelTypes: Array<Scalars['String']>;
+  getMotoEngines: Array<Scalars['String']>;
   getPersonalVehicles: Array<PersonalVehicle>;
   getUnits: Array<Scalars['String']>;
   getVehicleDecade: Array<Scalars['String']>;
@@ -494,6 +494,11 @@ export type GetFuelTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetFuelTypesQuery = { __typename?: 'Query', getFuelTypes: Array<string> };
 
+export type GetMotoEnginesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMotoEnginesQuery = { __typename?: 'Query', getMotoEngines: Array<string> };
+
 export type GetUnitsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -685,6 +690,49 @@ export function useConfirmEmailMutation(baseOptions?: Apollo.MutationHookOptions
 export type ConfirmEmailMutationHookResult = ReturnType<typeof useConfirmEmailMutation>;
 export type ConfirmEmailMutationResult = Apollo.MutationResult<ConfirmEmailMutation>;
 export type ConfirmEmailMutationOptions = Apollo.BaseMutationOptions<ConfirmEmailMutation, ConfirmEmailMutationVariables>;
+export const CreateActivityTypeDocument = gql`
+    mutation CreateActivityType($data: ActivityTypeInput!) {
+  createActivityType(data: $data) {
+    category
+    emissions
+    id
+    name
+    unit
+    vehicleAttributes {
+      fuelType
+      motoEngine
+      vehicleDecade
+      vehicleType
+    }
+  }
+}
+    `;
+export type CreateActivityTypeMutationFn = Apollo.MutationFunction<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>;
+
+/**
+ * __useCreateActivityTypeMutation__
+ *
+ * To run a mutation, you first call `useCreateActivityTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateActivityTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createActivityTypeMutation, { data, loading, error }] = useCreateActivityTypeMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateActivityTypeMutation(baseOptions?: Apollo.MutationHookOptions<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>(CreateActivityTypeDocument, options);
+      }
+export type CreateActivityTypeMutationHookResult = ReturnType<typeof useCreateActivityTypeMutation>;
+export type CreateActivityTypeMutationResult = Apollo.MutationResult<CreateActivityTypeMutation>;
+export type CreateActivityTypeMutationOptions = Apollo.BaseMutationOptions<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>;
 export const CreatePersonalVehicleDocument = gql`
     mutation CreatePersonalVehicle($data: NewPersonalVehicleInput!) {
   createPersonalVehicle(data: $data) {
@@ -1324,6 +1372,9 @@ export type GetFuelTypesLazyQueryHookResult = ReturnType<typeof useGetFuelTypesL
 export type GetFuelTypesSuspenseQueryHookResult = ReturnType<typeof useGetFuelTypesSuspenseQuery>;
 export type GetFuelTypesQueryResult = Apollo.QueryResult<GetFuelTypesQuery, GetFuelTypesQueryVariables>;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6634203 (add form 2/2 & validation error accessibility fix)
 export const GetMotoEnginesDocument = gql`
     query getMotoEngines {
   getMotoEngines
@@ -1361,6 +1412,7 @@ export type GetMotoEnginesQueryHookResult = ReturnType<typeof useGetMotoEnginesQ
 export type GetMotoEnginesLazyQueryHookResult = ReturnType<typeof useGetMotoEnginesLazyQuery>;
 export type GetMotoEnginesSuspenseQueryHookResult = ReturnType<typeof useGetMotoEnginesSuspenseQuery>;
 export type GetMotoEnginesQueryResult = Apollo.QueryResult<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>;
+<<<<<<< HEAD
 export const GetUnitsDocument = gql`
     query getUnits {
   getUnits
@@ -1417,6 +1469,8 @@ export type GetFuelTypesQueryResult = Apollo.QueryResult<
 >;
 =======
 >>>>>>> 87dbdf2 (upd form)
+=======
+>>>>>>> 6634203 (add form 2/2 & validation error accessibility fix)
 export const GetUnitsDocument = gql`
     query getUnits {
   getUnits
