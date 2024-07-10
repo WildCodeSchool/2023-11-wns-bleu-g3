@@ -62,12 +62,9 @@ export default function newActivType() {
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
 
-    //validation
-    if (
-      !/^[A-Za-z\s]+$/.test(formJSON.name) ||
-      formJSON.name.length > 50 ||
-      formJSON.name === ""
-    ) {
+    //validation sanitisation
+    const name = formJSON.name.trim();
+    if (!/^[A-Za-z\s]+$/.test(name) || name.length > 50 || name === "") {
       setError({
         message:
           "Le champ nom ne doit pas être vide et doit comporter que des lettres. Max 50 caractères.",
@@ -107,7 +104,11 @@ export default function newActivType() {
       setError({ message: "", errorInput: "" }); //error reset
       router.push(`/admin/activities`);
     } catch (e) {
-      setError({ message: "Une erreur est survenue.", errorInput: "general" });
+      setError({
+        message:
+          "Une erreur est survenue. Assurez-vous de bien remplir tous les champs.",
+        errorInput: "general",
+      });
       console.error("Error :", error);
     }
   };
@@ -143,7 +144,7 @@ export default function newActivType() {
             // required
             minLength={2}
             maxLength={50}
-            pattern="^[A-Za-z]+$"
+            pattern="^[A-Za-z\s]+$"
             className={`shadow-sm bg-gray-50 border ${
               error.errorInput === "name" ? "border-red-700" : "border-gray-300"
             } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3`}
@@ -187,7 +188,6 @@ export default function newActivType() {
             type="text"
             name="emissions"
             id="emissions"
-            // required
             pattern="^\d*\.?\d*$"
             className={`shadow-sm bg-gray-50 border ${
               error.errorInput === "emissions"

@@ -8,8 +8,8 @@ export default function Dashboard() {
   const data = {
     labels: [
       "Positif < 2 tonnes de CO2 par an ",
-      "Acceptable: Entre 2 et 6 tonnes de CO2 par an",
-      "Négatif: > 6 tonnes de CO2 par an",
+      "Acceptable Entre 2 et 6 tonnes de CO2 par an",
+      "Négatif > 6 tonnes de CO2 par an",
     ],
     datasets: [
       {
@@ -55,14 +55,45 @@ export default function Dashboard() {
                   alt="petit couchon mignon"
                   className="w-[8rem]"
                 />
-                <div className="m-4 pb-2">
-                  <h2 className="text-xl font-semibold mt-4">
-                    Donations totales: 3450€
-                  </h2>
-                  <p className="text-lg py-2 ">
-                    <span className="text-lg font-semibold ">Objectif: </span>{" "}
-                    10000€ au 01/01/2025
-                  </p>
+                <div className="justify-between  flex w-full">
+                  <div className="ml-4 mt-2 pb-2">
+                    <h2 className="text-xl font-semibold ">
+                      Dons totaux: 3450€
+                    </h2>
+                    <p className="text-lg py-2 ">
+                      <span className="text-lg font-semibold ">Objectif: </span>
+                      10000€ jusqu'au 01/01/2025
+                    </p>
+                    <p className="text-md  ">
+                      <span className="text-md font-semibold ">
+                        Plus haute donation:{" "}
+                      </span>
+                      230 € par NicoEcolo
+                    </p>
+                  </div>
+                  <div className="text-right justify-end ml-4 mt-2">
+                    <a
+                      href="/admin/donations"
+                      className="p-3 text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm   text-center inline-flex items-center focus:ring-gray-500 "
+                    >
+                      <svg
+                        className=" w-3 h-3 text-gray-800 "
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 8 14"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="m1 13 5.7-5.326a.909.909 0 0 0 0-1.348L1 1"
+                        />
+                      </svg>
+                      Voir détails
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -77,15 +108,15 @@ export default function Dashboard() {
               <div className="flex justify-between">
                 <div className="m-4 p-2 ">
                   <h2 className="text-xl">Contributions</h2>
-                  <p>53 contributions</p>
+                  <p>53 dons</p>
                 </div>
                 <div className="m-4 p-2 ">
                   <h2 className="text-xl">Nº Greenfooters</h2>
-                  <p>87 Inscriptions Totales</p>
+                  <p>87 inscriptions totales</p>
                 </div>
                 <div className="m-4 p-2 ">
                   <h2 className="text-xl">Réseau Social</h2>
-                  <p>233 Publications totales</p>
+                  <p>345 publications totales</p>
                 </div>
               </div>
             </div>
@@ -94,7 +125,7 @@ export default function Dashboard() {
             <div className="bg-white shadow-lg rounded-lg p-6  h-[35vh]">
               <h2 className="text-lg font-semibold mb-4">
                 Consummation de CO
-                <sub>2</sub> Moyenne Utlisateurs GreenFoot
+                <sub>2</sub> Moyenne des Utilisateurs de GreenFoot
               </h2>
               <div className="mt-4 h-[22vh] w-[25vw]  items-start justify-left">
                 <Doughnut data={data} options={options} />
