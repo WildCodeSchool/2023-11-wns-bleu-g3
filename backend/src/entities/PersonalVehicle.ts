@@ -101,9 +101,6 @@ export class NewPersonalVehicleInput {
 
   @Field({ nullable: true })
   moto_engine?: MotoEngine;
-
-  @Field(() => ObjectId)
-  user: ObjectId;
 }
 
 @InputType()
