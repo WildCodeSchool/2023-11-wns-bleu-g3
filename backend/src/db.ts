@@ -15,7 +15,7 @@ const db = new DataSource({
   database: env.DB_NAME,
   entities: [User, ActivityType, Activity, Follow, PersonalVehicle],
   synchronize: true,
-  // logging: env.NODE_ENV !== "test",
+  logging: env.NODE_ENV === "test",
 });
 
 export async function clearDB() {

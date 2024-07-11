@@ -19,7 +19,7 @@ export type Scalars = {
 export type Activity = {
   __typename?: 'Activity';
   activityType: ActivityType;
-  ends_at: Scalars['DateTimeISO'];
+  ends_at?: Maybe<Scalars['DateTimeISO']>;
   id: Scalars['Int'];
   is_made_in_france: Scalars['Boolean'];
   is_reccurent: Scalars['Boolean'];
@@ -81,9 +81,11 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   confirmEmail: Scalars['Boolean'];
+  createActivity: Activity;
   createActivityType: ActivityType;
   createPersonalVehicle: PersonalVehicle;
   createUser: User;
+  deleteActivity: Scalars['String'];
   deleteActivityType: Scalars['String'];
   deleteUser: Scalars['String'];
   followUser: Follow;
@@ -92,6 +94,7 @@ export type Mutation = {
   resetPassword: Scalars['Boolean'];
   resetPasswordRequest: Scalars['Boolean'];
   unfollow: Scalars['String'];
+  updateActivity: Activity;
   updateActivityType: ActivityType;
   updateProfile: User;
 };
@@ -99,6 +102,11 @@ export type Mutation = {
 
 export type MutationConfirmEmailArgs = {
   emailToken: Scalars['String'];
+};
+
+
+export type MutationCreateActivityArgs = {
+  data: NewActivityInput;
 };
 
 
@@ -114,6 +122,11 @@ export type MutationCreatePersonalVehicleArgs = {
 
 export type MutationCreateUserArgs = {
   data: NewUserInput;
+};
+
+
+export type MutationDeleteActivityArgs = {
+  ActivityId: Scalars['Float'];
 };
 
 
@@ -153,6 +166,12 @@ export type MutationUnfollowArgs = {
 };
 
 
+export type MutationUpdateActivityArgs = {
+  ActivityId: Scalars['Float'];
+  data: UpdateActivityInput;
+};
+
+
 export type MutationUpdateActivityTypeArgs = {
   ActivityTypeId: Scalars['Float'];
   data: UpdateActivityTypeInput;
@@ -161,6 +180,19 @@ export type MutationUpdateActivityTypeArgs = {
 
 export type MutationUpdateProfileArgs = {
   data: UpdateUserInput;
+};
+
+export type NewActivityInput = {
+  activityType: ObjectId;
+  ends_at?: InputMaybe<Scalars['DateTimeISO']>;
+  is_made_in_france: Scalars['Boolean'];
+  is_reccurent: Scalars['Boolean'];
+  is_secondhand: Scalars['Boolean'];
+  name: Scalars['String'];
+  quantity: Scalars['Float'];
+  reccurence_count?: InputMaybe<Scalars['Float']>;
+  reccurence_interval?: InputMaybe<Scalars['String']>;
+  starts_at: Scalars['DateTimeISO'];
 };
 
 export type NewPersonalVehicleInput = {
@@ -178,6 +210,10 @@ export type NewUserInput = {
   password: Scalars['String'];
 };
 
+export type ObjectId = {
+  id: Scalars['Int'];
+};
+
 export type PersonalVehicle = {
   __typename?: 'PersonalVehicle';
   fuel_type?: Maybe<Scalars['String']>;
@@ -192,6 +228,7 @@ export type PersonalVehicle = {
 
 export type Query = {
   __typename?: 'Query';
+  getActivities: Array<Activity>;
   getActivitiesTypes: Array<ActivityType>;
   getActivitiesTypesPagination: Array<ActivityType>;
   getActivityTypesById: ActivityType;
@@ -208,6 +245,11 @@ export type Query = {
   getVehicleTypes: Array<Scalars['String']>;
   profile: User;
   searchUser: Array<User>;
+};
+
+
+export type QueryGetActivitiesArgs = {
+  userId?: InputMaybe<Scalars['Float']>;
 };
 
 
@@ -247,6 +289,19 @@ export type ResetPasswordInput = {
 
 export type ResetPasswordRequestInput = {
   email: Scalars['String'];
+};
+
+export type UpdateActivityInput = {
+  activityType: ObjectId;
+  ends_at?: InputMaybe<Scalars['DateTimeISO']>;
+  is_made_in_france: Scalars['Boolean'];
+  is_reccurent: Scalars['Boolean'];
+  is_secondhand: Scalars['Boolean'];
+  name: Scalars['String'];
+  quantity: Scalars['Float'];
+  reccurence_count?: InputMaybe<Scalars['Float']>;
+  reccurence_interval?: InputMaybe<Scalars['String']>;
+  starts_at: Scalars['DateTimeISO'];
 };
 
 export type UpdateActivityTypeInput = {
