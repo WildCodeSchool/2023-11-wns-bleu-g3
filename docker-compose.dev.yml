@@ -26,14 +26,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    image: greenfoot/greenfoot-back
+    image: greenfoot/greenfoot-back-dev
 
   frontend:
     environment:
       JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
     stop_grace_period: 0s
     env_file: frontend/.env.dev
-    image: greenfoot/greenfoot-front
+    image: greenfoot/greenfoot-front-dev
 
   gateway:
     restart: always
