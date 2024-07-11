@@ -4,12 +4,15 @@ import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 // import Activities from "../activities";
 import {
+  CreateActivityTypeMutation,
   GetActivityTypesByIdDocument,
   UpdateActivityTypeDocument,
-  UpdateActivityTypeInput,
+  ActivityTypeInput,
+  useCreateActivityTypeMutation,
   useGetActivityTypesByIdQuery,
   useGetCategoriesQuery,
   useGetFuelTypesQuery,
+  useGetMotoEnginesQuery,
   useGetUnitsQuery,
   useGetVehicleDecadeQuery,
   useGetVehicleTypesQuery,
@@ -20,7 +23,7 @@ import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { updateSourceFile } from "typescript";
 
 export default function newActivType() {
-  const [error, setError] = useState("");
+  const [error, setError] = useState({ message: "", errorInput: "" });
   const router = useRouter();
 
   const { id } = router.query;
@@ -40,28 +43,51 @@ export default function newActivType() {
   const { data: d5 } = useGetVehicleTypesQuery();
   const vehiclestypes = d5?.getVehicleTypes || [];
 
+  const { data: d6 } = useGetMotoEnginesQuery();
+  const motoengines = d6?.getMotoEngines || [];
+
   const [selectedOption, setSelectedOption] = useState("");
 
   const optionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
   };
 
-  // update mutation
-  // const activId = parseInt( id as string);
-  const [updateActivityType] = useUpdateActivityTypeMutation();
+  // create mutation
+
+  const [createActivityType] = useCreateActivityTypeMutation();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    setError("");
+    setError({ message: "", errorInput: "" });
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
 
-    if (!/^\d*\.?\d*$/.test(formJSON.emissions) || formJSON.emissions === "") {
-      setError("Ton champ emissions ne comporte que des chiffres");
+    //validation sanitisation
+    const name = formJSON.name.trim();
+    if (!/^[A-Za-z\s]+$/.test(name) || name.length > 50 || name === "") {
+      setError({
+        message:
+          "Le champ nom ne doit pas être vide et doit comporter que des lettres. Max 50 caractères.",
+        errorInput: "name",
+      });
       return;
     }
 
-    const object: UpdateActivityTypeInput = {
+    if (
+      !/^\d*\.?\d*$/.test(formJSON.emissions) ||
+      formJSON.emissions.length > 50 ||
+      formJSON.emissions === ""
+    ) {
+      setError({
+        message:
+          "Le champ emissions ne doit pas être vide et doit comporter que des chiffres",
+        errorInput: "emissions",
+      });
+      return;
+    }
+
+    const object: ActivityTypeInput = {
+      name: formJSON.name as string,
       category: formJSON.category as string,
       emissions: parseFloat(formJSON.emissions as string),
       unit: formJSON.unit as string,
@@ -74,29 +100,22 @@ export default function newActivType() {
     console.log("form data:", formJSON);
 
     try {
-      await updateActivityType({
-        variables: { activityTypeId: parseFloat(id as string), data: object },
-        refetchQueries: [
-          {
-            query: GetActivityTypesByIdDocument,
-            variables: { getActivityTypesById: parseInt(id as string) },
-          },
-        ],
-      });
-      setError("");
+      await createActivityType({ variables: { data: object } });
+      setError({ message: "", errorInput: "" }); //error reset
       router.push(`/admin/activities`);
     } catch (e) {
-      setError("une erreur est survenue");
+      setError({
+        message:
+          "Une erreur est survenue. Assurez-vous de bien remplir tous les champs.",
+        errorInput: "general",
+      });
       console.error("Error :", error);
     }
   };
 
   return (
     <LayoutAdmin>
-      <form
-        className="max-w-3xl mx-auto mt-3 p-5"
-        //   onSubmit={handleSubmit}
-      >
+      <form className="max-w-3xl mx-auto mt-3 p-5" onSubmit={handleSubmit}>
         <div>
           <h1 className="text-3xl font-bold  text-reef">
             Créer Nouveau Type d'Activité
@@ -113,6 +132,29 @@ export default function newActivType() {
         </div>
         <div className="mb-3">
           <label
+            htmlFor="name"
+            className="block mb-2 text-sm font-medium text-gray-900"
+          >
+            Nom
+          </label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            // required
+            minLength={2}
+            maxLength={50}
+            pattern="^[A-Za-z\s]+$"
+            className={`shadow-sm bg-gray-50 border ${
+              error.errorInput === "name" ? "border-red-700" : "border-gray-300"
+            } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3`}
+          />
+          {error.errorInput === "name" && (
+            <pre className="text-red-700">{error.message}</pre>
+          )}
+        </div>
+        <div className="mb-3">
+          <label
             htmlFor="category"
             className="block mb-2 text-sm font-medium text-gray-900"
           >
@@ -125,6 +167,7 @@ export default function newActivType() {
             value={selectedOption}
             onChange={optionChange}
             defaultValue="default"
+            required
           >
             <option value="default" hidden></option>
             {cats.map((cat) => (
@@ -145,10 +188,16 @@ export default function newActivType() {
             type="text"
             name="emissions"
             id="emissions"
+            pattern="^\d*\.?\d*$"
             className={`shadow-sm bg-gray-50 border ${
-              error ? "border-red-700" : "border-gray-300"
+              error.errorInput === "emissions"
+                ? "border-red-700"
+                : "border-gray-300"
             } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3`}
           />
+          {error.errorInput === "emissions" && (
+            <pre className="text-red-700">{error.message}</pre>
+          )}
         </div>
         <div className="mb-3">
           <label
@@ -162,6 +211,7 @@ export default function newActivType() {
             name="unit"
             className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             defaultValue="default"
+            required
           >
             <option value="default" hidden></option>
             {units.map((unit) => (
@@ -183,6 +233,7 @@ export default function newActivType() {
               name="vehicletype"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               defaultValue="default"
+              required
             >
               <option value="default" hidden></option>
               {vehiclestypes.map((type) => (
@@ -205,6 +256,7 @@ export default function newActivType() {
               name="fuelType"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               defaultValue="default"
+              required
             >
               <option value="default" hidden></option>
               {fuels.map((fuel) => (
@@ -227,6 +279,7 @@ export default function newActivType() {
               name="vehicleDecade"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               defaultValue="default"
+              required
             >
               <option value="default" hidden></option>
               {decades.map((decade) => (
@@ -236,7 +289,32 @@ export default function newActivType() {
           </div>
         ) : null}
 
-        {error !== "" && <pre className="text-red-700">{error}</pre>}
+        {selectedOption === "Moto" ? (
+          <div className="mb-3">
+            <label
+              htmlFor="motoEngine"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Moteur
+            </label>
+            <select
+              id="motoEngine"
+              name="motoEngine"
+              className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              defaultValue="default"
+              required
+            >
+              <option value="default" hidden></option>
+              {motoengines.map((type) => (
+                <option value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+
+        {error.errorInput === "general" && (
+          <pre className="text-red-700">{error.message}</pre>
+        )}
         <button
           type="submit"
           className="text-lightPearl bg-reef hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 py-2.5 text-center"

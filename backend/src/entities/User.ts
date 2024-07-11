@@ -92,8 +92,6 @@ class User extends BaseEntity {
   @Field(() => [Follow])
   followers: Follow[];
 
-
-
   @OneToMany(() => PersonalVehicle, (personalVehicle) => personalVehicle.user)
   @Field(() => [PersonalVehicle], { nullable: true })
   personalVehicles?: PersonalVehicle[];

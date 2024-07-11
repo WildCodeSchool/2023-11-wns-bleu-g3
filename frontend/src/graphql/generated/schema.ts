@@ -19,7 +19,7 @@ export type Scalars = {
 export type Activity = {
   __typename?: 'Activity';
   activityType: ActivityType;
-  ends_at: Scalars['DateTimeISO'];
+  ends_at?: Maybe<Scalars['DateTimeISO']>;
   id: Scalars['Int'];
   is_made_in_france: Scalars['Boolean'];
   is_reccurent: Scalars['Boolean'];
@@ -81,9 +81,11 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   confirmEmail: Scalars['Boolean'];
+  createActivity: Activity;
   createActivityType: ActivityType;
   createPersonalVehicle: PersonalVehicle;
   createUser: User;
+  deleteActivity: Scalars['String'];
   deleteActivityType: Scalars['String'];
   deletePersonalVehicle: Scalars['String'];
   deleteUser: Scalars['String'];
@@ -93,6 +95,7 @@ export type Mutation = {
   resetPassword: Scalars['Boolean'];
   resetPasswordRequest: Scalars['Boolean'];
   unfollow: Scalars['String'];
+  updateActivity: Activity;
   updateActivityType: ActivityType;
   updatePersonalVehicle: PersonalVehicle;
   updateProfile: User;
@@ -101,6 +104,11 @@ export type Mutation = {
 
 export type MutationConfirmEmailArgs = {
   emailToken: Scalars['String'];
+};
+
+
+export type MutationCreateActivityArgs = {
+  data: NewActivityInput;
 };
 
 
@@ -116,6 +124,11 @@ export type MutationCreatePersonalVehicleArgs = {
 
 export type MutationCreateUserArgs = {
   data: NewUserInput;
+};
+
+
+export type MutationDeleteActivityArgs = {
+  ActivityId: Scalars['Float'];
 };
 
 
@@ -160,6 +173,12 @@ export type MutationUnfollowArgs = {
 };
 
 
+export type MutationUpdateActivityArgs = {
+  ActivityId: Scalars['Float'];
+  data: UpdateActivityInput;
+};
+
+
 export type MutationUpdateActivityTypeArgs = {
   ActivityTypeId: Scalars['Float'];
   data: UpdateActivityTypeInput;
@@ -174,6 +193,19 @@ export type MutationUpdatePersonalVehicleArgs = {
 
 export type MutationUpdateProfileArgs = {
   data: UpdateUserInput;
+};
+
+export type NewActivityInput = {
+  activityType: ObjectId;
+  ends_at?: InputMaybe<Scalars['DateTimeISO']>;
+  is_made_in_france: Scalars['Boolean'];
+  is_reccurent: Scalars['Boolean'];
+  is_secondhand: Scalars['Boolean'];
+  name: Scalars['String'];
+  quantity: Scalars['Float'];
+  reccurence_count?: InputMaybe<Scalars['Float']>;
+  reccurence_interval?: InputMaybe<Scalars['String']>;
+  starts_at: Scalars['DateTimeISO'];
 };
 
 export type NewPersonalVehicleInput = {
@@ -191,6 +223,10 @@ export type NewUserInput = {
   password: Scalars['String'];
 };
 
+export type ObjectId = {
+  id: Scalars['Int'];
+};
+
 export type PersonalVehicle = {
   __typename?: 'PersonalVehicle';
   created_at: Scalars['DateTimeISO'];
@@ -206,7 +242,7 @@ export type PersonalVehicle = {
 
 export type Query = {
   __typename?: 'Query';
-  MotoEngine: Array<Scalars['String']>;
+  getActivities: Array<Activity>;
   getActivitiesTypes: Array<ActivityType>;
   getActivitiesTypesPagination: Array<ActivityType>;
   getActivityTypesById: ActivityType;
@@ -216,12 +252,18 @@ export type Query = {
   getFollowing: Array<User>;
   getFollowingByUser: Array<User>;
   getFuelTypes: Array<Scalars['String']>;
+  getMotoEngines: Array<Scalars['String']>;
   getPersonalVehicles: Array<PersonalVehicle>;
   getUnits: Array<Scalars['String']>;
   getVehicleDecade: Array<Scalars['String']>;
   getVehicleTypes: Array<Scalars['String']>;
   profile: User;
   searchUser: Array<User>;
+};
+
+
+export type QueryGetActivitiesArgs = {
+  userId?: InputMaybe<Scalars['Float']>;
 };
 
 
@@ -261,6 +303,19 @@ export type ResetPasswordInput = {
 
 export type ResetPasswordRequestInput = {
   email: Scalars['String'];
+};
+
+export type UpdateActivityInput = {
+  activityType: ObjectId;
+  ends_at?: InputMaybe<Scalars['DateTimeISO']>;
+  is_made_in_france: Scalars['Boolean'];
+  is_reccurent: Scalars['Boolean'];
+  is_secondhand: Scalars['Boolean'];
+  name: Scalars['String'];
+  quantity: Scalars['Float'];
+  reccurence_count?: InputMaybe<Scalars['Float']>;
+  reccurence_interval?: InputMaybe<Scalars['String']>;
+  starts_at: Scalars['DateTimeISO'];
 };
 
 export type UpdateActivityTypeInput = {
@@ -348,6 +403,13 @@ export type ConfirmEmailMutationVariables = Exact<{
 
 export type ConfirmEmailMutation = { __typename?: 'Mutation', confirmEmail: boolean };
 
+export type CreateActivityTypeMutationVariables = Exact<{
+  data: ActivityTypeInput;
+}>;
+
+
+export type CreateActivityTypeMutation = { __typename?: 'Mutation', createActivityType: { __typename?: 'ActivityType', category: string, emissions: number, id: number, name: string, unit: string, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, motoEngine?: string | null, vehicleDecade?: string | null, vehicleType?: string | null } | null } };
+
 export type CreatePersonalVehicleMutationVariables = Exact<{
   data: NewPersonalVehicleInput;
 }>;
@@ -385,6 +447,11 @@ export type GetFuelTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetFuelTypesQuery = { __typename?: 'Query', getFuelTypes: Array<string> };
+
+export type GetMotoEnginesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMotoEnginesQuery = { __typename?: 'Query', getMotoEngines: Array<string> };
 
 export type GetUnitsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -561,6 +628,49 @@ export function useConfirmEmailMutation(baseOptions?: Apollo.MutationHookOptions
 export type ConfirmEmailMutationHookResult = ReturnType<typeof useConfirmEmailMutation>;
 export type ConfirmEmailMutationResult = Apollo.MutationResult<ConfirmEmailMutation>;
 export type ConfirmEmailMutationOptions = Apollo.BaseMutationOptions<ConfirmEmailMutation, ConfirmEmailMutationVariables>;
+export const CreateActivityTypeDocument = gql`
+    mutation CreateActivityType($data: ActivityTypeInput!) {
+  createActivityType(data: $data) {
+    category
+    emissions
+    id
+    name
+    unit
+    vehicleAttributes {
+      fuelType
+      motoEngine
+      vehicleDecade
+      vehicleType
+    }
+  }
+}
+    `;
+export type CreateActivityTypeMutationFn = Apollo.MutationFunction<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>;
+
+/**
+ * __useCreateActivityTypeMutation__
+ *
+ * To run a mutation, you first call `useCreateActivityTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateActivityTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createActivityTypeMutation, { data, loading, error }] = useCreateActivityTypeMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateActivityTypeMutation(baseOptions?: Apollo.MutationHookOptions<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>(CreateActivityTypeDocument, options);
+      }
+export type CreateActivityTypeMutationHookResult = ReturnType<typeof useCreateActivityTypeMutation>;
+export type CreateActivityTypeMutationResult = Apollo.MutationResult<CreateActivityTypeMutation>;
+export type CreateActivityTypeMutationOptions = Apollo.BaseMutationOptions<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>;
 export const CreatePersonalVehicleDocument = gql`
     mutation CreatePersonalVehicle($data: NewPersonalVehicleInput!) {
   createPersonalVehicle(data: $data) {
@@ -767,6 +877,43 @@ export type GetFuelTypesQueryHookResult = ReturnType<typeof useGetFuelTypesQuery
 export type GetFuelTypesLazyQueryHookResult = ReturnType<typeof useGetFuelTypesLazyQuery>;
 export type GetFuelTypesSuspenseQueryHookResult = ReturnType<typeof useGetFuelTypesSuspenseQuery>;
 export type GetFuelTypesQueryResult = Apollo.QueryResult<GetFuelTypesQuery, GetFuelTypesQueryVariables>;
+export const GetMotoEnginesDocument = gql`
+    query getMotoEngines {
+  getMotoEngines
+}
+    `;
+
+/**
+ * __useGetMotoEnginesQuery__
+ *
+ * To run a query within a React component, call `useGetMotoEnginesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMotoEnginesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMotoEnginesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMotoEnginesQuery(baseOptions?: Apollo.QueryHookOptions<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>(GetMotoEnginesDocument, options);
+      }
+export function useGetMotoEnginesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>(GetMotoEnginesDocument, options);
+        }
+export function useGetMotoEnginesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>(GetMotoEnginesDocument, options);
+        }
+export type GetMotoEnginesQueryHookResult = ReturnType<typeof useGetMotoEnginesQuery>;
+export type GetMotoEnginesLazyQueryHookResult = ReturnType<typeof useGetMotoEnginesLazyQuery>;
+export type GetMotoEnginesSuspenseQueryHookResult = ReturnType<typeof useGetMotoEnginesSuspenseQuery>;
+export type GetMotoEnginesQueryResult = Apollo.QueryResult<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>;
 export const GetUnitsDocument = gql`
     query getUnits {
   getUnits
