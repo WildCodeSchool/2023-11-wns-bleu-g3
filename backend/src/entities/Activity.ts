@@ -154,6 +154,7 @@ export class UpdateActivityInput {
 
   @Field()
   is_made_in_france: boolean;
+  
 }
 
 export default Activity;
