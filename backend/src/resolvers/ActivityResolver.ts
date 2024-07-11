@@ -68,6 +68,20 @@ class ActivityResolver {
 
     return await activityToUpdate.save();
   }
+
+  @Authorized()
+  @Mutation(() => String)
+  async deleteActivity(
+    @Ctx() ctx: Context,
+    @Arg("ActivityId") id: number,
+  ) {
+    if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
+
+    const activityToDelete = await Activity.findOneBy({ id });
+    if (!activityToDelete) throw new GraphQLError("Activity not found.");
+    await activityToDelete.remove();
+    return "Activity successfully deleted.";
+  }
 }
 
 export default ActivityResolver;
