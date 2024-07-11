@@ -112,7 +112,7 @@ class ActivityTypeResolver {
     return Object.values(VehicleType);
   }
   @Query(() => [String])
-  MotoEngine() {
+  getMotoEngines() {
     return Object.values(MotoEngine);
   }
 }

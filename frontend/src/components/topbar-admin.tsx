@@ -27,10 +27,23 @@ export default function TopbarAdmin({
         </h1>
       </div>
       <div className="hidden md:block">
-        <button className="h-14 w-14 rounded-full bg-reef flex justify-center items-center text-xl text-white font-semibold btn hover:bg-white hover:text-anchor transition ease-in-out">
-          GT
-        </button>
+        <a
+          href="/dashboard"
+          className="bg-gradient-to-r bg-pearl  hover:bg-gradient-to-br hover:from-pearl  hover:to-shore focus:ring-4 focus:outline-none focus:ring-shore font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center space-x-2"
+        >
+          <svg
+            className="w-5 h-5 text-anchor  group-hover:text-blue-600 "
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+          </svg>
+          <span className="text-md">User Interface</span>
+        </a>
       </div>
+
       {isOpen === false ? (
         <button onClick={() => setIsOpen(true)} className="md:hidden">
           <Icon name="menu" size="4xl" color="white" />
