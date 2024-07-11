@@ -139,6 +139,10 @@ export type MutationDeletePersonalVehicleArgs = {
   personalVehicleId: Scalars["Float"];
 };
 
+export type MutationDeletePersonalVehicleArgs = {
+  personalVehicleId: Scalars["Float"];
+};
+
 export type MutationDeleteUserArgs = {
   userId?: InputMaybe<Scalars["Float"]>;
 };
