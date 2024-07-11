@@ -46,4 +46,4 @@ jobs:
       - name: Call VPS webhook to update dev
         uses: wei/curl@master
         with:
-          args: https://dev.1123-bleu-3.wns.wilders.dev/hooks/update-dev
+          args: https://ops.1123-bleu-3.wns.wilders.dev/hooks/update-dev
