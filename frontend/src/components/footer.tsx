@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 export default function Footer() {
   return (
     <footer className="bg-anchor bg-opacity-80 flex flex-col md:flex-row justify-center md:justify-between items-center p-4 gap-6 md:gap-0">

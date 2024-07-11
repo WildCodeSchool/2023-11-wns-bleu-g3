@@ -3,6 +3,8 @@ import env from "./env";
 import User from "./entities/User";
 import ActivityType from "./entities/ActivityType";
 import Activity from "./entities/Activity";
+import { Follow } from "./entities/Follow";
+import PersonalVehicle from "./entities/PersonalVehicle";
 
 const db = new DataSource({
   type: "postgres",
@@ -11,7 +13,7 @@ const db = new DataSource({
   username: env.DB_USER,
   password: env.DB_PASS,
   database: env.DB_NAME,
-  entities: [User, ActivityType, Activity],
+  entities: [User, ActivityType, Activity, Follow, PersonalVehicle],
   synchronize: true,
   logging: env.NODE_ENV === "test",
 });

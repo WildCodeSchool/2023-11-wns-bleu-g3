@@ -1,0 +1,11 @@
+mutation CreatePersonalVehicle($data: NewPersonalVehicleInput!) {
+  createPersonalVehicle(data: $data) {
+    id
+    name
+    moto_engine
+    vehicle_category
+    year_of_construction
+    vehicle_type
+    fuel_type
+  }
+}

@@ -28,8 +28,8 @@ import {
   Update_Attr_Input,
   MadeInFrance,
   SecondHandClothes,
-  SecondHandPhones
-} from "./Attributes"
+  SecondHandPhones,
+} from "./Attributes";
 
 export enum Unit {
   Weight = "grammes de CO2",
@@ -108,7 +108,7 @@ class ActivityType extends BaseEntity {
   updatedAt: Date;
 
   @Column(() => Attr)
-  @Field(() => Attr)
+  @Field(() => Attr, { nullable: true })
   attributes?: Attr;
 
   @Column(() => Vehicle_Attr)
@@ -128,7 +128,7 @@ export class ActivityTypeInput {
   @Field()
   category: string;
 
-  @Field(() => Attr_Input)
+  @Field(() => Attr_Input, { nullable: true })
   attributes?: Attr_Input;
 
   @Field(() => Vehicle_Attr_Input, { nullable: true })
@@ -147,10 +147,10 @@ export class UpdateActivityTypeInput {
   @Field()
   category: string;
 
-  @Field(() => Attr_Input, )
-  attributes?: Attr_Input;
+  @Field(() => Update_Attr_Input, { nullable: true })
+  attributes?: Update_Attr_Input;
 
-  @Field(() => Vehicle_Attr_Input, { nullable: true })
+  @Field(() => UpdateVehicle_Attr_Input, { nullable: true })
   vehicleAttributes?: UpdateVehicle_Attr_Input;
 
   @Field()

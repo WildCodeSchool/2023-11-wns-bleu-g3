@@ -1,5 +1,11 @@
 import { registerEnumType } from "type-graphql";
 
+export enum VehicleCategory {
+  Car = "Voiture",
+  Motorbike = "Moto/scooter",
+  Bike = "Vélo électrique",
+}
+
 // Car
 export enum FuelType {
   Petrol = "Essence",
@@ -11,11 +17,11 @@ export enum FuelType {
 
 export const fuelTypeCalc: { [key in FuelType]: number } = {
   [FuelType.Petrol]: 1.06,
-  [FuelType.Diesel]: 1.00,
+  [FuelType.Diesel]: 1.0,
   [FuelType.Hybrid]: 0.85,
   [FuelType.Electric]: 0.78,
-  [FuelType.Hydrogen]: 0.30,
-}
+  [FuelType.Hydrogen]: 0.3,
+};
 
 export enum VehicleType {
   Economic = "Economique",

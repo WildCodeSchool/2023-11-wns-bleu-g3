@@ -11,6 +11,14 @@ export default function TopbarMenu() {
   return (
     <div className="mt-4 absolute inset-y-0 end-0 z-10">
       <div className="flex flex-col gap-2 py-4">
+        {user?.profile.role === "admin" ? (
+          <button
+            className="btn btn-anchor"
+            onClick={() => router.push("/admin/dashboard")}
+          >
+            BackOffice
+          </button>
+        ) : null}
         <button
           className="btn btn-shore"
           onClick={() => router.push("/profile")}

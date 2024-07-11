@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html lang="fr" className="bg-pearl">
+    <Html lang="fr" className="bg-lightPearl">
       <Head>
         <link
           href="https://fonts.googleapis.com/icon?family=Material+Icons"

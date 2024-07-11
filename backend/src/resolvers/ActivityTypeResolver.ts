@@ -35,7 +35,8 @@ class ActivityTypeResolver {
 
   @Query(() => [ActivityType])
   async getActivitiesTypesPagination(
-    @Arg("offset", () => Int, { nullable: true, defaultValue: 0 }) offset: number,
+    @Arg("offset", () => Int, { nullable: true, defaultValue: 0 })
+    offset: number,
     @Arg("limit", () => Int, { nullable: true, defaultValue: 9 }) limit: number
   ) {
     return ActivityType.find({
@@ -111,7 +112,7 @@ class ActivityTypeResolver {
     return Object.values(VehicleType);
   }
   @Query(() => [String])
-  MotoEngine() {
+  getMotoEngines() {
     return Object.values(MotoEngine);
   }
 }

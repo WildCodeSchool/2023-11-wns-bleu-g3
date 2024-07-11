@@ -35,7 +35,7 @@ export type Activity = {
 export type ActivityType = {
   __typename?: 'ActivityType';
   activities: Array<Activity>;
-  attributes: Attr;
+  attributes?: Maybe<Attr>;
   category: Scalars['String'];
   emissions: Scalars['Float'];
   id: Scalars['Int'];
@@ -45,7 +45,7 @@ export type ActivityType = {
 };
 
 export type ActivityTypeInput = {
-  attributes: Attr_Input;
+  attributes?: InputMaybe<Attr_Input>;
   category: Scalars['String'];
   emissions: Scalars['Float'];
   name: Scalars['String'];
@@ -61,9 +61,16 @@ export type Attr = {
 };
 
 export type Attr_Input = {
-  madeInFrance?: InputMaybe<Scalars['Boolean']>;
-  secondHandClothes?: InputMaybe<Scalars['Boolean']>;
-  secondHandPhones?: InputMaybe<Scalars['Boolean']>;
+  madeInFrance?: InputMaybe<Scalars['Float']>;
+  secondHandClothes?: InputMaybe<Scalars['Float']>;
+  secondHandPhones?: InputMaybe<Scalars['Float']>;
+};
+
+export type Follow = {
+  __typename?: 'Follow';
+  follower: User;
+  following: User;
+  id: Scalars['Float'];
 };
 
 export type LoginInput = {
@@ -76,13 +83,18 @@ export type Mutation = {
   confirmEmail: Scalars['Boolean'];
   createActivity: Activity;
   createActivityType: ActivityType;
+  createPersonalVehicle: PersonalVehicle;
   createUser: User;
+  deleteActivity: Scalars['String'];
   deleteActivityType: Scalars['String'];
-  deleteProfile: Scalars['String'];
+  deleteUser: Scalars['String'];
+  followUser: Follow;
   login: Scalars['String'];
   logout: Scalars['String'];
   resetPassword: Scalars['Boolean'];
   resetPasswordRequest: Scalars['Boolean'];
+  unfollow: Scalars['String'];
+  updateActivity: Activity;
   updateActivityType: ActivityType;
   updateProfile: User;
 };
@@ -103,8 +115,18 @@ export type MutationCreateActivityTypeArgs = {
 };
 
 
+export type MutationCreatePersonalVehicleArgs = {
+  data: NewPersonalVehicleInput;
+};
+
+
 export type MutationCreateUserArgs = {
   data: NewUserInput;
+};
+
+
+export type MutationDeleteActivityArgs = {
+  ActivityId: Scalars['Float'];
 };
 
 
@@ -113,7 +135,12 @@ export type MutationDeleteActivityTypeArgs = {
 };
 
 
-export type MutationDeleteProfileArgs = {
+export type MutationDeleteUserArgs = {
+  userId?: InputMaybe<Scalars['Float']>;
+};
+
+
+export type MutationFollowUserArgs = {
   userId: Scalars['Float'];
 };
 
@@ -131,6 +158,17 @@ export type MutationResetPasswordArgs = {
 
 export type MutationResetPasswordRequestArgs = {
   data: ResetPasswordRequestInput;
+};
+
+
+export type MutationUnfollowArgs = {
+  userId: Scalars['Float'];
+};
+
+
+export type MutationUpdateActivityArgs = {
+  ActivityId: Scalars['Float'];
+  data: UpdateActivityInput;
 };
 
 
@@ -157,6 +195,15 @@ export type NewActivityInput = {
   starts_at: Scalars['DateTimeISO'];
 };
 
+export type NewPersonalVehicleInput = {
+  fuel_type?: InputMaybe<Scalars['String']>;
+  moto_engine?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  vehicle_category: Scalars['String'];
+  vehicle_type?: InputMaybe<Scalars['String']>;
+  year_of_construction?: InputMaybe<Scalars['Float']>;
+};
+
 export type NewUserInput = {
   email: Scalars['String'];
   nickname: Scalars['String'];
@@ -167,19 +214,37 @@ export type ObjectId = {
   id: Scalars['Int'];
 };
 
+export type PersonalVehicle = {
+  __typename?: 'PersonalVehicle';
+  fuel_type?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  moto_engine?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  user: User;
+  vehicle_category: Scalars['String'];
+  vehicle_type?: Maybe<Scalars['String']>;
+  year_of_construction?: Maybe<Scalars['Float']>;
+};
+
 export type Query = {
   __typename?: 'Query';
-  MotoEngine: Array<Scalars['String']>;
   getActivities: Array<Activity>;
   getActivitiesTypes: Array<ActivityType>;
   getActivitiesTypesPagination: Array<ActivityType>;
   getActivityTypesById: ActivityType;
   getCategories: Array<Scalars['String']>;
+  getFollowers: Array<User>;
+  getFollowersByUser: Array<User>;
+  getFollowing: Array<User>;
+  getFollowingByUser: Array<User>;
   getFuelTypes: Array<Scalars['String']>;
+  getMotoEngines: Array<Scalars['String']>;
+  getPersonalVehicles: Array<PersonalVehicle>;
   getUnits: Array<Scalars['String']>;
   getVehicleDecade: Array<Scalars['String']>;
   getVehicleTypes: Array<Scalars['String']>;
   profile: User;
+  searchUser: Array<User>;
 };
 
 
@@ -198,6 +263,26 @@ export type QueryGetActivityTypesByIdArgs = {
   id: Scalars['Int'];
 };
 
+
+export type QueryGetFollowersByUserArgs = {
+  userId: Scalars['Float'];
+};
+
+
+export type QueryGetFollowingByUserArgs = {
+  userId: Scalars['Float'];
+};
+
+
+export type QueryGetPersonalVehiclesArgs = {
+  userId?: InputMaybe<Scalars['Float']>;
+};
+
+
+export type QuerySearchUserArgs = {
+  name: Scalars['String'];
+};
+
 export type ResetPasswordInput = {
   password: Scalars['String'];
 };
@@ -206,12 +291,25 @@ export type ResetPasswordRequestInput = {
   email: Scalars['String'];
 };
 
+export type UpdateActivityInput = {
+  activityType: ObjectId;
+  ends_at?: InputMaybe<Scalars['DateTimeISO']>;
+  is_made_in_france: Scalars['Boolean'];
+  is_reccurent: Scalars['Boolean'];
+  is_secondhand: Scalars['Boolean'];
+  name: Scalars['String'];
+  quantity: Scalars['Float'];
+  reccurence_count?: InputMaybe<Scalars['Float']>;
+  reccurence_interval?: InputMaybe<Scalars['String']>;
+  starts_at: Scalars['DateTimeISO'];
+};
+
 export type UpdateActivityTypeInput = {
-  attributes: Attr_Input;
+  attributes?: InputMaybe<Update_Attr_Input>;
   category: Scalars['String'];
   emissions: Scalars['Float'];
   unit: Scalars['String'];
-  vehicleAttributes?: InputMaybe<Vehicle_Attr_Input>;
+  vehicleAttributes?: InputMaybe<UpdateVehicle_Attr_Input>;
 };
 
 export type UpdateUserInput = {
@@ -222,17 +320,33 @@ export type UpdateUserInput = {
   nickname?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateVehicle_Attr_Input = {
+  fuelType?: InputMaybe<Scalars['String']>;
+  motoEngine?: InputMaybe<Scalars['String']>;
+  vehicleDecade?: InputMaybe<Scalars['String']>;
+  vehicleType?: InputMaybe<Scalars['String']>;
+};
+
+export type Update_Attr_Input = {
+  madeInFrance?: InputMaybe<Scalars['Float']>;
+  secondHandClothes?: InputMaybe<Scalars['Float']>;
+  secondHandPhones?: InputMaybe<Scalars['Float']>;
+};
+
 export type User = {
   __typename?: 'User';
-  activities: Array<Activity>;
+  activities?: Maybe<Array<Activity>>;
   avatarUrl?: Maybe<Scalars['String']>;
   blocked: Scalars['Boolean'];
   createdAt: Scalars['String'];
   email: Scalars['String'];
   firstName?: Maybe<Scalars['String']>;
+  followers: Array<Follow>;
+  following: Array<Follow>;
   id: Scalars['Float'];
   lastName?: Maybe<Scalars['String']>;
   nickname: Scalars['String'];
+  personalVehicles?: Maybe<Array<PersonalVehicle>>;
   role: Scalars['String'];
 };
 
@@ -266,12 +380,77 @@ export type ConfirmEmailMutationVariables = Exact<{
 
 export type ConfirmEmailMutation = { __typename?: 'Mutation', confirmEmail: boolean };
 
-export type DeleteProfileMutationVariables = Exact<{
-  userId: Scalars['Float'];
+export type CreateActivityTypeMutationVariables = Exact<{
+  data: ActivityTypeInput;
 }>;
 
 
-export type DeleteProfileMutation = { __typename?: 'Mutation', deleteProfile: string };
+export type CreateActivityTypeMutation = { __typename?: 'Mutation', createActivityType: { __typename?: 'ActivityType', category: string, emissions: number, id: number, name: string, unit: string, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, motoEngine?: string | null, vehicleDecade?: string | null, vehicleType?: string | null } | null } };
+
+export type CreatePersonalVehicleMutationVariables = Exact<{
+  data: NewPersonalVehicleInput;
+}>;
+
+
+export type CreatePersonalVehicleMutation = { __typename?: 'Mutation', createPersonalVehicle: { __typename?: 'PersonalVehicle', id: number, name: string, moto_engine?: string | null, vehicle_category: string, year_of_construction?: number | null, vehicle_type?: string | null, fuel_type?: string | null } };
+
+export type DeleteActivityTypeMutationVariables = Exact<{
+  activityTypeId: Scalars['Float'];
+}>;
+
+
+export type DeleteActivityTypeMutation = { __typename?: 'Mutation', deleteActivityType: string };
+
+export type DeleteUserMutationVariables = Exact<{
+  userId?: InputMaybe<Scalars['Float']>;
+}>;
+
+
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: string };
+
+export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCategoriesQuery = { __typename?: 'Query', getCategories: Array<string> };
+
+export type GetFuelTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetFuelTypesQuery = { __typename?: 'Query', getFuelTypes: Array<string> };
+
+export type GetMotoEnginesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMotoEnginesQuery = { __typename?: 'Query', getMotoEngines: Array<string> };
+
+export type GetUnitsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUnitsQuery = { __typename?: 'Query', getUnits: Array<string> };
+
+export type GetVehicleDecadeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetVehicleDecadeQuery = { __typename?: 'Query', getVehicleDecade: Array<string> };
+
+export type GetVehicleTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetVehicleTypesQuery = { __typename?: 'Query', getVehicleTypes: Array<string> };
+
+export type GetActivityTypesByIdQueryVariables = Exact<{
+  getActivityTypesById: Scalars['Int'];
+}>;
+
+
+export type GetActivityTypesByIdQuery = { __typename?: 'Query', getActivityTypesById: { __typename?: 'ActivityType', category: string, id: number, emissions: number, name: string, unit: string, attributes?: { __typename?: 'Attr', madeInFrance?: number | null, secondHandClothes?: number | null, secondHandPhones?: number | null } | null, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, vehicleType?: string | null, vehicleDecade?: string | null, motoEngine?: string | null } | null } };
+
+export type GetPersonalVehiclesQueryVariables = Exact<{
+  userId?: InputMaybe<Scalars['Float']>;
+}>;
+
+
+export type GetPersonalVehiclesQuery = { __typename?: 'Query', getPersonalVehicles: Array<{ __typename?: 'PersonalVehicle', id: number, fuel_type?: string | null, moto_engine?: string | null, name: string, vehicle_category: string, vehicle_type?: string | null, year_of_construction?: number | null, user: { __typename?: 'User', id: number } }> };
 
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -305,12 +484,27 @@ export type ResetPasswordRequestMutationVariables = Exact<{
 
 export type ResetPasswordRequestMutation = { __typename?: 'Mutation', resetPasswordRequest: boolean };
 
+export type SearchUserQueryVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type SearchUserQuery = { __typename?: 'Query', searchUser: Array<{ __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, avatarUrl?: string | null, nickname: string }> };
+
 export type SignupMutationVariables = Exact<{
   data: NewUserInput;
 }>;
 
 
 export type SignupMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: number, nickname: string, email: string, avatarUrl?: string | null } };
+
+export type UpdateActivityTypeMutationVariables = Exact<{
+  activityTypeId: Scalars['Float'];
+  data: UpdateActivityTypeInput;
+}>;
+
+
+export type UpdateActivityTypeMutation = { __typename?: 'Mutation', updateActivityType: { __typename?: 'ActivityType', id: number, emissions: number, unit: string, category: string, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, vehicleType?: string | null, vehicleDecade?: string | null, motoEngine?: string | null } | null, attributes?: { __typename?: 'Attr', madeInFrance?: number | null, secondHandClothes?: number | null, secondHandPhones?: number | null } | null } };
 
 export type UpdateProfileMutationVariables = Exact<{
   data: UpdateUserInput;
@@ -396,37 +590,476 @@ export function useConfirmEmailMutation(baseOptions?: Apollo.MutationHookOptions
 export type ConfirmEmailMutationHookResult = ReturnType<typeof useConfirmEmailMutation>;
 export type ConfirmEmailMutationResult = Apollo.MutationResult<ConfirmEmailMutation>;
 export type ConfirmEmailMutationOptions = Apollo.BaseMutationOptions<ConfirmEmailMutation, ConfirmEmailMutationVariables>;
-export const DeleteProfileDocument = gql`
-    mutation DeleteProfile($userId: Float!) {
-  deleteProfile(userId: $userId)
+export const CreateActivityTypeDocument = gql`
+    mutation CreateActivityType($data: ActivityTypeInput!) {
+  createActivityType(data: $data) {
+    category
+    emissions
+    id
+    name
+    unit
+    vehicleAttributes {
+      fuelType
+      motoEngine
+      vehicleDecade
+      vehicleType
+    }
+  }
 }
     `;
-export type DeleteProfileMutationFn = Apollo.MutationFunction<DeleteProfileMutation, DeleteProfileMutationVariables>;
+export type CreateActivityTypeMutationFn = Apollo.MutationFunction<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>;
 
 /**
- * __useDeleteProfileMutation__
+ * __useCreateActivityTypeMutation__
  *
- * To run a mutation, you first call `useDeleteProfileMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteProfileMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateActivityTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateActivityTypeMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [deleteProfileMutation, { data, loading, error }] = useDeleteProfileMutation({
+ * const [createActivityTypeMutation, { data, loading, error }] = useCreateActivityTypeMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateActivityTypeMutation(baseOptions?: Apollo.MutationHookOptions<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>(CreateActivityTypeDocument, options);
+      }
+export type CreateActivityTypeMutationHookResult = ReturnType<typeof useCreateActivityTypeMutation>;
+export type CreateActivityTypeMutationResult = Apollo.MutationResult<CreateActivityTypeMutation>;
+export type CreateActivityTypeMutationOptions = Apollo.BaseMutationOptions<CreateActivityTypeMutation, CreateActivityTypeMutationVariables>;
+export const CreatePersonalVehicleDocument = gql`
+    mutation CreatePersonalVehicle($data: NewPersonalVehicleInput!) {
+  createPersonalVehicle(data: $data) {
+    id
+    name
+    moto_engine
+    vehicle_category
+    year_of_construction
+    vehicle_type
+    fuel_type
+  }
+}
+    `;
+export type CreatePersonalVehicleMutationFn = Apollo.MutationFunction<CreatePersonalVehicleMutation, CreatePersonalVehicleMutationVariables>;
+
+/**
+ * __useCreatePersonalVehicleMutation__
+ *
+ * To run a mutation, you first call `useCreatePersonalVehicleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePersonalVehicleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPersonalVehicleMutation, { data, loading, error }] = useCreatePersonalVehicleMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreatePersonalVehicleMutation(baseOptions?: Apollo.MutationHookOptions<CreatePersonalVehicleMutation, CreatePersonalVehicleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreatePersonalVehicleMutation, CreatePersonalVehicleMutationVariables>(CreatePersonalVehicleDocument, options);
+      }
+export type CreatePersonalVehicleMutationHookResult = ReturnType<typeof useCreatePersonalVehicleMutation>;
+export type CreatePersonalVehicleMutationResult = Apollo.MutationResult<CreatePersonalVehicleMutation>;
+export type CreatePersonalVehicleMutationOptions = Apollo.BaseMutationOptions<CreatePersonalVehicleMutation, CreatePersonalVehicleMutationVariables>;
+export const DeleteActivityTypeDocument = gql`
+    mutation DeleteActivityType($activityTypeId: Float!) {
+  deleteActivityType(ActivityTypeId: $activityTypeId)
+}
+    `;
+export type DeleteActivityTypeMutationFn = Apollo.MutationFunction<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>;
+
+/**
+ * __useDeleteActivityTypeMutation__
+ *
+ * To run a mutation, you first call `useDeleteActivityTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteActivityTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteActivityTypeMutation, { data, loading, error }] = useDeleteActivityTypeMutation({
+ *   variables: {
+ *      activityTypeId: // value for 'activityTypeId'
+ *   },
+ * });
+ */
+export function useDeleteActivityTypeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>(DeleteActivityTypeDocument, options);
+      }
+export type DeleteActivityTypeMutationHookResult = ReturnType<typeof useDeleteActivityTypeMutation>;
+export type DeleteActivityTypeMutationResult = Apollo.MutationResult<DeleteActivityTypeMutation>;
+export type DeleteActivityTypeMutationOptions = Apollo.BaseMutationOptions<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>;
+export const DeleteUserDocument = gql`
+    mutation DeleteUser($userId: Float) {
+  deleteUser(userId: $userId)
+}
+    `;
+export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, DeleteUserMutationVariables>;
+
+/**
+ * __useDeleteUserMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
  *   variables: {
  *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useDeleteProfileMutation(baseOptions?: Apollo.MutationHookOptions<DeleteProfileMutation, DeleteProfileMutationVariables>) {
+export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserMutation, DeleteUserMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteProfileMutation, DeleteProfileMutationVariables>(DeleteProfileDocument, options);
+        return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument, options);
       }
-export type DeleteProfileMutationHookResult = ReturnType<typeof useDeleteProfileMutation>;
-export type DeleteProfileMutationResult = Apollo.MutationResult<DeleteProfileMutation>;
-export type DeleteProfileMutationOptions = Apollo.BaseMutationOptions<DeleteProfileMutation, DeleteProfileMutationVariables>;
+export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
+export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
+export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
+export const GetCategoriesDocument = gql`
+    query getCategories {
+  getCategories
+}
+    `;
+
+/**
+ * __useGetCategoriesQuery__
+ *
+ * To run a query within a React component, call `useGetCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+      }
+export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
+export function useGetCategoriesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
+        }
+export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
+export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
+export type GetCategoriesSuspenseQueryHookResult = ReturnType<typeof useGetCategoriesSuspenseQuery>;
+export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
+export const GetFuelTypesDocument = gql`
+    query getFuelTypes {
+  getFuelTypes
+}
+    `;
+
+/**
+ * __useGetFuelTypesQuery__
+ *
+ * To run a query within a React component, call `useGetFuelTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFuelTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFuelTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetFuelTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetFuelTypesQuery, GetFuelTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFuelTypesQuery, GetFuelTypesQueryVariables>(GetFuelTypesDocument, options);
+      }
+export function useGetFuelTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFuelTypesQuery, GetFuelTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFuelTypesQuery, GetFuelTypesQueryVariables>(GetFuelTypesDocument, options);
+        }
+export function useGetFuelTypesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetFuelTypesQuery, GetFuelTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetFuelTypesQuery, GetFuelTypesQueryVariables>(GetFuelTypesDocument, options);
+        }
+export type GetFuelTypesQueryHookResult = ReturnType<typeof useGetFuelTypesQuery>;
+export type GetFuelTypesLazyQueryHookResult = ReturnType<typeof useGetFuelTypesLazyQuery>;
+export type GetFuelTypesSuspenseQueryHookResult = ReturnType<typeof useGetFuelTypesSuspenseQuery>;
+export type GetFuelTypesQueryResult = Apollo.QueryResult<GetFuelTypesQuery, GetFuelTypesQueryVariables>;
+export const GetMotoEnginesDocument = gql`
+    query getMotoEngines {
+  getMotoEngines
+}
+    `;
+
+/**
+ * __useGetMotoEnginesQuery__
+ *
+ * To run a query within a React component, call `useGetMotoEnginesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMotoEnginesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMotoEnginesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMotoEnginesQuery(baseOptions?: Apollo.QueryHookOptions<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>(GetMotoEnginesDocument, options);
+      }
+export function useGetMotoEnginesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>(GetMotoEnginesDocument, options);
+        }
+export function useGetMotoEnginesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>(GetMotoEnginesDocument, options);
+        }
+export type GetMotoEnginesQueryHookResult = ReturnType<typeof useGetMotoEnginesQuery>;
+export type GetMotoEnginesLazyQueryHookResult = ReturnType<typeof useGetMotoEnginesLazyQuery>;
+export type GetMotoEnginesSuspenseQueryHookResult = ReturnType<typeof useGetMotoEnginesSuspenseQuery>;
+export type GetMotoEnginesQueryResult = Apollo.QueryResult<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>;
+export const GetUnitsDocument = gql`
+    query getUnits {
+  getUnits
+}
+    `;
+
+/**
+ * __useGetUnitsQuery__
+ *
+ * To run a query within a React component, call `useGetUnitsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUnitsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUnitsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUnitsQuery(baseOptions?: Apollo.QueryHookOptions<GetUnitsQuery, GetUnitsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUnitsQuery, GetUnitsQueryVariables>(GetUnitsDocument, options);
+      }
+export function useGetUnitsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUnitsQuery, GetUnitsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUnitsQuery, GetUnitsQueryVariables>(GetUnitsDocument, options);
+        }
+export function useGetUnitsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUnitsQuery, GetUnitsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUnitsQuery, GetUnitsQueryVariables>(GetUnitsDocument, options);
+        }
+export type GetUnitsQueryHookResult = ReturnType<typeof useGetUnitsQuery>;
+export type GetUnitsLazyQueryHookResult = ReturnType<typeof useGetUnitsLazyQuery>;
+export type GetUnitsSuspenseQueryHookResult = ReturnType<typeof useGetUnitsSuspenseQuery>;
+export type GetUnitsQueryResult = Apollo.QueryResult<GetUnitsQuery, GetUnitsQueryVariables>;
+export const GetVehicleDecadeDocument = gql`
+    query getVehicleDecade {
+  getVehicleDecade
+}
+    `;
+
+/**
+ * __useGetVehicleDecadeQuery__
+ *
+ * To run a query within a React component, call `useGetVehicleDecadeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVehicleDecadeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVehicleDecadeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetVehicleDecadeQuery(baseOptions?: Apollo.QueryHookOptions<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>(GetVehicleDecadeDocument, options);
+      }
+export function useGetVehicleDecadeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>(GetVehicleDecadeDocument, options);
+        }
+export function useGetVehicleDecadeSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>(GetVehicleDecadeDocument, options);
+        }
+export type GetVehicleDecadeQueryHookResult = ReturnType<typeof useGetVehicleDecadeQuery>;
+export type GetVehicleDecadeLazyQueryHookResult = ReturnType<typeof useGetVehicleDecadeLazyQuery>;
+export type GetVehicleDecadeSuspenseQueryHookResult = ReturnType<typeof useGetVehicleDecadeSuspenseQuery>;
+export type GetVehicleDecadeQueryResult = Apollo.QueryResult<GetVehicleDecadeQuery, GetVehicleDecadeQueryVariables>;
+export const GetVehicleTypesDocument = gql`
+    query getVehicleTypes {
+  getVehicleTypes
+}
+    `;
+
+/**
+ * __useGetVehicleTypesQuery__
+ *
+ * To run a query within a React component, call `useGetVehicleTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVehicleTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVehicleTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetVehicleTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>(GetVehicleTypesDocument, options);
+      }
+export function useGetVehicleTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>(GetVehicleTypesDocument, options);
+        }
+export function useGetVehicleTypesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>(GetVehicleTypesDocument, options);
+        }
+export type GetVehicleTypesQueryHookResult = ReturnType<typeof useGetVehicleTypesQuery>;
+export type GetVehicleTypesLazyQueryHookResult = ReturnType<typeof useGetVehicleTypesLazyQuery>;
+export type GetVehicleTypesSuspenseQueryHookResult = ReturnType<typeof useGetVehicleTypesSuspenseQuery>;
+export type GetVehicleTypesQueryResult = Apollo.QueryResult<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>;
+export const GetActivityTypesByIdDocument = gql`
+    query GetActivityTypesById($getActivityTypesById: Int!) {
+  getActivityTypesById(id: $getActivityTypesById) {
+    category
+    id
+    emissions
+    name
+    unit
+    attributes {
+      madeInFrance
+      secondHandClothes
+      secondHandPhones
+    }
+    vehicleAttributes {
+      fuelType
+      vehicleType
+      vehicleDecade
+      motoEngine
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetActivityTypesByIdQuery__
+ *
+ * To run a query within a React component, call `useGetActivityTypesByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActivityTypesByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActivityTypesByIdQuery({
+ *   variables: {
+ *      getActivityTypesById: // value for 'getActivityTypesById'
+ *   },
+ * });
+ */
+export function useGetActivityTypesByIdQuery(baseOptions: Apollo.QueryHookOptions<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables> & ({ variables: GetActivityTypesByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>(GetActivityTypesByIdDocument, options);
+      }
+export function useGetActivityTypesByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>(GetActivityTypesByIdDocument, options);
+        }
+export function useGetActivityTypesByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>(GetActivityTypesByIdDocument, options);
+        }
+export type GetActivityTypesByIdQueryHookResult = ReturnType<typeof useGetActivityTypesByIdQuery>;
+export type GetActivityTypesByIdLazyQueryHookResult = ReturnType<typeof useGetActivityTypesByIdLazyQuery>;
+export type GetActivityTypesByIdSuspenseQueryHookResult = ReturnType<typeof useGetActivityTypesByIdSuspenseQuery>;
+export type GetActivityTypesByIdQueryResult = Apollo.QueryResult<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>;
+export const GetPersonalVehiclesDocument = gql`
+    query GetPersonalVehicles($userId: Float) {
+  getPersonalVehicles(userId: $userId) {
+    id
+    fuel_type
+    moto_engine
+    name
+    vehicle_category
+    vehicle_type
+    year_of_construction
+    user {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPersonalVehiclesQuery__
+ *
+ * To run a query within a React component, call `useGetPersonalVehiclesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPersonalVehiclesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPersonalVehiclesQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetPersonalVehiclesQuery(baseOptions?: Apollo.QueryHookOptions<GetPersonalVehiclesQuery, GetPersonalVehiclesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPersonalVehiclesQuery, GetPersonalVehiclesQueryVariables>(GetPersonalVehiclesDocument, options);
+      }
+export function useGetPersonalVehiclesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPersonalVehiclesQuery, GetPersonalVehiclesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPersonalVehiclesQuery, GetPersonalVehiclesQueryVariables>(GetPersonalVehiclesDocument, options);
+        }
+export function useGetPersonalVehiclesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetPersonalVehiclesQuery, GetPersonalVehiclesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPersonalVehiclesQuery, GetPersonalVehiclesQueryVariables>(GetPersonalVehiclesDocument, options);
+        }
+export type GetPersonalVehiclesQueryHookResult = ReturnType<typeof useGetPersonalVehiclesQuery>;
+export type GetPersonalVehiclesLazyQueryHookResult = ReturnType<typeof useGetPersonalVehiclesLazyQuery>;
+export type GetPersonalVehiclesSuspenseQueryHookResult = ReturnType<typeof useGetPersonalVehiclesSuspenseQuery>;
+export type GetPersonalVehiclesQueryResult = Apollo.QueryResult<GetPersonalVehiclesQuery, GetPersonalVehiclesQueryVariables>;
 export const ProfileDocument = gql`
     query Profile {
   profile {
@@ -596,6 +1229,50 @@ export function useResetPasswordRequestMutation(baseOptions?: Apollo.MutationHoo
 export type ResetPasswordRequestMutationHookResult = ReturnType<typeof useResetPasswordRequestMutation>;
 export type ResetPasswordRequestMutationResult = Apollo.MutationResult<ResetPasswordRequestMutation>;
 export type ResetPasswordRequestMutationOptions = Apollo.BaseMutationOptions<ResetPasswordRequestMutation, ResetPasswordRequestMutationVariables>;
+export const SearchUserDocument = gql`
+    query SearchUser($name: String!) {
+  searchUser(name: $name) {
+    id
+    firstName
+    lastName
+    avatarUrl
+    nickname
+  }
+}
+    `;
+
+/**
+ * __useSearchUserQuery__
+ *
+ * To run a query within a React component, call `useSearchUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchUserQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useSearchUserQuery(baseOptions: Apollo.QueryHookOptions<SearchUserQuery, SearchUserQueryVariables> & ({ variables: SearchUserQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchUserQuery, SearchUserQueryVariables>(SearchUserDocument, options);
+      }
+export function useSearchUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchUserQuery, SearchUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchUserQuery, SearchUserQueryVariables>(SearchUserDocument, options);
+        }
+export function useSearchUserSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<SearchUserQuery, SearchUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<SearchUserQuery, SearchUserQueryVariables>(SearchUserDocument, options);
+        }
+export type SearchUserQueryHookResult = ReturnType<typeof useSearchUserQuery>;
+export type SearchUserLazyQueryHookResult = ReturnType<typeof useSearchUserLazyQuery>;
+export type SearchUserSuspenseQueryHookResult = ReturnType<typeof useSearchUserSuspenseQuery>;
+export type SearchUserQueryResult = Apollo.QueryResult<SearchUserQuery, SearchUserQueryVariables>;
 export const SignupDocument = gql`
     mutation Signup($data: NewUserInput!) {
   createUser(data: $data) {
@@ -632,6 +1309,54 @@ export function useSignupMutation(baseOptions?: Apollo.MutationHookOptions<Signu
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export const UpdateActivityTypeDocument = gql`
+    mutation UpdateActivityType($activityTypeId: Float!, $data: UpdateActivityTypeInput!) {
+  updateActivityType(ActivityTypeId: $activityTypeId, data: $data) {
+    id
+    emissions
+    unit
+    category
+    vehicleAttributes {
+      fuelType
+      vehicleType
+      vehicleDecade
+      motoEngine
+    }
+    attributes {
+      madeInFrance
+      secondHandClothes
+      secondHandPhones
+    }
+  }
+}
+    `;
+export type UpdateActivityTypeMutationFn = Apollo.MutationFunction<UpdateActivityTypeMutation, UpdateActivityTypeMutationVariables>;
+
+/**
+ * __useUpdateActivityTypeMutation__
+ *
+ * To run a mutation, you first call `useUpdateActivityTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateActivityTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateActivityTypeMutation, { data, loading, error }] = useUpdateActivityTypeMutation({
+ *   variables: {
+ *      activityTypeId: // value for 'activityTypeId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateActivityTypeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateActivityTypeMutation, UpdateActivityTypeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateActivityTypeMutation, UpdateActivityTypeMutationVariables>(UpdateActivityTypeDocument, options);
+      }
+export type UpdateActivityTypeMutationHookResult = ReturnType<typeof useUpdateActivityTypeMutation>;
+export type UpdateActivityTypeMutationResult = Apollo.MutationResult<UpdateActivityTypeMutation>;
+export type UpdateActivityTypeMutationOptions = Apollo.BaseMutationOptions<UpdateActivityTypeMutation, UpdateActivityTypeMutationVariables>;
 export const UpdateProfileDocument = gql`
     mutation UpdateProfile($data: UpdateUserInput!) {
   updateProfile(data: $data) {
