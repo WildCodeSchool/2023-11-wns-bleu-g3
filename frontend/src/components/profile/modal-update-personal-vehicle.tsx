@@ -2,7 +2,6 @@ import React, { FormEvent, useState } from "react";
 import Icon from "../icon";
 import {
   useDeletePersonalVehicleMutation,
-  useProfileQuery,
   useUpdatePersonalVehicleMutation,
 } from "@/graphql/generated/schema";
 import { useRouter } from "next/router";
@@ -16,26 +15,17 @@ export default function ModalUpdatePersonalVehicle({
   setIsBeingModified: any;
   vehicle: any;
 }) {
-  const [deletePersonalVehicle] = useDeletePersonalVehicleMutation();
   const [updatePersonalVehicle] = useUpdatePersonalVehicleMutation();
   const [error, setError] = useState("");
   const [selectedVehicle, setSelectedVehicle] = useState("");
-
-  const router = useRouter();
 
   const handleVehicleChange = (event: any) => {
     setSelectedVehicle(event.target.value);
   };
 
-  const handleDeleteVehicle = () => {
-    deletePersonalVehicle({ variables: { personalVehicleId: vehicle.id } })
-      .then(() => router.push("/profile"))
-      .catch(console.error);
-  };
-
   const notify = () => toast.success("Véhicule mis à jour");
 
-  const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
+  const handleUpdateVehicle = async (e: FormEvent<HTMLFormElement>) => {
     setError("");
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -66,7 +56,7 @@ export default function ModalUpdatePersonalVehicle({
             </button>
             <div className="flex flex-col p-4 gap-6">
               <h2 className="text-center">{vehicle.name}</h2>
-              <form onSubmit={handleUpdate}>
+              <form onSubmit={handleUpdateVehicle}>
                 <label htmlFor="name">
                   Nom
                   <input
@@ -109,7 +99,7 @@ export default function ModalUpdatePersonalVehicle({
                         <option value="Hydrogène">Hydrogène</option>
                       </select>
                     </label>
-
+                    vehicle_category
                     <label htmlFor="vehicle_type">
                       Gamme
                       <select
@@ -123,7 +113,6 @@ export default function ModalUpdatePersonalVehicle({
                         <option value="Luxe">Luxe</option>
                       </select>
                     </label>
-
                     <label htmlFor="year_of_construction">
                       Année de construction
                       <select
@@ -161,31 +150,6 @@ export default function ModalUpdatePersonalVehicle({
 
                 <div className="flex justify-around my-10">
                   <button className="btn btn-reef">Modifier</button>
-                  <Modal
-                    buttonClasses="btn btn-error"
-                    modalButtonTitle="Supprimer"
-                    content={
-                      <div className="p-4 flex flex-col gap-4 justify-around h-full">
-                        <p>
-                          Êtes-vous certain.e de vouloir supprimer ce véhicule ?
-                        </p>
-                        <div className="flex justify-around">
-                          <button
-                            className="btn btn-outline-error"
-                            onClick={handleDeleteVehicle}
-                          >
-                            Supprimer
-                          </button>
-                          <button className="btn btn-outline-reef">
-                            Annuler
-                          </button>
-                        </div>
-                        <p className="font-light text-xs mt-4 text-center">
-                          Attention, cette action est irréversible.
-                        </p>
-                      </div>
-                    }
-                  />
                 </div>
               </form>
             </div>

@@ -1,6 +1,7 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import PersonalVehicle, {
   NewPersonalVehicleInput,
+  UpdatePersonalVehicleInput,
 } from "../entities/PersonalVehicle";
 import { GraphQLError } from "graphql";
 import { Context } from "../types";
@@ -34,7 +35,7 @@ class PersonalVehicleResolver {
 
     const userIdToFetch = userId ?? ctx.currentUser.id;
 
-    if (userId && ctx.currentUser.role !== "admin") {
+    if (userId && ctx.currentUser.role !== UserRole.Admin) {
       throw new GraphQLError("You do not have permission");
     }
 
@@ -51,9 +52,12 @@ class PersonalVehicleResolver {
   async updatePersonalVehicle(
     @Ctx() ctx: Context,
     @Arg("personalVehicleId") id: number,
-    @Arg("data", { validate: true }) data: UpdatePersonalVehicleInput
+    @Arg("data", { validate: true }) data: UpdatePersonalVehicleInput,
+    @Arg("userId", { nullable: true }) userId?: number
   ) {
     if (!ctx.currentUser) throw new GraphQLError("You need to be logged in !");
+
+    const userIdToFetch = userId ?? ctx.currentUser.id;
 
     const personalVehicleToUpdate = await PersonalVehicle.findOne({
       where: { id },
@@ -62,31 +66,33 @@ class PersonalVehicleResolver {
 
     if (!personalVehicleToUpdate) throw new GraphQLError("Not found");
 
-    if (
-      ctx.currentUser.role !== UserRole.Admin &&
-      personalVehicleToUpdate?.user.id !== ctx.currentUser.id
-    )
+    if (userId && ctx.currentUser.role !== UserRole.Admin) {
       throw new GraphQLError("You are not the owner of this vehicle !");
+    }
 
     await Object.assign(personalVehicleToUpdate, data);
 
     await personalVehicleToUpdate.save();
+
     return PersonalVehicle.findOne({
-      where: { id },
       relations: { user: true },
+      where: { id, user: { id: userIdToFetch } },
     });
   }
 
   @Authorized()
   @Mutation(() => String)
   async deletePersonalVehicle(
+    @Ctx() ctx: Context,
     @Arg("personalVehicleId") id: number,
-    @Ctx() ctx: Context
+    @Arg("userId", { nullable: true }) userId?: number
   ) {
     if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
 
+    const userIdToFetch = userId ?? ctx.currentUser.id;
+
     const personalVehicleToDelete = await PersonalVehicle.findOne({
-      where: { id },
+      where: { id, user: { id: userIdToFetch } },
       relations: { user: true },
     });
 

@@ -18,7 +18,6 @@ import MobileUpdateProfile from "@/components/profile/mobile-update-profile";
 
 export default function Profile() {
   const screenSize = useScreenSize();
-  const screenSize = useScreenSize();
   const router = useRouter();
   const [error, setError] = useState("");
   const [isBeingModified, setIsBeingModified] = useState(false);
@@ -34,7 +33,7 @@ export default function Profile() {
 
   const notify = () => toast.success("Profil mis à jour");
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleUpdateProfile = async (e: FormEvent<HTMLFormElement>) => {
     setError("");
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -52,7 +51,7 @@ export default function Profile() {
 
   const handleDeleteProfile = () => {
     deleteProfile()
-      .then(() => router.push("/"))
+      .then(() => router.reload())
       .catch(console.error);
   };
 
@@ -74,11 +73,11 @@ export default function Profile() {
               user={user}
               error={error}
               handleDeleteProfile={handleDeleteProfile}
-              handleSubmit={handleSubmit}
+              handleUpdateProfile={handleUpdateProfile}
               setIsBeingModified={setIsBeingModified}
             />
           ) : (
-            <DesktopProfile user={user} handleSubmit={handleSubmit} />
+            <DesktopProfile user={user} />
           )}
         </div>
       </LayoutLoggedInUser>
@@ -101,13 +100,12 @@ export default function Profile() {
               user={user}
               error={error}
               handleDeleteProfile={handleDeleteProfile}
-              handleSubmit={handleSubmit}
+              handleUpdateProfile={handleUpdateProfile}
               setIsBeingModified={setIsBeingModified}
             />
           ) : (
             <MobileProfile
               user={user}
-              handleSubmit={handleSubmit}
               setIsBeingModified={setIsBeingModified}
               isBeingModified={isBeingModified}
             />

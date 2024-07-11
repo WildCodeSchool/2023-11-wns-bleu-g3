@@ -7,24 +7,27 @@ import {
 import { useRouter } from "next/router";
 
 const ModalAddPersonalVehicle = ({
-  isPersonalVehicleModalOpen,
-  setIsPersonalVehicleModalOpen,
+  isAddPersonalVehicleModalOpen,
+  setIsAddPersonalVehicleModalOpen,
 }: {
-  isPersonalVehicleModalOpen: boolean;
-  setIsPersonalVehicleModalOpen: any;
+  isAddPersonalVehicleModalOpen: boolean;
+  setIsAddPersonalVehicleModalOpen: any;
 }) => {
   const [selectedVehicle, setSelectedVehicle] = useState("");
+  const router = useRouter();
   const [createPersonalVehicle] = useCreatePersonalVehicleMutation();
+
   const { data: user } = useProfileQuery({
     errorPolicy: "ignore",
   });
-  const router = useRouter();
 
   const handleVehicleChange = (event: any) => {
     setSelectedVehicle(event.target.value);
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleCreateNewPersonalVehicle = async (
+    e: FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
@@ -32,20 +35,21 @@ const ModalAddPersonalVehicle = ({
 
     createPersonalVehicle({ variables: { data: formJSON } })
       .then((res) => {
-        setIsPersonalVehicleModalOpen(false);
-        // router.reload();
+        setIsAddPersonalVehicleModalOpen(false);
+        router.reload();
       })
       .catch(console.error);
   };
+
   return (
     <div>
-      {isPersonalVehicleModalOpen && (
+      {isAddPersonalVehicleModalOpen && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto md:w-3/12 my-6 mx-2 md:mx-4 lg:mx-auto max-w-3xl">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-lightPearl outline-none focus:outline-none">
                 <button
-                  onClick={() => setIsPersonalVehicleModalOpen(false)}
+                  onClick={() => setIsAddPersonalVehicleModalOpen(false)}
                   className="flex justify-end items-center p-3"
                 >
                   <Icon name="close" />
@@ -53,7 +57,7 @@ const ModalAddPersonalVehicle = ({
                 <div className="flex flex-col p-4 gap-6">
                   <h2 className="text-center">Ajouter un véhicule</h2>
                   <form
-                    onSubmit={handleSubmit}
+                    onSubmit={handleCreateNewPersonalVehicle}
                     className="text-reef font-semibold flex flex-col gap-6"
                   >
                     <label htmlFor="name">
@@ -90,7 +94,7 @@ const ModalAddPersonalVehicle = ({
                             name="fuel_type"
                             id="fuel_type"
                           >
-                            <option disabled selected></option>
+                            <option disabled value=""></option>
                             <option value="Essence">Essence</option>
                             <option value="Diesel">Diesel</option>
                             <option value="Électrique">Électrique</option>
@@ -106,7 +110,7 @@ const ModalAddPersonalVehicle = ({
                             name="vehicle_type"
                             id="vehicle_type"
                           >
-                            <option disabled selected></option>
+                            <option disabled value=""></option>
                             <option value="Economique">Économique</option>
                             <option value="Sportif">Sportive</option>
                             <option value="Luxe">Luxe</option>
@@ -120,7 +124,7 @@ const ModalAddPersonalVehicle = ({
                             name="year_of_construction"
                             id="year_of_construction"
                           >
-                            <option disabled selected></option>
+                            <option disabled value=""></option>
                             <option value="Avant 90s">Avant 1989</option>
                             <option value="Avant 2000">1990-1999</option>
                             <option value="2000s">2000-2009</option>
@@ -139,7 +143,7 @@ const ModalAddPersonalVehicle = ({
                           name="moto_engine"
                           id="moto_engine"
                         >
-                          <option disabled selected></option>
+                          <option disabled value=""></option>
                           <option value="moins de 125cc">Moins de 125cc</option>
                           <option value="125cc a 500cc">125cc à 500cc</option>
                           <option value="Plus de 500cc">Plus de 500cc</option>

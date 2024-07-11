@@ -3,23 +3,17 @@ import React, { useState } from "react";
 import PersonalVehicleItem from "./personal-vehicle-item";
 import ModalAddPersonalVehicle from "./modal-add-personal-vehicle";
 
-const DesktopProfile = ({
-  user,
-  handleSubmit,
-}: {
-  user: any;
-  handleSubmit: any;
-}) => {
-  const [isPersonalVehicleModalOpen, setIsPersonalVehicleModalOpen] =
+const DesktopProfile = ({ user }: { user: any }) => {
+  const [isAddPersonalVehicleModalOpen, setIsAddPersonalVehicleModalOpen] =
     useState(false);
 
   const openNewVehicleModal = () => {
-    setIsPersonalVehicleModalOpen(true);
+    setIsAddPersonalVehicleModalOpen(true);
   };
+
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
+      <div
         className="text-reef font-semibold grid grid-cols-2 gap-x-20 gap-y-7 gap"
         data-testid="profile-form"
       >
@@ -85,11 +79,11 @@ const DesktopProfile = ({
             </div>
           </div>
         </div>
-      </form>
+      </div>
 
       <ModalAddPersonalVehicle
-        isPersonalVehicleModalOpen={isPersonalVehicleModalOpen}
-        setIsPersonalVehicleModalOpen={setIsPersonalVehicleModalOpen}
+        isAddPersonalVehicleModalOpen={isAddPersonalVehicleModalOpen}
+        setIsAddPersonalVehicleModalOpen={setIsAddPersonalVehicleModalOpen}
       />
     </>
   );

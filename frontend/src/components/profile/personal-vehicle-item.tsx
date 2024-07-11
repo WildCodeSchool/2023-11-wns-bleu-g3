@@ -11,15 +11,7 @@ const PersonalVehicleItem = () => {
     null
   );
 
-  const { data: currentUser } = useProfileQuery({
-    errorPolicy: "ignore",
-  });
-
-  const { data } = useGetPersonalVehiclesQuery({
-    variables: {
-      userId: currentUser?.profile.id,
-    },
-  });
+  const { data } = useGetPersonalVehiclesQuery();
 
   const personalVehicles = data?.getPersonalVehicles;
 

@@ -6,16 +6,16 @@ export default function MobileUpdateProfile({
   error,
   setIsBeingModified,
   handleDeleteProfile,
-  handleSubmit,
+  handleUpdateProfile,
 }: {
   user: any;
   error: string;
   setIsBeingModified: any;
   handleDeleteProfile: any;
-  handleSubmit: any;
+  handleUpdateProfile: any;
 }) {
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleUpdateProfile}>
       <div className="text-reef font-semibold flex flex-col gap-6">
         <label htmlFor="firstName">
           Prénom

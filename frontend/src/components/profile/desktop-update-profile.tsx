@@ -6,17 +6,17 @@ export default function DesktopUpdateProfile({
   error,
   setIsBeingModified,
   handleDeleteProfile,
-  handleSubmit,
+  handleUpdateProfile,
 }: {
   user: any;
   error: string;
   setIsBeingModified: any;
   handleDeleteProfile: any;
-  handleSubmit: any;
+  handleUpdateProfile: any;
 }) {
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="text-reef font-semibold grid grid-cols-2 gap-x-20 gap-y-7 gap-x">
+    <form onSubmit={handleUpdateProfile}>
+      <div className="text-reef fonthandleUpdateProfile-semibold grid grid-cols-2 gap-x-20 gap-y-7 gap-x">
         <label htmlFor="firstName">
           Prénom
           <input

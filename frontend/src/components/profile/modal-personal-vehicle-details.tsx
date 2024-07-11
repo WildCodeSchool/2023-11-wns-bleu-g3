@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Icon from "../icon";
 import {
   useDeletePersonalVehicleMutation,
-  useProfileQuery,
+  useUpdatePersonalVehicleMutation,
 } from "@/graphql/generated/schema";
-import { useRouter } from "next/router";
 import Modal from "../modal";
 import ModalUpdatePersonalVehicle from "./modal-update-personal-vehicle";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 export default function ModalPersonalVehicleDetails({
   setIsPersonalVehicleDetailsModalOpen,
@@ -17,12 +18,15 @@ export default function ModalPersonalVehicleDetails({
 }) {
   const [isBeingModified, setIsBeingModified] = useState(false);
   const [deletePersonalVehicle] = useDeletePersonalVehicleMutation();
+
   const router = useRouter();
 
   const handleDeleteVehicle = () => {
     deletePersonalVehicle({ variables: { personalVehicleId: vehicle.id } })
-      // .then(() => router.reload())
-      .then(() => router.push("/profile"))
+      .then((res) => {
+        toast.success("Véhicule supprimé");
+        router.reload();
+      })
       .catch(console.error);
   };
 
@@ -41,7 +45,7 @@ export default function ModalPersonalVehicleDetails({
                 </button>
                 <div className="flex flex-col p-4 gap-6">
                   <h2 className="text-center">{vehicle.name}</h2>
-                  <form>
+                  <div>
                     <label htmlFor="name">
                       Nom
                       <input
@@ -140,7 +144,7 @@ export default function ModalPersonalVehicleDetails({
                         }
                       />
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>
@@ -149,8 +153,8 @@ export default function ModalPersonalVehicleDetails({
         </>
       ) : (
         <ModalUpdatePersonalVehicle
-          vehicle={vehicle}
           setIsBeingModified={setIsBeingModified}
+          vehicle={vehicle}
         />
       )}
     </>
