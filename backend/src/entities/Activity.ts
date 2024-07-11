@@ -118,4 +118,38 @@ export class NewActivityInput {
   activityType: ObjectId;
 }
 
+@InputType()
+export class UpdateActivityInput {
+  @Field()
+  name: string;
+
+  @Field()
+  quantity: number;
+
+  @Field()
+  is_reccurent: boolean;
+
+  @Field({ nullable: true })
+  reccurence_interval?: ReccurenceInterval;
+
+  @Field({ nullable: true })
+  @Min(0)
+  reccurence_count?: number;
+
+  @Field()
+  starts_at: Date;
+
+  @Field({ nullable: true })
+  ends_at?: Date;
+
+  @Field()
+  is_secondhand: boolean;
+
+  @Field()
+  is_made_in_france: boolean;
+
+  @Field(() => ObjectId)
+  activityType: ObjectId;
+}
+
 export default Activity;

@@ -19,7 +19,7 @@ export type Scalars = {
 export type Activity = {
   __typename?: 'Activity';
   activityType: ActivityType;
-  ends_at: Scalars['DateTimeISO'];
+  ends_at?: Maybe<Scalars['DateTimeISO']>;
   id: Scalars['Int'];
   is_made_in_france: Scalars['Boolean'];
   is_reccurent: Scalars['Boolean'];
@@ -74,6 +74,7 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   confirmEmail: Scalars['Boolean'];
+  createActivity: Activity;
   createActivityType: ActivityType;
   createUser: User;
   deleteActivityType: Scalars['String'];
@@ -89,6 +90,11 @@ export type Mutation = {
 
 export type MutationConfirmEmailArgs = {
   emailToken: Scalars['String'];
+};
+
+
+export type MutationCreateActivityArgs = {
+  data: NewActivityInput;
 };
 
 
@@ -138,15 +144,33 @@ export type MutationUpdateProfileArgs = {
   data: UpdateUserInput;
 };
 
+export type NewActivityInput = {
+  activityType: ObjectId;
+  ends_at?: InputMaybe<Scalars['DateTimeISO']>;
+  is_made_in_france: Scalars['Boolean'];
+  is_reccurent: Scalars['Boolean'];
+  is_secondhand: Scalars['Boolean'];
+  name: Scalars['String'];
+  quantity: Scalars['Float'];
+  reccurence_count?: InputMaybe<Scalars['Float']>;
+  reccurence_interval?: InputMaybe<Scalars['String']>;
+  starts_at: Scalars['DateTimeISO'];
+};
+
 export type NewUserInput = {
   email: Scalars['String'];
   nickname: Scalars['String'];
   password: Scalars['String'];
 };
 
+export type ObjectId = {
+  id: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
   MotoEngine: Array<Scalars['String']>;
+  getActivities: Array<Activity>;
   getActivitiesTypes: Array<ActivityType>;
   getActivitiesTypesPagination: Array<ActivityType>;
   getActivityTypesById: ActivityType;
@@ -156,6 +180,11 @@ export type Query = {
   getVehicleDecade: Array<Scalars['String']>;
   getVehicleTypes: Array<Scalars['String']>;
   profile: User;
+};
+
+
+export type QueryGetActivitiesArgs = {
+  userId?: InputMaybe<Scalars['Float']>;
 };
 
 

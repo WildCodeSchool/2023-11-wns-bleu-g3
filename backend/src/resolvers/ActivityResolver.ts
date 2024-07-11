@@ -6,7 +6,7 @@ import {
   Authorized,
   Ctx,
 } from "type-graphql";
-import Activity from "../entities/Activity";
+import Activity, { UpdateActivityInput } from "../entities/Activity";
 import {
   NewActivityInput,
 } from "../entities/Activity";
@@ -51,6 +51,22 @@ class ActivityResolver {
     newActivity.user = ctx.currentUser;
 
     return await newActivity.save();
+  }
+
+  @Authorized()
+  @Mutation(() => Activity)
+  async updateActivity(
+    @Ctx() ctx: Context,
+    @Arg("ActivityId") id: number,
+    @Arg("data", { validate: true }) data: UpdateActivityInput
+  ) {
+    if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
+
+    const activityToUpdate = await Activity.findOneBy({ id });
+    if (!activityToUpdate) throw new GraphQLError("Activity not found.");
+    Object.assign(activityToUpdate, data);
+
+    return await activityToUpdate.save();
   }
 }
 
