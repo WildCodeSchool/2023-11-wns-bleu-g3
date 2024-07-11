@@ -87,6 +87,7 @@ export type Mutation = {
   createUser: User;
   deleteActivity: Scalars['String'];
   deleteActivityType: Scalars['String'];
+  deletePersonalVehicle: Scalars['String'];
   deleteUser: Scalars['String'];
   followUser: Follow;
   login: Scalars['String'];
@@ -96,6 +97,7 @@ export type Mutation = {
   unfollow: Scalars['String'];
   updateActivity: Activity;
   updateActivityType: ActivityType;
+  updatePersonalVehicle: PersonalVehicle;
   updateProfile: User;
 };
 
@@ -132,6 +134,11 @@ export type MutationDeleteActivityArgs = {
 
 export type MutationDeleteActivityTypeArgs = {
   ActivityTypeId: Scalars['Float'];
+};
+
+
+export type MutationDeletePersonalVehicleArgs = {
+  personalVehicleId: Scalars['Float'];
 };
 
 
@@ -178,6 +185,12 @@ export type MutationUpdateActivityTypeArgs = {
 };
 
 
+export type MutationUpdatePersonalVehicleArgs = {
+  data: UpdatePersonalVehicleInput;
+  personalVehicleId: Scalars['Float'];
+};
+
+
 export type MutationUpdateProfileArgs = {
   data: UpdateUserInput;
 };
@@ -201,7 +214,7 @@ export type NewPersonalVehicleInput = {
   name: Scalars['String'];
   vehicle_category: Scalars['String'];
   vehicle_type?: InputMaybe<Scalars['String']>;
-  year_of_construction?: InputMaybe<Scalars['Float']>;
+  year_of_construction?: InputMaybe<Scalars['String']>;
 };
 
 export type NewUserInput = {
@@ -216,6 +229,7 @@ export type ObjectId = {
 
 export type PersonalVehicle = {
   __typename?: 'PersonalVehicle';
+  created_at: Scalars['DateTimeISO'];
   fuel_type?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   moto_engine?: Maybe<Scalars['String']>;
@@ -223,7 +237,7 @@ export type PersonalVehicle = {
   user: User;
   vehicle_category: Scalars['String'];
   vehicle_type?: Maybe<Scalars['String']>;
-  year_of_construction?: Maybe<Scalars['Float']>;
+  year_of_construction?: Maybe<Scalars['String']>;
 };
 
 export type Query = {
@@ -312,6 +326,15 @@ export type UpdateActivityTypeInput = {
   vehicleAttributes?: InputMaybe<UpdateVehicle_Attr_Input>;
 };
 
+export type UpdatePersonalVehicleInput = {
+  fuel_type?: InputMaybe<Scalars['String']>;
+  moto_engine?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  vehicle_category: Scalars['String'];
+  vehicle_type?: InputMaybe<Scalars['String']>;
+  year_of_construction?: InputMaybe<Scalars['String']>;
+};
+
 export type UpdateUserInput = {
   avatarUrl?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
@@ -392,7 +415,7 @@ export type CreatePersonalVehicleMutationVariables = Exact<{
 }>;
 
 
-export type CreatePersonalVehicleMutation = { __typename?: 'Mutation', createPersonalVehicle: { __typename?: 'PersonalVehicle', id: number, name: string, moto_engine?: string | null, vehicle_category: string, year_of_construction?: number | null, vehicle_type?: string | null, fuel_type?: string | null } };
+export type CreatePersonalVehicleMutation = { __typename?: 'Mutation', createPersonalVehicle: { __typename?: 'PersonalVehicle', id: number, name: string, moto_engine?: string | null, vehicle_category: string, year_of_construction?: string | null, vehicle_type?: string | null, fuel_type?: string | null } };
 
 export type DeleteActivityTypeMutationVariables = Exact<{
   activityTypeId: Scalars['Float'];
@@ -400,6 +423,13 @@ export type DeleteActivityTypeMutationVariables = Exact<{
 
 
 export type DeleteActivityTypeMutation = { __typename?: 'Mutation', deleteActivityType: string };
+
+export type DeletePersonalVehicleMutationVariables = Exact<{
+  personalVehicleId: Scalars['Float'];
+}>;
+
+
+export type DeletePersonalVehicleMutation = { __typename?: 'Mutation', deletePersonalVehicle: string };
 
 export type DeleteUserMutationVariables = Exact<{
   userId?: InputMaybe<Scalars['Float']>;
@@ -450,7 +480,7 @@ export type GetPersonalVehiclesQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonalVehiclesQuery = { __typename?: 'Query', getPersonalVehicles: Array<{ __typename?: 'PersonalVehicle', id: number, fuel_type?: string | null, moto_engine?: string | null, name: string, vehicle_category: string, vehicle_type?: string | null, year_of_construction?: number | null, user: { __typename?: 'User', id: number } }> };
+export type GetPersonalVehiclesQuery = { __typename?: 'Query', getPersonalVehicles: Array<{ __typename?: 'PersonalVehicle', id: number, name: string, vehicle_category: string, vehicle_type?: string | null, fuel_type?: string | null, year_of_construction?: string | null, moto_engine?: string | null, created_at: any, user: { __typename?: 'User', id: number } }> };
 
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -505,6 +535,14 @@ export type UpdateActivityTypeMutationVariables = Exact<{
 
 
 export type UpdateActivityTypeMutation = { __typename?: 'Mutation', updateActivityType: { __typename?: 'ActivityType', id: number, emissions: number, unit: string, category: string, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, vehicleType?: string | null, vehicleDecade?: string | null, motoEngine?: string | null } | null, attributes?: { __typename?: 'Attr', madeInFrance?: number | null, secondHandClothes?: number | null, secondHandPhones?: number | null } | null } };
+
+export type UpdatePersonalVehicleMutationVariables = Exact<{
+  data: UpdatePersonalVehicleInput;
+  personalVehicleId: Scalars['Float'];
+}>;
+
+
+export type UpdatePersonalVehicleMutation = { __typename?: 'Mutation', updatePersonalVehicle: { __typename?: 'PersonalVehicle', id: number, name: string, vehicle_category: string, vehicle_type?: string | null, year_of_construction?: string | null, fuel_type?: string | null, moto_engine?: string | null, created_at: any, user: { __typename?: 'User', id: number } } };
 
 export type UpdateProfileMutationVariables = Exact<{
   data: UpdateUserInput;
@@ -703,6 +741,37 @@ export function useDeleteActivityTypeMutation(baseOptions?: Apollo.MutationHookO
 export type DeleteActivityTypeMutationHookResult = ReturnType<typeof useDeleteActivityTypeMutation>;
 export type DeleteActivityTypeMutationResult = Apollo.MutationResult<DeleteActivityTypeMutation>;
 export type DeleteActivityTypeMutationOptions = Apollo.BaseMutationOptions<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>;
+export const DeletePersonalVehicleDocument = gql`
+    mutation DeletePersonalVehicle($personalVehicleId: Float!) {
+  deletePersonalVehicle(personalVehicleId: $personalVehicleId)
+}
+    `;
+export type DeletePersonalVehicleMutationFn = Apollo.MutationFunction<DeletePersonalVehicleMutation, DeletePersonalVehicleMutationVariables>;
+
+/**
+ * __useDeletePersonalVehicleMutation__
+ *
+ * To run a mutation, you first call `useDeletePersonalVehicleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePersonalVehicleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePersonalVehicleMutation, { data, loading, error }] = useDeletePersonalVehicleMutation({
+ *   variables: {
+ *      personalVehicleId: // value for 'personalVehicleId'
+ *   },
+ * });
+ */
+export function useDeletePersonalVehicleMutation(baseOptions?: Apollo.MutationHookOptions<DeletePersonalVehicleMutation, DeletePersonalVehicleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePersonalVehicleMutation, DeletePersonalVehicleMutationVariables>(DeletePersonalVehicleDocument, options);
+      }
+export type DeletePersonalVehicleMutationHookResult = ReturnType<typeof useDeletePersonalVehicleMutation>;
+export type DeletePersonalVehicleMutationResult = Apollo.MutationResult<DeletePersonalVehicleMutation>;
+export type DeletePersonalVehicleMutationOptions = Apollo.BaseMutationOptions<DeletePersonalVehicleMutation, DeletePersonalVehicleMutationVariables>;
 export const DeleteUserDocument = gql`
     mutation DeleteUser($userId: Float) {
   deleteUser(userId: $userId)
@@ -1015,12 +1084,13 @@ export const GetPersonalVehiclesDocument = gql`
     query GetPersonalVehicles($userId: Float) {
   getPersonalVehicles(userId: $userId) {
     id
-    fuel_type
-    moto_engine
     name
     vehicle_category
     vehicle_type
+    fuel_type
     year_of_construction
+    moto_engine
+    created_at
     user {
       id
     }
@@ -1357,6 +1427,50 @@ export function useUpdateActivityTypeMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateActivityTypeMutationHookResult = ReturnType<typeof useUpdateActivityTypeMutation>;
 export type UpdateActivityTypeMutationResult = Apollo.MutationResult<UpdateActivityTypeMutation>;
 export type UpdateActivityTypeMutationOptions = Apollo.BaseMutationOptions<UpdateActivityTypeMutation, UpdateActivityTypeMutationVariables>;
+export const UpdatePersonalVehicleDocument = gql`
+    mutation UpdatePersonalVehicle($data: UpdatePersonalVehicleInput!, $personalVehicleId: Float!) {
+  updatePersonalVehicle(data: $data, personalVehicleId: $personalVehicleId) {
+    id
+    name
+    vehicle_category
+    vehicle_type
+    year_of_construction
+    fuel_type
+    moto_engine
+    created_at
+    user {
+      id
+    }
+  }
+}
+    `;
+export type UpdatePersonalVehicleMutationFn = Apollo.MutationFunction<UpdatePersonalVehicleMutation, UpdatePersonalVehicleMutationVariables>;
+
+/**
+ * __useUpdatePersonalVehicleMutation__
+ *
+ * To run a mutation, you first call `useUpdatePersonalVehicleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePersonalVehicleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePersonalVehicleMutation, { data, loading, error }] = useUpdatePersonalVehicleMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *      personalVehicleId: // value for 'personalVehicleId'
+ *   },
+ * });
+ */
+export function useUpdatePersonalVehicleMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePersonalVehicleMutation, UpdatePersonalVehicleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePersonalVehicleMutation, UpdatePersonalVehicleMutationVariables>(UpdatePersonalVehicleDocument, options);
+      }
+export type UpdatePersonalVehicleMutationHookResult = ReturnType<typeof useUpdatePersonalVehicleMutation>;
+export type UpdatePersonalVehicleMutationResult = Apollo.MutationResult<UpdatePersonalVehicleMutation>;
+export type UpdatePersonalVehicleMutationOptions = Apollo.BaseMutationOptions<UpdatePersonalVehicleMutation, UpdatePersonalVehicleMutationVariables>;
 export const UpdateProfileDocument = gql`
     mutation UpdateProfile($data: UpdateUserInput!) {
   updateProfile(data: $data) {

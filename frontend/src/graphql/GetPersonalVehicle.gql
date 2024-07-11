@@ -1,12 +1,13 @@
 query GetPersonalVehicles($userId: Float) {
   getPersonalVehicles(userId: $userId) {
     id
-    fuel_type
-    moto_engine
     name
     vehicle_category
     vehicle_type
+    fuel_type
     year_of_construction
+    moto_engine
+    created_at
     user {
       id
     }

@@ -1,0 +1,18 @@
+mutation UpdatePersonalVehicle(
+  $data: UpdatePersonalVehicleInput!
+  $personalVehicleId: Float!
+) {
+  updatePersonalVehicle(data: $data, personalVehicleId: $personalVehicleId) {
+    id
+    name
+    vehicle_category
+    vehicle_type
+    year_of_construction
+    fuel_type
+    moto_engine
+    created_at
+    user {
+      id
+    }
+  }
+}
