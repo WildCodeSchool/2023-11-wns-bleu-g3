@@ -287,6 +287,7 @@ export type NewPersonalVehicleInput = {
   fuel_type?: InputMaybe<Scalars['String']>;
   moto_engine?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
+  user: ObjectId;
   vehicle_category: Scalars['String'];
   vehicle_type?: InputMaybe<Scalars['String']>;
   year_of_construction?: InputMaybe<Scalars['String']>;

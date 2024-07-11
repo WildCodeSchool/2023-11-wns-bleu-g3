@@ -40,6 +40,7 @@ async function main() {
     nickname: "Gretaaaaa",
     email: "greenGreta@app.com",
     password: "Visitor42@!",
+    firstName: "Greta",
     lastName: "Thunberg",
     avatarUrl:
       "https://cdn-s-www.estrepublicain.fr/images/829E79B4-6141-4B09-A1A4-C8CA53D382BE/NW_raw/greta-thunberg-a-caen-ce-dimanche-photo-jean-francois-monier-afp-1563726733.jpg",
