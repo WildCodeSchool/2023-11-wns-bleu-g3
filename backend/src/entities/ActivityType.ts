@@ -49,6 +49,7 @@ export enum Category {
   Train = "TGV",
   Moto = "Moto",
   Boat = "Bateau",
+  ElectricBike = "Vélo électrique",
   Heating = "Chauffage",
   Cooling = "Climatisation",
   Lighting = "Éclairage",
