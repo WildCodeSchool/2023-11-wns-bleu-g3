@@ -1,0 +1,10 @@
+query GetUsersPagination($offset: Int, $limit: Int) {
+  getUsersPagination(offset: $offset, limit: $limit) {
+    id
+    email
+    nickname
+    role
+    avatarUrl
+    createdAt
+  }
+}

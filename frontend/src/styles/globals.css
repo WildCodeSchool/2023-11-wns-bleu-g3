@@ -31,3 +31,11 @@ h2 {
   color: #282828;
   font-weight: 500;
 }
+
+/* animation speeds */
+.animate-fast {
+  animation-duration: 0.8s;
+}
+
+
+

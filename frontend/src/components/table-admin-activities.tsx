@@ -3,7 +3,6 @@ import {
   useDeleteActivityTypeMutation,
   useGetActivitiesTypesPaginationQuery,
 } from "@/graphql/generated/schema";
-import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ModalBin from "./modalBin";

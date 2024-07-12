@@ -1,4 +1,12 @@
-import { Arg, Mutation, Query, Ctx, Resolver, Authorized } from "type-graphql";
+import {
+  Arg,
+  Mutation,
+  Query,
+  Ctx,
+  Int,
+  Resolver,
+  Authorized,
+} from "type-graphql";
 import User, {
   LoginInput,
   NewUserInput,
@@ -14,6 +22,7 @@ import { Context } from "../types";
 import crypto from "crypto";
 import mailer from "../mailer";
 import { hash } from "argon2";
+import { UserRole } from "../entities/User";
 
 @Resolver()
 class UserResolver {
@@ -198,6 +207,32 @@ class UserResolver {
     } else {
       throw new GraphQLError("Users not found");
     }
+  }
+
+  //table users backoffice
+  @Authorized([UserRole.Admin])
+  @Query(() => [User])
+  async getUsersPagination(
+    @Ctx() ctx: Context,
+    @Arg("offset", () => Int, { nullable: true, defaultValue: 0 })
+    offset: number,
+    @Arg("limit", () => Int, { nullable: true, defaultValue: 9 }) limit: number
+  ) {
+    if (!ctx.currentUser)
+      throw new GraphQLError(
+        "You need to be logged in to have access to this operation."
+      );
+
+    if (ctx.currentUser.role !== "admin") {
+      return new GraphQLError("You do not have permission to this operation.");
+    }
+
+    const findusers = await User.find({
+      skip: offset,
+      take: limit,
+    });
+    if (findusers.length === 0) throw new GraphQLError("Users were not found.");
+    return findusers;
   }
 }
 

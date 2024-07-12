@@ -265,6 +265,7 @@ export type Query = {
   getMotoEngines: Array<Scalars['String']>;
   getPersonalVehicles: Array<PersonalVehicle>;
   getUnits: Array<Scalars['String']>;
+  getUsersPagination: Array<User>;
   getVehicleDecade: Array<Scalars['String']>;
   getVehicleTypes: Array<Scalars['String']>;
   profile: User;
@@ -430,6 +431,14 @@ export type GetActivitiesTypesPaginationQueryVariables = Exact<{
 
 
 export type GetActivitiesTypesPaginationQuery = { __typename?: 'Query', getActivitiesTypesPagination: Array<{ __typename?: 'ActivityType', category: string, emissions: number, id: number, name: string, unit: string }> };
+
+export type GetUsersPaginationQueryVariables = Exact<{
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetUsersPaginationQuery = { __typename?: 'Query', getUsersPagination: Array<{ __typename?: 'User', id: number, email: string, nickname: string, role: string, avatarUrl?: string | null, createdAt: string }> };
 
 export type ConfirmEmailMutationVariables = Exact<{
   emailToken: Scalars['String'];
@@ -640,6 +649,52 @@ export type GetActivitiesTypesPaginationQueryHookResult = ReturnType<typeof useG
 export type GetActivitiesTypesPaginationLazyQueryHookResult = ReturnType<typeof useGetActivitiesTypesPaginationLazyQuery>;
 export type GetActivitiesTypesPaginationSuspenseQueryHookResult = ReturnType<typeof useGetActivitiesTypesPaginationSuspenseQuery>;
 export type GetActivitiesTypesPaginationQueryResult = Apollo.QueryResult<GetActivitiesTypesPaginationQuery, GetActivitiesTypesPaginationQueryVariables>;
+export const GetUsersPaginationDocument = gql`
+    query GetUsersPagination($offset: Int, $limit: Int) {
+  getUsersPagination(offset: $offset, limit: $limit) {
+    id
+    email
+    nickname
+    role
+    avatarUrl
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetUsersPaginationQuery__
+ *
+ * To run a query within a React component, call `useGetUsersPaginationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersPaginationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersPaginationQuery({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetUsersPaginationQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>(GetUsersPaginationDocument, options);
+      }
+export function useGetUsersPaginationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>(GetUsersPaginationDocument, options);
+        }
+export function useGetUsersPaginationSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>(GetUsersPaginationDocument, options);
+        }
+export type GetUsersPaginationQueryHookResult = ReturnType<typeof useGetUsersPaginationQuery>;
+export type GetUsersPaginationLazyQueryHookResult = ReturnType<typeof useGetUsersPaginationLazyQuery>;
+export type GetUsersPaginationSuspenseQueryHookResult = ReturnType<typeof useGetUsersPaginationSuspenseQuery>;
+export type GetUsersPaginationQueryResult = Apollo.QueryResult<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>;
 export const ConfirmEmailDocument = gql`
     mutation ConfirmEmail($emailToken: String!) {
   confirmEmail(emailToken: $emailToken)
