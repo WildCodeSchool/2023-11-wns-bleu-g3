@@ -99,7 +99,6 @@ export default function ModalUpdatePersonalVehicle({
                         <option value="Hydrogène">Hydrogène</option>
                       </select>
                     </label>
-                    vehicle_category
                     <label htmlFor="vehicle_type">
                       Gamme
                       <select
