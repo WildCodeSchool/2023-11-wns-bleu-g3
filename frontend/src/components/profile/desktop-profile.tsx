@@ -1,25 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
-import PersonalVehicleItem from "../personal-vehicle-item";
-import ModalAddPersonalVehicle from "../modal-add-personal-vehicle";
+import PersonalVehicleItem from "./personal-vehicle-item";
+import ModalAddPersonalVehicle from "./modal-add-personal-vehicle";
 
-const DesktopProfile = ({
-  user,
-  handleSubmit,
-}: {
-  user: any;
-  handleSubmit: any;
-}) => {
-  const [isPersonalVehicleModalOpen, setIsPersonalVehicleModalOpen] =
+const DesktopProfile = ({ user }: { user: any }) => {
+  const [isAddPersonalVehicleModalOpen, setIsAddPersonalVehicleModalOpen] =
     useState(false);
 
   const openNewVehicleModal = () => {
-    setIsPersonalVehicleModalOpen(true);
+    setIsAddPersonalVehicleModalOpen(true);
   };
+
   return (
     <>
-      <form
-        onSubmit={handleSubmit}
+      <div
         className="text-reef font-semibold grid grid-cols-2 gap-x-20 gap-y-7 gap"
         data-testid="profile-form"
       >
@@ -64,7 +58,7 @@ const DesktopProfile = ({
           <img
             src={user.profile.avatarUrl || ""}
             alt="Phot de profil"
-            className="h-72 w-72 mt-4 ml-6 z-10 rounded-full object-cover"
+            className="h-72 w-72 mt-4 ml-6 rounded-full object-cover"
           />
         </label>
         <div className="my-6">
@@ -85,11 +79,11 @@ const DesktopProfile = ({
             </div>
           </div>
         </div>
-      </form>
+      </div>
 
       <ModalAddPersonalVehicle
-        isPersonalVehicleModalOpen={isPersonalVehicleModalOpen}
-        setIsPersonalVehicleModalOpen={setIsPersonalVehicleModalOpen}
+        isAddPersonalVehicleModalOpen={isAddPersonalVehicleModalOpen}
+        setIsAddPersonalVehicleModalOpen={setIsAddPersonalVehicleModalOpen}
       />
     </>
   );

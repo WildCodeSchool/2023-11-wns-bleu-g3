@@ -1,22 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
 import Modal from "@/components/modal";
 
-export default function MobileUpdateProfile({
+export default function DesktopUpdateProfile({
   user,
   error,
   setIsBeingModified,
   handleDeleteProfile,
-  handleSubmit,
+  handleUpdateProfile,
 }: {
   user: any;
   error: string;
   setIsBeingModified: any;
   handleDeleteProfile: any;
-  handleSubmit: any;
+  handleUpdateProfile: any;
 }) {
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="text-reef font-semibold flex flex-col gap-6">
+    <form onSubmit={handleUpdateProfile}>
+      <div className="text-reef fonthandleUpdateProfile-semibold grid grid-cols-2 gap-x-20 gap-y-7 gap-x">
         <label htmlFor="firstName">
           Prénom
           <input
@@ -70,7 +70,7 @@ export default function MobileUpdateProfile({
       </div>
 
       {error !== "" && <pre className="text-red-700">{error}</pre>}
-      <div className="flex flex-col justify-between my-16">
+      <div className="flex justify-between">
         <button className="btn btn-reef mt-4">Mise à jour</button>
         <Modal
           buttonClasses="btn-lg btn-error mt-4"
