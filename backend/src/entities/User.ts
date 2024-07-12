@@ -13,6 +13,7 @@ import {
 import Activity from "./Activity";
 import { Follow } from "./Follow";
 import PersonalVehicle from "./PersonalVehicle";
+import Post from "./Post";
 
 export enum UserRole {
   Admin = "admin",
@@ -95,6 +96,10 @@ class User extends BaseEntity {
   @OneToMany(() => PersonalVehicle, (personalVehicle) => personalVehicle.user)
   @Field(() => [PersonalVehicle], { nullable: true })
   personalVehicles?: PersonalVehicle[];
+
+  @OneToMany(() => Post, (post) => post.user)
+  @Field(() => [Post], { nullable: true })
+  posts?: Post[];
 }
 
 @InputType()
