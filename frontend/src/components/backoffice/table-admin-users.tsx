@@ -11,6 +11,7 @@ export default function TableAdminUsers() {
   // pagination offset limit
   const [page, setPage] = useState(0);
   const [notEndPage, setNotEndPage] = useState(true);
+  const [dropMenu, setDropMenu] = useState(false);
 
   const { data, loading, error } = useGetUsersPaginationQuery({
     variables: {
@@ -39,6 +40,10 @@ export default function TableAdminUsers() {
 
   const users = data?.getUsersPagination || [];
 
+  const changeMenu = () => {
+    setDropMenu(!dropMenu);
+  };
+
   return (
     <div className="m-auto w-4/5 mt-8">
       <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-lightPearl  m-auto ">
@@ -46,8 +51,10 @@ export default function TableAdminUsers() {
           <button
             id="dropdownActionButton"
             data-dropdown-toggle="dropdownAction"
-            className="inline-flex items-center text-reef bg-shore border border-reef focus:outline-none focus:border-reef hover:bg-shore hover:text-anchor hover:border-anchor focus:ring-2 focus:ring-reef  font-medium rounded-lg text-sm ml-1 px-4 py-1.5    "
+            className="inline-flex items-center text-reef bg-shore border border-reef focus:border-reef hover:bg-shore hover:text-anchor hover:border-anchor focus:outline-none text-sm  font-medium rounded-lg  px-4 py-1.5    "
             type="button"
+            onClick={changeMenu} 
+            onMouseOver={changeMenu} 
           >
             Action
             <svg
@@ -67,48 +74,35 @@ export default function TableAdminUsers() {
             </svg>
           </button>
           {/* Dropdown menu */}
-          <div
-            id="dropdownAction"
-            className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
-          >
-            <ul
-              className="py-1 text-sm text-gray-700 dark:text-gray-200"
-              aria-labelledby="dropdownActionButton"
+          {dropMenu && (
+            <div
+              id="dropdownAction"
+              className="z-20 absolute bg-shore divide-y divide-reef text-reef border border-reef rounded-lg shadow w-44 text-sm  font-medium"
             >
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Reward
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Promote
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Activate account
-                </a>
-              </li>
-            </ul>
-            <div className="py-1">
-              <a
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+              <ul
+                className="py-1 text-sm text-gray-700 dark:text-gray-200"
+                aria-labelledby="dropdownActionButton"
               >
-                Delete User
-              </a>
+                <li>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-reef bg-shore  focus:border-reef hover:bg-reef hover:text-lightPearl hover:border-anchor"
+                  >
+                    Bloquer
+                  </a>
+                </li>
+                
+              </ul>
+              <div className="py-1">
+                <a
+                  href="#"
+                  className="block px-4 py-2 text-reef bg-shore  focus:border-reef hover:bg-reef hover:text-lightPearl hover:border-anchor"
+                >
+                  Supprime
+                </a>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="relative">
           <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
