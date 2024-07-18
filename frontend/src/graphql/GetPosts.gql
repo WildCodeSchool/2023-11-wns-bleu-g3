@@ -1,0 +1,13 @@
+query GetPosts($title: String) {
+  getPosts(title: $title) {
+    id
+    title
+    content
+    imageUrl
+    likes
+    created_at
+    user {
+      nickname
+    }
+  }
+}

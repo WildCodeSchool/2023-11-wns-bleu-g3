@@ -1,10 +1,14 @@
 import SideLoggedInUser from "@/components/side-logged-in-user";
 import Footer from "@/components/footer";
 import TopbarLoggedInUser from "@/components/topbar-logged-in-user";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import useScreenSize from "@/hooks/useScreenSize";
 
-export default function LayoutLoggedInUser({ children }: { children: any }) {
+export default function LayoutLoggedInUser({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const screenSize = useScreenSize();
   const [isOpen, setIsOpen] = useState(false);
 
