@@ -3,6 +3,7 @@ import { GraphQLError } from "graphql";
 import { Context } from "../types";
 import { UserRole } from "../entities/User";
 import Post, { NewPostInput, UpdatePostInput } from "../entities/Post";
+import { ILike } from "typeorm";
 
 @Resolver()
 class PostResolver {
@@ -25,22 +26,14 @@ class PostResolver {
   @Query(() => [Post])
   async getPosts(
     @Ctx() ctx: Context,
-    @Arg("userId", { nullable: true }) userId?: number
+    @Arg("title", { nullable: true }) title?: string
   ): Promise<Post[]> {
     if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
 
-    const userIdToFetch = userId ?? ctx.currentUser.id;
-
-    if (userId && ctx.currentUser.role !== UserRole.Admin) {
-      throw new GraphQLError("You do not have permission");
-    }
-
-    const posts = await Post.find({
+    return await Post.find({
       relations: { user: true },
-      where: { user: { id: userIdToFetch } },
+      where: { title: title ? ILike(`%${title}%`) : undefined },
     });
-
-    return posts;
   }
 
   @Authorized()
@@ -48,12 +41,9 @@ class PostResolver {
   async updatePost(
     @Ctx() ctx: Context,
     @Arg("postId") id: number,
-    @Arg("data", { validate: true }) data: UpdatePostInput,
-    @Arg("userId", { nullable: true }) userId?: number
+    @Arg("data", { validate: true }) data: UpdatePostInput
   ) {
     if (!ctx.currentUser) throw new GraphQLError("You need to be logged in !");
-
-    const userIdToFetch = userId ?? ctx.currentUser.id;
 
     const postToUpdate = await Post.findOne({
       where: { id },
@@ -62,7 +52,10 @@ class PostResolver {
 
     if (!postToUpdate) throw new GraphQLError("Not found");
 
-    if (userId && ctx.currentUser.role !== UserRole.Admin) {
+    if (
+      postToUpdate?.user.id !== ctx.currentUser.id &&
+      ctx.currentUser.role !== UserRole.Admin
+    ) {
       throw new GraphQLError("You are not the owner of this post !");
     }
 
@@ -72,7 +65,7 @@ class PostResolver {
 
     return Post.findOne({
       relations: { user: true },
-      where: { id, user: { id: userIdToFetch } },
+      where: { id },
     });
   }
 

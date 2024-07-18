@@ -51,7 +51,7 @@ export default function SideLoggedInUser({ isOpen }: { isOpen: any }) {
             <SideLoggedInUserItem href="#" name="Ajouter une dépense" />
             <SideLoggedInUserItem href="#" name="Mes dépenses" />
             <SideLoggedInUserItem href="#" name="Donations" />
-            <SideLoggedInUserItem href="#" name="Les bons plans" />
+            <SideLoggedInUserItem href="/feed" name="Les bons plans" />
           </div>
 
           <div className="md:hidden flex flex-col gap-2 py-4">

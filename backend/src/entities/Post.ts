@@ -30,7 +30,7 @@ class Post extends BaseEntity {
   imageUrl: string;
 
   @Column({ default: 0 })
-  @Field(() => Int)
+  @Field()
   likes: number;
 
   @CreateDateColumn()
@@ -70,6 +70,9 @@ export class UpdatePostInput {
 
   @Field({ nullable: true })
   imageUrl?: string;
+
+  @Field({ nullable: true })
+  likes?: number;
 }
 
 export default Post;
