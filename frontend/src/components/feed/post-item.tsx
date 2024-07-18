@@ -1,20 +1,37 @@
 /* eslint-disable @next/next/no-img-element */
+import {
+  useDeletePostMutation,
+  useProfileQuery,
+  useUpdatePostMutation,
+} from "@/graphql/generated/schema";
 import Icon from "../icon";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import Modal from "../modal";
+import { useEffect, useRef, useState } from "react";
+import ModalDeletePost from "./modal-delete-post";
 
 const PostItem = ({
   post,
 }: {
   post: {
-    user: {
-      nickname: string;
-    };
+    id: number;
     created_at: string;
     title: string;
     content: string;
     imageUrl: string;
     likes: number;
+    user: {
+      nickname: string;
+    };
   };
 }) => {
+  const { data: userData } = useProfileQuery();
+  const currentUsername = userData?.profile?.nickname || "";
+
+  const [updatePost] = useUpdatePostMutation();
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+
   const convertDate = (isoString: string) => {
     const date = new Date(isoString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -44,14 +61,40 @@ const PostItem = ({
           <p>{post.content}</p>
         )}
       </div>
-      <div className="flex gap-2 justify-end text-reef">
-        <p>{post.likes}</p>
-        {post.likes === 0 ? (
-          <Icon name="favorite_border" />
-        ) : (
-          <Icon name="favorite" />
+      <div
+        className={`flex ${
+          currentUsername === post.user.nickname
+            ? "justify-between"
+            : "justify-end"
+        }`}
+      >
+        {currentUsername === post.user.nickname && (
+          <div className="flex gap-2 justify-end text-reef">
+            <button>
+              <Icon name="edit" />
+            </button>
+            <button onClick={() => setIsModalDeleteOpen(true)}>
+              <Icon name="delete" />
+            </button>
+          </div>
         )}
+
+        <div className="flex gap-2 justify-end text-reef">
+          <p>{post.likes}</p>
+          <button>
+            {post.likes === 0 ? (
+              <Icon name="favorite_border" />
+            ) : (
+              <Icon name="favorite" />
+            )}
+          </button>
+        </div>
       </div>
+      <ModalDeletePost
+        isModalDeleteOpen={isModalDeleteOpen}
+        setIsModalDeleteOpen={setIsModalDeleteOpen}
+        post={post}
+      />
     </div>
   );
 };
