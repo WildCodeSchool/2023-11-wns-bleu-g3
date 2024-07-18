@@ -32,7 +32,7 @@ const PostItem = ({
       <div className="mb-4">
         <h3 className="text-xl mb-1">{post.title}</h3>
         {post.imageUrl ? (
-          <div className="flex">
+          <div className="flex justify-between">
             <p>{post.content}</p>
             <img
               src={post.imageUrl || ""}
