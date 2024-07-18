@@ -551,12 +551,10 @@ export type GetPersonalVehiclesQueryVariables = Exact<{
 
 export type GetPersonalVehiclesQuery = { __typename?: 'Query', getPersonalVehicles: Array<{ __typename?: 'PersonalVehicle', id: number, name: string, vehicle_category: string, vehicle_type?: string | null, fuel_type?: string | null, year_of_construction?: string | null, moto_engine?: string | null, created_at: any, user: { __typename?: 'User', id: number } }> };
 
-export type GetPostsQueryVariables = Exact<{
-  title?: InputMaybe<Scalars['String']>;
-}>;
+export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, likes: number, created_at: any, user: { __typename?: 'User', nickname: string } }> };
+export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, likes: number, created_at: any, user: { __typename?: 'User', id: number, nickname: string } }> };
 
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1287,8 +1285,8 @@ export type GetPersonalVehiclesLazyQueryHookResult = ReturnType<typeof useGetPer
 export type GetPersonalVehiclesSuspenseQueryHookResult = ReturnType<typeof useGetPersonalVehiclesSuspenseQuery>;
 export type GetPersonalVehiclesQueryResult = Apollo.QueryResult<GetPersonalVehiclesQuery, GetPersonalVehiclesQueryVariables>;
 export const GetPostsDocument = gql`
-    query GetPosts($title: String) {
-  getPosts(title: $title) {
+    query GetPosts {
+  getPosts {
     id
     title
     content
@@ -1296,6 +1294,7 @@ export const GetPostsDocument = gql`
     likes
     created_at
     user {
+      id
       nickname
     }
   }
@@ -1314,7 +1313,6 @@ export const GetPostsDocument = gql`
  * @example
  * const { data, loading, error } = useGetPostsQuery({
  *   variables: {
- *      title: // value for 'title'
  *   },
  * });
  */
