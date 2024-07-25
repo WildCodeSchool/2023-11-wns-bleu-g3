@@ -1,14 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import {
-  useDeletePostMutation,
   useProfileQuery,
   useUpdatePostMutation,
 } from "@/graphql/generated/schema";
 import Icon from "../icon";
-import { toast } from "react-toastify";
-import { useRouter } from "next/router";
-import Modal from "../modal";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import ModalDeletePost from "./modal-delete-post";
 import ModalUpdatePost from "./modal-update-post";
 
@@ -27,11 +23,35 @@ const PostItem = ({
     };
   };
 }) => {
-  const { data: userData } = useProfileQuery();
-  const currentUsername = userData?.profile?.nickname || "";
-
   const [isUpdatePostModalOpen, setIsUpdatePostModalOpen] = useState(false);
   const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
+
+  const [updateNbLikes] = useUpdatePostMutation();
+
+  const like = async () => {
+    await updateNbLikes({
+      variables: {
+        data: {
+          likes: post.likes + 1,
+        },
+        postId: post.id,
+      },
+    });
+  };
+
+  const dislike = async () => {
+    await updateNbLikes({
+      variables: {
+        data: {
+          likes: post.likes - 1,
+        },
+        postId: post.id,
+      },
+    });
+  };
+
+  const { data: userData } = useProfileQuery();
+  const currentUsername = userData?.profile?.nickname || "";
 
   const convertDate = (isoString: string) => {
     const date = new Date(isoString);
@@ -85,9 +105,13 @@ const PostItem = ({
           <p>{post.likes}</p>
           <button>
             {post.likes === 0 ? (
-              <Icon name="favorite_border" />
+              <button onClick={like}>
+                <Icon name="favorite_border" />
+              </button>
             ) : (
-              <Icon name="favorite" />
+              <button onClick={dislike}>
+                <Icon name="favorite" />
+              </button>
             )}
           </button>
         </div>

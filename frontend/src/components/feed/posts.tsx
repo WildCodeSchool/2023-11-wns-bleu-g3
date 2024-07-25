@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useGetPostsQuery, useProfileQuery } from "@/graphql/generated/schema";
 import SortDropdown from "./sort-dropdown";
 import FilterDropdown from "./filter-dropdown";
