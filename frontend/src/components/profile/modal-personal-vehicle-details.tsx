@@ -1,9 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import Icon from "../icon";
-import {
-  useDeletePersonalVehicleMutation,
-  useUpdatePersonalVehicleMutation,
-} from "@/graphql/generated/schema";
+import { useDeletePersonalVehicleMutation } from "@/graphql/generated/schema";
 import Modal from "../modal";
 import ModalUpdatePersonalVehicle from "./modal-update-personal-vehicle";
 import { toast } from "react-toastify";
