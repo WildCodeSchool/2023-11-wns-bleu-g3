@@ -7,9 +7,11 @@ import {
   VehicleDecade,
   VehicleType,
   MotoEngine,
+  VehicleCategory,
 } from "./entities/Enums/Vehicle_Attributes";
 import fs from "fs";
 import path from "path";
+import PersonalVehicle from "./entities/PersonalVehicle";
 
 export async function clearDB() {
   const runner = db.createQueryRunner();
@@ -78,6 +80,34 @@ async function main() {
     emailVerified: true,
   });
   await admin.save();
+
+  const personalVehicle1 = new PersonalVehicle();
+  Object.assign(personalVehicle1, {
+    name: "Mon super vélo",
+    vehicle_category: VehicleCategory.Bike,
+    user: user,
+  });
+  await personalVehicle1.save();
+
+  const personalVehicle2 = new PersonalVehicle();
+  Object.assign(personalVehicle2, {
+    name: "Porsche Cayenne",
+    vehicle_category: VehicleCategory.Car,
+    fuel_type: FuelType.Petrol,
+    vehicle_type: VehicleType.Luxury,
+    year_of_construction: VehicleDecade.Decade2020s,
+    user: user,
+  });
+  await personalVehicle2.save();
+
+  const personalVehicle3 = new PersonalVehicle();
+  Object.assign(personalVehicle3, {
+    name: "Ma moto électrique",
+    vehicle_category: VehicleCategory.Motorbike,
+    moto_engine: MotoEngine.Electric,
+    user: user,
+  });
+  await personalVehicle3.save();
 
   // Json Reader
   const filePath = path.resolve(__dirname, "../src/data/defaultDB.json");

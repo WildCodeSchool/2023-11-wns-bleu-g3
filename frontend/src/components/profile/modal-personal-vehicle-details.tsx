@@ -7,6 +7,8 @@ import {
 import Modal from "../modal";
 import ModalUpdatePersonalVehicle from "./modal-update-personal-vehicle";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { useRouter } from "next/router";
 
 export default function ModalPersonalVehicleDetails({
@@ -54,7 +56,7 @@ export default function ModalPersonalVehicleDetails({
                         id="name"
                         className="input-text-reef mb-4"
                         value={vehicle.name}
-                        readOnly
+                        disabled
                       />
                     </label>
 
@@ -68,7 +70,7 @@ export default function ModalPersonalVehicleDetails({
                             id="fuel_type"
                             className="input-text-reef"
                             value={vehicle.fuel_type}
-                            readOnly
+                            disabled
                           />
                         </label>
                         <label htmlFor="vehicle_type">
@@ -79,7 +81,7 @@ export default function ModalPersonalVehicleDetails({
                             id="vehicle_type"
                             className="input-text-reef"
                             value={vehicle.vehicle_type}
-                            readOnly
+                            disabled
                           />
                         </label>
                         <label htmlFor="year_of_construction">
@@ -90,7 +92,7 @@ export default function ModalPersonalVehicleDetails({
                             id="year_of_construction"
                             className="input-text-reef"
                             value={vehicle.year_of_construction}
-                            readOnly
+                            disabled
                           />
                         </label>
                       </div>
@@ -105,7 +107,7 @@ export default function ModalPersonalVehicleDetails({
                           id="moto_engine"
                           className="input-text-reef"
                           value={vehicle.moto_engine}
-                          readOnly
+                          disabled
                         />
                       </label>
                     )}

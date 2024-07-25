@@ -7,6 +7,7 @@ import {
 import { useRouter } from "next/router";
 import Modal from "../modal";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ModalUpdatePersonalVehicle({
   setIsBeingModified,
@@ -64,6 +65,8 @@ export default function ModalUpdatePersonalVehicle({
                     name="name"
                     id="name"
                     className="input-text-reef mb-4"
+                    defaultValue={vehicle.name}
+                    required
                   />
                 </label>
                 <label htmlFor="vehicle_category">
@@ -74,6 +77,7 @@ export default function ModalUpdatePersonalVehicle({
                     id="vehicle_category"
                     value={selectedVehicle}
                     onChange={handleVehicleChange}
+                    required
                   >
                     <option disabled value=""></option>
                     <option value="Voiture">Voiture</option>

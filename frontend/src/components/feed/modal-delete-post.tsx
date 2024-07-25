@@ -6,8 +6,8 @@ import Icon from "../icon";
 
 export default function ModalDeletePost({
   post,
-  isModalDeleteOpen,
-  setIsModalDeleteOpen,
+  isDeletePostModalOpen,
+  setIsDeletePostModalOpen,
 }: {
   post: {
     id: number;
@@ -20,8 +20,8 @@ export default function ModalDeletePost({
       nickname: string;
     };
   };
-  isModalDeleteOpen: boolean;
-  setIsModalDeleteOpen: (value: boolean) => void;
+  isDeletePostModalOpen: boolean;
+  setIsDeletePostModalOpen: (value: boolean) => void;
 }) {
   const [deletepost] = useDeletePostMutation();
 
@@ -37,13 +37,13 @@ export default function ModalDeletePost({
   };
   return (
     <>
-      {isModalDeleteOpen && (
+      {isDeletePostModalOpen && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto md:w-3/12 my-6 mx-2 md:mx-4 lg:mx-auto max-w-3xl">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-lightPearl outline-none focus:outline-none">
                 <button
-                  onClick={() => setIsModalDeleteOpen(false)}
+                  onClick={() => setIsDeletePostModalOpen(false)}
                   className="flex justify-end items-center p-3"
                 >
                   <Icon name="close" />
@@ -59,7 +59,7 @@ export default function ModalDeletePost({
                     Supprimer
                   </button>
                   <button
-                    onClick={() => setIsModalDeleteOpen(false)}
+                    onClick={() => setIsDeletePostModalOpen(false)}
                     className="btn btn-outline-reef"
                   >
                     Annuler

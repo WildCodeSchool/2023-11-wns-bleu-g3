@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import Modal from "../modal";
 import { useEffect, useRef, useState } from "react";
 import ModalDeletePost from "./modal-delete-post";
+import ModalUpdatePost from "./modal-update-post";
 
 const PostItem = ({
   post,
@@ -29,8 +30,8 @@ const PostItem = ({
   const { data: userData } = useProfileQuery();
   const currentUsername = userData?.profile?.nickname || "";
 
-  const [updatePost] = useUpdatePostMutation();
-  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [isUpdatePostModalOpen, setIsUpdatePostModalOpen] = useState(false);
+  const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
 
   const convertDate = (isoString: string) => {
     const date = new Date(isoString);
@@ -47,7 +48,8 @@ const PostItem = ({
         <p>{convertDate(post.created_at)}</p>
       </div>
       <div className="mb-4">
-        <h3 className="text-xl mb-1">{post.title}</h3>
+        <h3 className="text-xl mb-2">{post.title}</h3>
+        <div className=" border-b-2 border-shore w-full my-3" />
         {post.imageUrl ? (
           <div className="flex justify-between">
             <p>{post.content}</p>
@@ -70,10 +72,10 @@ const PostItem = ({
       >
         {currentUsername === post.user.nickname && (
           <div className="flex gap-2 justify-end text-reef">
-            <button>
+            <button onClick={() => setIsUpdatePostModalOpen(true)}>
               <Icon name="edit" />
             </button>
-            <button onClick={() => setIsModalDeleteOpen(true)}>
+            <button onClick={() => setIsDeletePostModalOpen(true)}>
               <Icon name="delete" />
             </button>
           </div>
@@ -91,8 +93,13 @@ const PostItem = ({
         </div>
       </div>
       <ModalDeletePost
-        isModalDeleteOpen={isModalDeleteOpen}
-        setIsModalDeleteOpen={setIsModalDeleteOpen}
+        isDeletePostModalOpen={isDeletePostModalOpen}
+        setIsDeletePostModalOpen={setIsDeletePostModalOpen}
+        post={post}
+      />
+      <ModalUpdatePost
+        isUpdatePostModalOpen={isUpdatePostModalOpen}
+        setIsUpdatePostModalOpen={setIsUpdatePostModalOpen}
         post={post}
       />
     </div>
