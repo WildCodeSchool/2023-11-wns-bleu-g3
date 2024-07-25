@@ -72,7 +72,7 @@ const PostItem = ({
         <div className=" border-b-2 border-shore w-full my-3" />
         {post.imageUrl ? (
           <div className="flex justify-between">
-            <p>{post.content}</p>
+            <p className="whitespace-pre-line">{post.content}</p>
             <img
               src={post.imageUrl || ""}
               alt="post"
@@ -80,7 +80,7 @@ const PostItem = ({
             />
           </div>
         ) : (
-          <p>{post.content}</p>
+          <p className="whitespace-pre-line">{post.content}</p>
         )}
       </div>
       <div
