@@ -3,6 +3,7 @@ import { GraphQLError } from "graphql";
 import { Context } from "../types";
 import { UserRole } from "../entities/User";
 import Post, { NewPostInput, UpdatePostInput } from "../entities/Post";
+import Like from "../entities/Like";
 import { ILike } from "typeorm";
 
 @Resolver()
@@ -30,10 +31,17 @@ class PostResolver {
   ): Promise<Post[]> {
     if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
 
-    return await Post.find({
-      relations: { user: true },
+    const posts = await Post.find({
+      relations: { user: true, likes: true },
       where: { title: title ? ILike(`%${title}%`) : undefined },
     });
+
+    for (const post of posts) {
+      const likeCount = await Like.count({ where: { post: { id: post.id } } });
+      post.nbOfLikes = likeCount;
+    }
+
+    return posts;
   }
 
   @Authorized()
