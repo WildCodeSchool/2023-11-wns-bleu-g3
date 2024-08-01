@@ -30,7 +30,6 @@ export default function TopbarMenu() {
           onClick={async () => {
             await logout();
             router.push("/");
-            client.resetStore();
           }}
         >
           Déconnexion
