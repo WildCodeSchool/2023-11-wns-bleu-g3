@@ -14,6 +14,7 @@ import Activity from "./Activity";
 import { Follow } from "./Follow";
 import PersonalVehicle from "./PersonalVehicle";
 import Post from "./Post";
+import Like from "./Like";
 
 export enum UserRole {
   Admin = "admin",
@@ -100,6 +101,10 @@ class User extends BaseEntity {
   @OneToMany(() => Post, (post) => post.user)
   @Field(() => [Post], { nullable: true })
   posts?: Post[];
+
+  @OneToMany(() => Like, (like) => like.user)
+  @Field(() => [Like])
+  likes: Like[];
 }
 
 @InputType()

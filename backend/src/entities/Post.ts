@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import User from "./User";
+import Like from "./Like";
 import { ObjectId } from "../types";
 
 @Entity()
@@ -29,13 +31,16 @@ class Post extends BaseEntity {
   @Field({ nullable: true })
   imageUrl: string;
 
-  @Column({ default: 0 })
-  @Field()
-  likes: number;
-
   @CreateDateColumn()
   @Field()
   created_at: Date;
+
+  @Field({ nullable: true })
+  nbOfLikes?: number;
+
+  @OneToMany(() => Like, (like) => like.post)
+  @Field(() => [Like])
+  likes: Like[];
 
   @ManyToOne(() => User, (user) => user.posts, {
     cascade: true,
@@ -58,6 +63,9 @@ export class NewPostInput {
 
   @Field(() => ObjectId)
   user: ObjectId;
+
+  @Field({ nullable: true })
+  nbOfLikes?: number;
 }
 
 @InputType()
@@ -71,8 +79,8 @@ export class UpdatePostInput {
   @Field({ nullable: true })
   imageUrl?: string;
 
-  @Field({ nullable: true })
-  likes?: number;
+  // @Field({ nullable: true })
+  // nbOfLikes?: number;
 }
 
 export default Post;
