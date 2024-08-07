@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import {
+  useGetLikesQuery,
+  useLikeAndDislikePostMutation,
   useProfileQuery,
-  useUpdatePostMutation,
 } from "@/graphql/generated/schema";
 import Icon from "../icon";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalDeletePost from "./modal-delete-post";
 import ModalUpdatePost from "./modal-update-post";
 
@@ -17,41 +18,51 @@ const PostItem = ({
     title: string;
     content: string;
     imageUrl: string;
-    likes: number;
+    nbOfLikes: number;
     user: {
       nickname: string;
     };
+    likes: {
+      id: number;
+    }[];
   };
 }) => {
   const [isUpdatePostModalOpen, setIsUpdatePostModalOpen] = useState(false);
   const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
-
-  const [updateNbLikes] = useUpdatePostMutation();
-
-  const like = async () => {
-    await updateNbLikes({
-      variables: {
-        data: {
-          likes: post.likes + 1,
-        },
-        postId: post.id,
-      },
-    });
-  };
-
-  const dislike = async () => {
-    await updateNbLikes({
-      variables: {
-        data: {
-          likes: post.likes - 1,
-        },
-        postId: post.id,
-      },
-    });
-  };
+  const [localLikes, setLocalLikes] = useState(post.nbOfLikes);
+  const [hasLiked, setHasLiked] = useState(false);
 
   const { data: userData } = useProfileQuery();
   const currentUsername = userData?.profile?.nickname || "";
+
+  const { data: likedPost } = useGetLikesQuery({
+    variables: { postId: post.id },
+  });
+
+  useEffect(() => {
+    if (likedPost) {
+      const userLike = likedPost.getLikes.some(
+        (like) => like.user.id === userData?.profile.id
+      );
+      setHasLiked(userLike);
+    }
+  }, [likedPost, userData]);
+
+  const [likePost] = useLikeAndDislikePostMutation();
+
+  const handleLikePost = () => {
+    likePost({ variables: { postId: post.id } })
+      .then(({ data }) => {
+        if (data?.likeAndDislikePost === "Like removed") {
+          setLocalLikes(localLikes - 1);
+          setHasLiked(false);
+        } else {
+          setLocalLikes(localLikes + 1);
+          setHasLiked(true);
+        }
+      })
+      .catch(console.error);
+  };
 
   const convertDate = (isoString: string) => {
     const date = new Date(isoString);
@@ -72,12 +83,16 @@ const PostItem = ({
         <div className=" border-b-2 border-shore w-full my-3" />
         {post.imageUrl ? (
           <div className="flex justify-between">
-            <p className="whitespace-pre-line">{post.content}</p>
-            <img
-              src={post.imageUrl || ""}
-              alt="post"
-              className="max-w-56 rounded-lg"
-            />
+            <p className="whitespace-pre-line">
+              <a href={post.imageUrl} target="_blank">
+                <img
+                  src={post.imageUrl}
+                  alt="post"
+                  className="mb-4 max-w-72 max-h-72 float-right rounded-lg"
+                />
+              </a>
+              {post.content}
+            </p>
           </div>
         ) : (
           <p className="whitespace-pre-line">{post.content}</p>
@@ -102,18 +117,18 @@ const PostItem = ({
         )}
 
         <div className="flex gap-2 justify-end text-reef">
-          <p>{post.likes}</p>
-          <button>
-            {post.likes === 0 ? (
-              <button onClick={like}>
-                <Icon name="favorite_border" />
-              </button>
-            ) : (
-              <button onClick={dislike}>
+          <p>{localLikes}</p>
+          <div>
+            {hasLiked ? (
+              <button onClick={handleLikePost}>
                 <Icon name="favorite" />
               </button>
+            ) : (
+              <button onClick={handleLikePost}>
+                <Icon name="favorite_border" />
+              </button>
             )}
-          </button>
+          </div>
         </div>
       </div>
       <ModalDeletePost

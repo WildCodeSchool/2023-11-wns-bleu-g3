@@ -1,0 +1,11 @@
+query GetLikes($postId: Float) {
+  getLikes(postId: $postId) {
+    id
+    post {
+      id
+    }
+    user {
+      id
+    }
+  }
+}
