@@ -27,6 +27,8 @@ export default function Posts() {
     let sortedArray = [...posts];
     if (sortedBy === "lessLikes") {
       sortedArray.sort((a, b) => (a.nbOfLikes || 0) - (b.nbOfLikes || 0));
+    } else if (sortedBy === "mostLikes") {
+      sortedArray.sort((a, b) => (b.nbOfLikes || 0) - (a.nbOfLikes || 0));
     } else if (sortedBy === "lessRecent") {
       sortedArray.sort((a, b) => a.id - b.id);
     } else if (sortedBy === "userNickname") {
@@ -75,7 +77,7 @@ export default function Posts() {
         />
       </div>
 
-      <div className="bg-pearl border-shore border-2 rounded-lg p-8">
+      <div className=" lg:border-shore lg:border-2 lg:rounded-lg lg:p-8">
         {filteredArray.length === 0 ? (
           <p>Aucun post ne correspond à vos critères</p>
         ) : (

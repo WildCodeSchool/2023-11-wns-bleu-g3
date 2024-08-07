@@ -16,11 +16,17 @@ class Like extends BaseEntity {
   @Field()
   id: number;
 
-  @ManyToOne(() => Post, (post) => post.likes)
+  @ManyToOne(() => Post, (post) => post.likes, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   @Field(() => Post)
   post: Post;
 
-  @ManyToOne(() => User, (user) => user.likes)
+  @ManyToOne(() => User, (user) => user.likes, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   @Field(() => User)
   user: User;
 }
