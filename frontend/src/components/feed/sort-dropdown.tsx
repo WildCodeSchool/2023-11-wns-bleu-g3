@@ -43,7 +43,7 @@ const SortDropdown = ({
         <Icon name="expand_more" />
       </button>
       {sortedByIsOpen && (
-        <div className="flex flex-col mt-8 absolute inset-y-0 end-0 z-50 w-52 border-2 rounded-lg bg-lightPearl border-shore h-[15rem]">
+        <div className="flex flex-col mt-8 absolute inset-y-0 end-0 z-50 w-52 border-2 rounded-lg bg-lightPearl border-shore h-[17rem]">
           <p
             className="border-b-2 border-shore px-2 py-1 hover:bg-shore cursor-pointer"
             onClick={() => handleSortBy("mostRecent")}
@@ -55,6 +55,12 @@ const SortDropdown = ({
             onClick={() => handleSortBy("lessRecent")}
           >
             Du plus ancien au plus récent
+          </p>
+          <p
+            className="border-b-2 border-shore px-2 py-1 hover:bg-shore cursor-pointer"
+            onClick={() => handleSortBy("mostLikes")}
+          >
+            Du plus de likes au moins de likes
           </p>
           <p
             className="border-b-2 border-shore px-2 py-1 hover:bg-shore cursor-pointer"

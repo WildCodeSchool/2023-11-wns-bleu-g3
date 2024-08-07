@@ -52,7 +52,7 @@ export default function ModalUpdatePost({
       {isUpdatePostModalOpen && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto md:w-3/12 my-6 mx-2 md:mx-4 lg:mx-auto max-w-3xl">
+            <div className="relative w-auto lg:w-6/12 my-6 mx-2 md:mx-4 lg:mx-auto max-w-3xl">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-lightPearl outline-none focus:outline-none">
                 <button
                   onClick={() => setIsUpdatePostModalOpen(false)}
@@ -80,7 +80,7 @@ export default function ModalUpdatePost({
                       <textarea
                         name="content"
                         id="content"
-                        className="input-text-reef"
+                        className="input-text-reef min-h-96 lg:min-h-64"
                         defaultValue={post.content}
                       />
                     </label>

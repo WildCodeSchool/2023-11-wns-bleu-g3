@@ -73,7 +73,7 @@ const PostItem = ({
   };
 
   return (
-    <div className="mb-4 border-2 border-reef rounded-lg p-2">
+    <div className="bg-pearl mb-4 lg:border-2 lg:border-reef lg:rounded-lg p-2 w-full">
       <div className="flex justify-between mb-4">
         <p className="font-semibold opacity-85">{post.user.nickname}</p>
         <p>{convertDate(post.created_at)}</p>
@@ -88,7 +88,7 @@ const PostItem = ({
                 <img
                   src={post.imageUrl}
                   alt="post"
-                  className="mb-4 max-w-72 max-h-72 float-right rounded-lg"
+                  className="mb-4 lg:max-w-72 max-h-72 lg:float-right rounded-lg"
                 />
               </a>
               {post.content}
