@@ -1,0 +1,17 @@
+query GetPosts {
+  getPosts {
+    id
+    title
+    content
+    imageUrl
+    created_at
+    nbOfLikes
+    user {
+      id
+      nickname
+    }
+    likes {
+      id
+    }
+  }
+}

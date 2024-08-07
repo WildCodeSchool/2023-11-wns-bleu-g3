@@ -1,0 +1,13 @@
+mutation CreatePost($data: NewPostInput!) {
+  createPost(data: $data) {
+    id
+    title
+    content
+    imageUrl
+    nbOfLikes
+    created_at
+    user {
+      id
+    }
+  }
+}

@@ -8,6 +8,7 @@ export default function Document() {
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet"
         />
+        <link rel="icon" href="/img/greenfoot-logo.png" />
       </Head>
       <body>
         <Main />

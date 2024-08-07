@@ -1,12 +1,13 @@
 import Footer from "@/components/footer";
 import HeaderVisitor from "@/components/header-visitor";
+import { ReactNode } from "react";
 
 export default function LayoutVisitor({
   children,
   isOpen,
   setIsOpen,
 }: {
-  children: any;
+  children: ReactNode;
   isOpen: boolean;
   setIsOpen: any;
 }) {

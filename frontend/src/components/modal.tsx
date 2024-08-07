@@ -6,7 +6,7 @@ export default function Modal({
   buttonClasses,
 }: {
   content: any;
-  modalButtonTitle: string;
+  modalButtonTitle: string | JSX.Element;
   buttonClasses: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);

@@ -5,8 +5,18 @@ import ActivityTypeResolver from "./resolvers/ActivityTypeResolver";
 import ActivityResolver from "./resolvers/ActivityResolver";
 import PersonalVehicleResolver from "./resolvers/PersonalVehicleResolver";
 import { FollowerResolver } from "./resolvers/FollowerResolver";
+import PostResolver from "./resolvers/PostResolver";
+import LikeResolver from "./resolvers/LikeResolver";
 
 export default buildSchema({
-  resolvers: [UserResolver, ActivityTypeResolver, ActivityResolver, PersonalVehicleResolver, FollowerResolver],
+  resolvers: [
+    UserResolver,
+    ActivityTypeResolver,
+    ActivityResolver,
+    PersonalVehicleResolver,
+    FollowerResolver,
+    PostResolver,
+    LikeResolver,
+  ],
   authChecker,
 });

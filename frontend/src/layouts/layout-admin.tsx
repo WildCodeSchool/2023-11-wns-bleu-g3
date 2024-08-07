@@ -1,9 +1,8 @@
 import SideAdmin from "@/components/side-admin";
 import TopbarAdmin from "@/components/topbar-admin";
-import React, { use, useState } from "react";
+import React, { ReactNode, use, useState } from "react";
 
-
-export default function LayoutAdmin({ children }: { children: any }) {
+export default function LayoutAdmin({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

@@ -36,7 +36,7 @@ const PersonalVehicleItem = () => {
               <p className="opacity-75 font-normal">
                 {convertDate(vehicle.created_at)}
               </p>
-              <p className="">{vehicle.fuel_type}</p>
+              <p className="">{vehicle.vehicle_category}</p>
             </div>
             <span
               onClick={() => setOpenModalVehicleId(vehicle.id)}
