@@ -17,7 +17,9 @@ export default function LayoutLoggedInUser({
       <>
         <TopbarLoggedInUser isOpen={isOpen} setIsOpen={setIsOpen} />
         <main className="flex min-h-screen w-full h-full">
-          <SideLoggedInUser isOpen={isOpen} />
+          <div>
+            <SideLoggedInUser isOpen={isOpen} />
+          </div>
           <div className="p-4 md:p-6 w-full">{children}</div>
         </main>
         <Footer />
