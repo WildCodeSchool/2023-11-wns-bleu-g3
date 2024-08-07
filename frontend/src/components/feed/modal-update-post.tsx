@@ -18,7 +18,7 @@ export default function ModalUpdatePost({
     title: string;
     content: string;
     imageUrl: string;
-    likes: number;
+    nbOfLikes: number;
     user: {
       nickname: string;
     };

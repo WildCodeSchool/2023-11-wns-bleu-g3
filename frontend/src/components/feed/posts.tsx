@@ -26,7 +26,7 @@ export default function Posts() {
   const sortedPosts = () => {
     let sortedArray = [...posts];
     if (sortedBy === "lessLikes") {
-      sortedArray.sort((a, b) => a.likes - b.likes);
+      sortedArray.sort((a, b) => (a.nbOfLikes || 0) - (b.nbOfLikes || 0));
     } else if (sortedBy === "lessRecent") {
       sortedArray.sort((a, b) => a.id - b.id);
     } else if (sortedBy === "userNickname") {

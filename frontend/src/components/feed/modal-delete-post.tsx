@@ -15,7 +15,7 @@ export default function ModalDeletePost({
     title: string;
     content: string;
     imageUrl: string;
-    likes: number;
+    nbOfLikes: number;
     user: {
       nickname: string;
     };

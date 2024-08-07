@@ -73,6 +73,13 @@ export type Follow = {
   id: Scalars['Float'];
 };
 
+export type Like = {
+  __typename?: 'Like';
+  id: Scalars['Float'];
+  post: Post;
+  user: User;
+};
+
 export type LoginInput = {
   emailOrNickname: Scalars['String'];
   password: Scalars['String'];
@@ -92,6 +99,7 @@ export type Mutation = {
   deletePost: Scalars['String'];
   deleteUser: Scalars['String'];
   followUser: Follow;
+  likeAndDislikePost: Scalars['String'];
   login: Scalars['String'];
   logout: Scalars['String'];
   resetPassword: Scalars['Boolean'];
@@ -164,6 +172,11 @@ export type MutationDeleteUserArgs = {
 
 export type MutationFollowUserArgs = {
   userId: Scalars['Float'];
+};
+
+
+export type MutationLikeAndDislikePostArgs = {
+  postId: Scalars['Float'];
 };
 
 
@@ -276,7 +289,8 @@ export type Post = {
   created_at: Scalars['DateTimeISO'];
   id: Scalars['Int'];
   imageUrl?: Maybe<Scalars['String']>;
-  likes: Scalars['Float'];
+  likes: Array<Like>;
+  nbOfLikes?: Maybe<Scalars['Float']>;
   title?: Maybe<Scalars['String']>;
   user: User;
 };
@@ -293,6 +307,7 @@ export type Query = {
   getFollowing: Array<User>;
   getFollowingByUser: Array<User>;
   getFuelTypes: Array<Scalars['String']>;
+  getLikes: Array<Like>;
   getMotoEngines: Array<Scalars['String']>;
   getPersonalVehicles: Array<PersonalVehicle>;
   getPosts: Array<Post>;
@@ -327,6 +342,11 @@ export type QueryGetFollowersByUserArgs = {
 
 export type QueryGetFollowingByUserArgs = {
   userId: Scalars['Float'];
+};
+
+
+export type QueryGetLikesArgs = {
+  postId?: InputMaybe<Scalars['Float']>;
 };
 
 
@@ -385,7 +405,6 @@ export type UpdatePersonalVehicleInput = {
 export type UpdatePostInput = {
   content?: InputMaybe<Scalars['String']>;
   imageUrl?: InputMaybe<Scalars['String']>;
-  likes?: InputMaybe<Scalars['Float']>;
   title?: InputMaybe<Scalars['String']>;
 };
 
@@ -422,6 +441,7 @@ export type User = {
   following: Array<Follow>;
   id: Scalars['Float'];
   lastName?: Maybe<Scalars['String']>;
+  likes: Array<Like>;
   nickname: Scalars['String'];
   personalVehicles?: Maybe<Array<PersonalVehicle>>;
   posts?: Maybe<Array<Post>>;
@@ -477,7 +497,7 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, likes: number, created_at: any, user: { __typename?: 'User', id: number } } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, nbOfLikes?: number | null, created_at: any, user: { __typename?: 'User', id: number } } };
 
 export type DeleteActivityTypeMutationVariables = Exact<{
   activityTypeId: Scalars['Float'];
@@ -544,6 +564,13 @@ export type GetActivityTypesByIdQueryVariables = Exact<{
 
 export type GetActivityTypesByIdQuery = { __typename?: 'Query', getActivityTypesById: { __typename?: 'ActivityType', category: string, id: number, emissions: number, name: string, unit: string, attributes?: { __typename?: 'Attr', madeInFrance?: number | null, secondHandClothes?: number | null, secondHandPhones?: number | null } | null, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, vehicleType?: string | null, vehicleDecade?: string | null, motoEngine?: string | null } | null } };
 
+export type GetLikesQueryVariables = Exact<{
+  postId?: InputMaybe<Scalars['Float']>;
+}>;
+
+
+export type GetLikesQuery = { __typename?: 'Query', getLikes: Array<{ __typename?: 'Like', id: number, post: { __typename?: 'Post', id: number }, user: { __typename?: 'User', id: number } }> };
+
 export type GetPersonalVehiclesQueryVariables = Exact<{
   userId?: InputMaybe<Scalars['Float']>;
 }>;
@@ -554,12 +581,19 @@ export type GetPersonalVehiclesQuery = { __typename?: 'Query', getPersonalVehicl
 export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, likes: number, created_at: any, user: { __typename?: 'User', id: number, nickname: string } }> };
+export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, created_at: any, nbOfLikes?: number | null, user: { __typename?: 'User', id: number, nickname: string }, likes: Array<{ __typename?: 'Like', id: number }> }> };
 
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, email: string, nickname: string, avatarUrl?: string | null, role: string, firstName?: string | null, lastName?: string | null } };
+
+export type LikeAndDislikePostMutationVariables = Exact<{
+  postId: Scalars['Float'];
+}>;
+
+
+export type LikeAndDislikePostMutation = { __typename?: 'Mutation', likeAndDislikePost: string };
 
 export type LoginMutationVariables = Exact<{
   data: LoginInput;
@@ -624,7 +658,7 @@ export type UpdatePostMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePostMutation = { __typename?: 'Mutation', updatePost: { __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, likes: number } };
+export type UpdatePostMutation = { __typename?: 'Mutation', updatePost: { __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, nbOfLikes?: number | null } };
 
 export type UpdateProfileMutationVariables = Exact<{
   data: UpdateUserInput;
@@ -799,7 +833,7 @@ export const CreatePostDocument = gql`
     title
     content
     imageUrl
-    likes
+    nbOfLikes
     created_at
     user {
       id
@@ -1234,6 +1268,52 @@ export type GetActivityTypesByIdQueryHookResult = ReturnType<typeof useGetActivi
 export type GetActivityTypesByIdLazyQueryHookResult = ReturnType<typeof useGetActivityTypesByIdLazyQuery>;
 export type GetActivityTypesByIdSuspenseQueryHookResult = ReturnType<typeof useGetActivityTypesByIdSuspenseQuery>;
 export type GetActivityTypesByIdQueryResult = Apollo.QueryResult<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>;
+export const GetLikesDocument = gql`
+    query GetLikes($postId: Float) {
+  getLikes(postId: $postId) {
+    id
+    post {
+      id
+    }
+    user {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetLikesQuery__
+ *
+ * To run a query within a React component, call `useGetLikesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLikesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLikesQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useGetLikesQuery(baseOptions?: Apollo.QueryHookOptions<GetLikesQuery, GetLikesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLikesQuery, GetLikesQueryVariables>(GetLikesDocument, options);
+      }
+export function useGetLikesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLikesQuery, GetLikesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLikesQuery, GetLikesQueryVariables>(GetLikesDocument, options);
+        }
+export function useGetLikesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetLikesQuery, GetLikesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetLikesQuery, GetLikesQueryVariables>(GetLikesDocument, options);
+        }
+export type GetLikesQueryHookResult = ReturnType<typeof useGetLikesQuery>;
+export type GetLikesLazyQueryHookResult = ReturnType<typeof useGetLikesLazyQuery>;
+export type GetLikesSuspenseQueryHookResult = ReturnType<typeof useGetLikesSuspenseQuery>;
+export type GetLikesQueryResult = Apollo.QueryResult<GetLikesQuery, GetLikesQueryVariables>;
 export const GetPersonalVehiclesDocument = gql`
     query GetPersonalVehicles($userId: Float) {
   getPersonalVehicles(userId: $userId) {
@@ -1291,11 +1371,14 @@ export const GetPostsDocument = gql`
     title
     content
     imageUrl
-    likes
     created_at
+    nbOfLikes
     user {
       id
       nickname
+    }
+    likes {
+      id
     }
   }
 }
@@ -1377,6 +1460,37 @@ export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileSuspenseQueryHookResult = ReturnType<typeof useProfileSuspenseQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
+export const LikeAndDislikePostDocument = gql`
+    mutation LikeAndDislikePost($postId: Float!) {
+  likeAndDislikePost(postId: $postId)
+}
+    `;
+export type LikeAndDislikePostMutationFn = Apollo.MutationFunction<LikeAndDislikePostMutation, LikeAndDislikePostMutationVariables>;
+
+/**
+ * __useLikeAndDislikePostMutation__
+ *
+ * To run a mutation, you first call `useLikeAndDislikePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikeAndDislikePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [likeAndDislikePostMutation, { data, loading, error }] = useLikeAndDislikePostMutation({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useLikeAndDislikePostMutation(baseOptions?: Apollo.MutationHookOptions<LikeAndDislikePostMutation, LikeAndDislikePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LikeAndDislikePostMutation, LikeAndDislikePostMutationVariables>(LikeAndDislikePostDocument, options);
+      }
+export type LikeAndDislikePostMutationHookResult = ReturnType<typeof useLikeAndDislikePostMutation>;
+export type LikeAndDislikePostMutationResult = Apollo.MutationResult<LikeAndDislikePostMutation>;
+export type LikeAndDislikePostMutationOptions = Apollo.BaseMutationOptions<LikeAndDislikePostMutation, LikeAndDislikePostMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($data: LoginInput!) {
   login(data: $data)
@@ -1680,7 +1794,7 @@ export const UpdatePostDocument = gql`
     title
     content
     imageUrl
-    likes
+    nbOfLikes
   }
 }
     `;

@@ -4,11 +4,14 @@ query GetPosts {
     title
     content
     imageUrl
-    likes
     created_at
+    nbOfLikes
     user {
       id
       nickname
+    }
+    likes {
+      id
     }
   }
 }

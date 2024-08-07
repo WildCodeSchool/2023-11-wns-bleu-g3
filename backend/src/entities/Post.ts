@@ -63,9 +63,6 @@ export class NewPostInput {
 
   @Field(() => ObjectId)
   user: ObjectId;
-
-  @Field({ nullable: true })
-  nbOfLikes?: number;
 }
 
 @InputType()
@@ -78,9 +75,6 @@ export class UpdatePostInput {
 
   @Field({ nullable: true })
   imageUrl?: string;
-
-  // @Field({ nullable: true })
-  // nbOfLikes?: number;
 }
 
 export default Post;

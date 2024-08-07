@@ -4,6 +4,6 @@ mutation UpdatePost($data: UpdatePostInput!, $postId: Float!) {
     title
     content
     imageUrl
-    likes
+    nbOfLikes
   }
 }
