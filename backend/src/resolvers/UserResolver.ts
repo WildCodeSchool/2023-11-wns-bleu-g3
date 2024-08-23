@@ -113,6 +113,9 @@ class UserResolver {
     );
     if (!passwordVerified) throw new GraphQLError("Invalid Credentials");
 
+    if ((findUser.isBlocked = true))
+      throw new GraphQLError("This account has been suspended.");
+
     const token = jwt.sign(
       {
         userId: findUser.id,
@@ -189,42 +192,47 @@ class UserResolver {
   }
 
   @Authorized([UserRole.Admin])
-  @Mutation(() => String)
+  @Mutation(() => [String])
   async toggleBlockUser(
     @Ctx() ctx: Context,
-    @Arg("userId", { nullable: true }) id?: number
-  ): Promise<string> {
+    @Arg("userIds", () => [Int]) ids: number[]
+  ): Promise<string[]> {
     if (!ctx.currentUser) throw new GraphQLError("You must be authenticated");
 
     if (ctx.currentUser.role !== "admin") {
       throw new GraphQLError("You do not have permission to this operation.");
     }
 
-    const userId = id || ctx.currentUser.id;
-    const user = await User.findOneBy({ id: userId });
-    if (!user) throw new GraphQLError("User not found");
+    //.all for concurrent mapping
+    const results = Promise.all(
+      ids.map(async (userId) => {
+        const user = await User.findOneBy({ id: userId });
+        if (!user) throw new GraphQLError("User not found");
 
-    if (user.role === UserRole.Admin) {
-      throw new GraphQLError("Admins cannot be blocked.");
-    }
+        if (user.role === UserRole.Admin) {
+          throw new GraphQLError("Admins cannot be blocked.");
+        }
 
-    switch (user.isBlocked) {
-      case false:
-        user.isBlocked = true;
-        user.blocked_at = new Date();
-        await user.save();
+        switch (user.isBlocked) {
+          case false:
+            user.isBlocked = true;
+            user.blocked_at = new Date();
+            await user.save();
 
-        return "User blocked and logged out of his account.";
+            return "User blocked and logged out of his account.";
 
-      case true:
-        user.isBlocked = false;
-        await user.save();
+          case true:
+            user.isBlocked = false;
+            await user.save();
 
-        return `${user.nickname} account has been unblocked.`;
+            return `${user.nickname} account has been unblocked.`;
 
-      default:
-        throw new GraphQLError(`Unexpected isBlocked state.`);
-    }
+          default:
+            throw new GraphQLError(`Unexpected block state.`);
+        }
+      })
+    );
+    return results;
   }
 
   @Authorized()

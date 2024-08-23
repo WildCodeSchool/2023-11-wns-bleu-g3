@@ -44,10 +44,16 @@ export default function ModalAuthentication({
       router.push("/dashboard");
     } catch (e: any) {
       console.log(e);
-      if (e.message === "Invalid Credentials") {
-        setError("Identifiants incorrects");
-      } else {
-        setError(e.errors.join(", \n"));
+
+      switch (e.message) {
+        case "Invalid Credentials":
+          setError("Identifiants incorrects");
+        case "This account has been suspended.":
+          setError(
+            "Votre compte est actuellement suspendu. Pour plus d'informations, veuillez contacter l'équipe support GreenFoot."
+          );
+        default:
+          setError(e.errors.join(", \n"));
       }
     } finally {
       client.resetStore();
@@ -73,7 +79,7 @@ export default function ModalAuthentication({
       } else {
         setError(e.errors.join(", \n"));
       }
-    } 
+    }
   };
 
   const loginSchema = Yup.object().shape({
@@ -229,19 +235,19 @@ export default function ModalAuthentication({
                       )}
                       <button className="btn btn-reef">Connexion</button>
                     </form>
-                      <p className="text-base py-3">
-                        Vous n&apos;avez pas de compte ?{" "}
-                        <button
-                          onClick={() => {
-                            setIsRegistration(true);
-                            setError("");
-                          }}
-                          className="cursor-pointer hover:underline font-semibold"
-                          type="button"
-                        >
-                          Inscrivez-vous ici.
-                        </button>
-                      </p>
+                    <p className="text-base py-3">
+                      Vous n&apos;avez pas de compte ?{" "}
+                      <button
+                        onClick={() => {
+                          setIsRegistration(true);
+                          setError("");
+                        }}
+                        className="cursor-pointer hover:underline font-semibold"
+                        type="button"
+                      >
+                        Inscrivez-vous ici.
+                      </button>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -357,18 +363,18 @@ export default function ModalAuthentication({
                         Inscription
                       </button>
                     </form>
-                      <p className="text-base py-3">
-                        Vous avez déjà un compte ?{" "}
-                        <button
-                          onClick={() => {
-                            setIsRegistration(false);
-                            setError("");
-                          }}
-                          className="cursor-pointer hover:underline font-semibold"
-                        >
-                          Connectez-vous ici.
-                        </button>
-                      </p>
+                    <p className="text-base py-3">
+                      Vous avez déjà un compte ?{" "}
+                      <button
+                        onClick={() => {
+                          setIsRegistration(false);
+                          setError("");
+                        }}
+                        className="cursor-pointer hover:underline font-semibold"
+                      >
+                        Connectez-vous ici.
+                      </button>
+                    </p>
                   </div>
                 </div>
               </div>
