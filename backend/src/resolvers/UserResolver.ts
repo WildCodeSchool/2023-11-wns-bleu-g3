@@ -23,6 +23,7 @@ import crypto from "crypto";
 import mailer from "../mailer";
 import { hash } from "argon2";
 import { UserRole } from "../entities/User";
+import { IsNull } from "typeorm";
 
 @Resolver()
 class UserResolver {
@@ -163,7 +164,13 @@ class UserResolver {
     @Ctx() ctx: Context,
     @Arg("userId", { nullable: true }) id?: number
   ) {
-    if (!ctx.currentUser) return new GraphQLError("You must be authenticated");
+    if (!ctx.currentUser) throw new GraphQLError("You must be authenticated");
+
+    if (ctx.currentUser.role !== "admin") {
+      throw new GraphQLError(
+        "You do not have permission to delete other users"
+      );
+    }
 
     if (!id) {
       const userToDelete = await User.findOneBy({ id: ctx.currentUser.id });
@@ -174,17 +181,50 @@ class UserResolver {
       return "User deleted and logged out successfully";
     }
 
-    if (ctx.currentUser.role !== "admin") {
-      return new GraphQLError(
-        "You do not have permission to delete other users"
-      );
-    }
-
     const userToDelete = await User.findOneBy({ id });
     if (!userToDelete) throw new GraphQLError("User not found");
 
     await userToDelete.remove();
     return "This user has been deleted";
+  }
+
+  @Authorized([UserRole.Admin])
+  @Mutation(() => String)
+  async toggleBlockUser(
+    @Ctx() ctx: Context,
+    @Arg("userId", { nullable: true }) id?: number
+  ): Promise<string> {
+    if (!ctx.currentUser) throw new GraphQLError("You must be authenticated");
+
+    if (ctx.currentUser.role !== "admin") {
+      throw new GraphQLError("You do not have permission to this operation.");
+    }
+
+    const userId = id || ctx.currentUser.id;
+    const user = await User.findOneBy({ id: userId });
+    if (!user) throw new GraphQLError("User not found");
+
+    if (user.role === UserRole.Admin) {
+      throw new GraphQLError("Admins cannot be blocked.");
+    }
+
+    switch (user.isBlocked) {
+      case false:
+        user.isBlocked = true;
+        user.blocked_at = new Date();
+        await user.save();
+
+        return "User blocked and logged out of his account.";
+
+      case true:
+        user.isBlocked = false;
+        await user.save();
+
+        return `${user.nickname} account has been unblocked.`;
+
+      default:
+        throw new GraphQLError(`Unexpected isBlocked state.`);
+    }
   }
 
   @Authorized()
