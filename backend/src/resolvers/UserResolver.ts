@@ -113,7 +113,7 @@ class UserResolver {
     );
     if (!passwordVerified) throw new GraphQLError("Invalid Credentials");
 
-    if ((findUser.isBlocked = true))
+    if (findUser.isBlocked === true)
       throw new GraphQLError("This account has been suspended.");
 
     const token = jwt.sign(

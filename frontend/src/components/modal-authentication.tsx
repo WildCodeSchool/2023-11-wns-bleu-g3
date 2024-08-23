@@ -48,12 +48,14 @@ export default function ModalAuthentication({
       switch (e.message) {
         case "Invalid Credentials":
           setError("Identifiants incorrects");
+          break;
         case "This account has been suspended.":
           setError(
-            "Votre compte est actuellement suspendu. Pour plus d'informations, veuillez contacter l'équipe support GreenFoot."
+            "Votre compte est actuellement suspendu.\nPour plus d'informations, veuillez contacter l'équipe support GreenFoot."
           );
+          break;
         default:
-          setError(e.errors.join(", \n"));
+          if (e.errors) setError(e.errors.join(", \n"));
       }
     } finally {
       client.resetStore();
