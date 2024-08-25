@@ -99,6 +99,7 @@ export type Mutation = {
   logout: Scalars['String'];
   resetPassword: Scalars['Boolean'];
   resetPasswordRequest: Scalars['Boolean'];
+  toggleBlockUser: Array<Scalars['String']>;
   unfollow: Scalars['String'];
   updateActivityType: ActivityType;
   updatePersonalVehicle: PersonalVehicle;
@@ -160,6 +161,11 @@ export type MutationResetPasswordArgs = {
 
 export type MutationResetPasswordRequestArgs = {
   data: ResetPasswordRequestInput;
+};
+
+
+export type MutationToggleBlockUserArgs = {
+  userIds: Array<Scalars['Int']>;
 };
 
 
@@ -396,13 +402,15 @@ export type User = {
   __typename?: 'User';
   activities?: Maybe<Array<Activity>>;
   avatarUrl?: Maybe<Scalars['String']>;
-  blocked: Scalars['Boolean'];
+  blocked_at?: Maybe<Scalars['DateTimeISO']>;
   createdAt: Scalars['String'];
   email: Scalars['String'];
   firstName?: Maybe<Scalars['String']>;
   followers: Array<Follow>;
   following: Array<Follow>;
   id: Scalars['Float'];
+  isBlocked: Scalars['Boolean'];
+  isOnline: Scalars['Boolean'];
   lastName?: Maybe<Scalars['String']>;
   nickname: Scalars['String'];
   personalVehicles?: Maybe<Array<PersonalVehicle>>;
@@ -438,7 +446,7 @@ export type GetUsersPaginationQueryVariables = Exact<{
 }>;
 
 
-export type GetUsersPaginationQuery = { __typename?: 'Query', getUsersPagination: Array<{ __typename?: 'User', id: number, email: string, nickname: string, role: string, avatarUrl?: string | null, createdAt: string }> };
+export type GetUsersPaginationQuery = { __typename?: 'Query', getUsersPagination: Array<{ __typename?: 'User', id: number, email: string, nickname: string, role: string, avatarUrl?: string | null, createdAt: string, blocked_at?: any | null, isBlocked: boolean }> };
 
 export type ConfirmEmailMutationVariables = Exact<{
   emailToken: Scalars['String'];
@@ -658,6 +666,8 @@ export const GetUsersPaginationDocument = gql`
     role
     avatarUrl
     createdAt
+    blocked_at
+    isBlocked
   }
 }
     `;

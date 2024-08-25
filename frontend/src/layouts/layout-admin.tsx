@@ -1,4 +1,4 @@
-import SideAdmin from "@/components/side-admin";
+import SideAdmin from "@/components/backoffice/side-admin";
 import TopbarAdmin from "@/components/topbar-admin";
 import React, { ReactNode, use, useState } from "react";
 

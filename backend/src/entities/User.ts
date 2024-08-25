@@ -74,10 +74,6 @@ class User extends BaseEntity {
   @Column({ default: false })
   emailVerified: boolean;
 
-  @Field()
-  @Column({ default: false })
-  blocked: boolean;
-
   @CreateDateColumn()
   @Field()
   createdAt: string;

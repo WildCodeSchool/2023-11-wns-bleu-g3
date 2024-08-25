@@ -1,13 +1,16 @@
 import { useState } from "react";
 
-export default function ModalBin({ operation }: { operation: any }) {
+export default function ModalBin(
+  { operation }: { operation: any },
+  { expression }: { expression: string }
+) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
       <button
         type="button"
-        className="material-icons text-red-600 "
+        className="material-icons text-red-700 text-[1.6rem]"
         onClick={() => setIsOpen(true)}
       >
         delete
@@ -23,7 +26,7 @@ export default function ModalBin({ operation }: { operation: any }) {
                   onClick={() => setIsOpen(false)}
                 >
                   <svg
-                    className="w-3 h-3"
+                    className="w-2 h-2"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -56,8 +59,8 @@ export default function ModalBin({ operation }: { operation: any }) {
                     />
                   </svg>
                   <h3 className="mb-5 text-md font-normal text-anchor ">
-                    Êtes-vous certain de de vouloir supprimer ce type
-                    d'activité? Attention, cette action est irréversible.
+                    Êtes-vous certain de de vouloir supprimer cet élément?
+                    Attention, cette action est irréversible.
                   </h3>
                   <button
                     data-modal-hide="popup-modal"
