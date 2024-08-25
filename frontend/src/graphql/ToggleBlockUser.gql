@@ -1,0 +1,3 @@
+mutation ToggleBlockUser($userIds: [Int!]!) {
+  toggleBlockUser(userIds: $userIds)
+}

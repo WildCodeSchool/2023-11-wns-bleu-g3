@@ -115,6 +115,8 @@ export default function TableActivities() {
                       },
                     }).then(() => window.location.reload())
                   }
+                  expression="supprimer"
+                  mappedVar={activity}
                 />
               </td>
             </tr>
