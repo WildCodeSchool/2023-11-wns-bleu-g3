@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import ModalDeletePost from "./modal-delete-post";
 import ModalUpdatePost from "./modal-update-post";
 
+
 const PostItem = ({ post }: { post: any }) => {
   const [isUpdatePostModalOpen, setIsUpdatePostModalOpen] = useState(false);
   const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
