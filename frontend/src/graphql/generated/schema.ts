@@ -19,7 +19,7 @@ export type Scalars = {
 export type Activity = {
   __typename?: 'Activity';
   activityType: ActivityType;
-  ends_at: Scalars['DateTimeISO'];
+  ends_at?: Maybe<Scalars['DateTimeISO']>;
   id: Scalars['Int'];
   is_made_in_france: Scalars['Boolean'];
   is_reccurent: Scalars['Boolean'];
@@ -88,19 +88,25 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   confirmEmail: Scalars['Boolean'];
+  createActivity: Activity;
   createActivityType: ActivityType;
   createPersonalVehicle: PersonalVehicle;
   createPost: Post;
   createUser: User;
+  deleteActivity: Scalars['String'];
   deleteActivityType: Scalars['String'];
+  deletePersonalVehicle: Scalars['String'];
+  deletePost: Scalars['String'];
   deleteUser: Scalars['String'];
   followUser: Follow;
+  likeAndDislikePost: Scalars['String'];
   login: Scalars['String'];
   logout: Scalars['String'];
   resetPassword: Scalars['Boolean'];
   resetPasswordRequest: Scalars['Boolean'];
   toggleBlockUser: Array<Scalars['String']>;
   unfollow: Scalars['String'];
+  updateActivity: Activity;
   updateActivityType: ActivityType;
   updatePersonalVehicle: PersonalVehicle;
   updatePost: Post;
@@ -110,6 +116,11 @@ export type Mutation = {
 
 export type MutationConfirmEmailArgs = {
   emailToken: Scalars['String'];
+};
+
+
+export type MutationCreateActivityArgs = {
+  data: NewActivityInput;
 };
 
 
@@ -133,8 +144,25 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationDeleteActivityArgs = {
+  ActivityId: Scalars['Float'];
+};
+
+
 export type MutationDeleteActivityTypeArgs = {
   ActivityTypeId: Scalars['Float'];
+};
+
+
+export type MutationDeletePersonalVehicleArgs = {
+  personalVehicleId: Scalars['Float'];
+  userId?: InputMaybe<Scalars['Float']>;
+};
+
+
+export type MutationDeletePostArgs = {
+  postId: Scalars['Float'];
+  userId?: InputMaybe<Scalars['Float']>;
 };
 
 
@@ -145,6 +173,11 @@ export type MutationDeleteUserArgs = {
 
 export type MutationFollowUserArgs = {
   userId: Scalars['Float'];
+};
+
+
+export type MutationLikeAndDislikePostArgs = {
+  postId: Scalars['Float'];
 };
 
 
@@ -174,9 +207,28 @@ export type MutationUnfollowArgs = {
 };
 
 
+export type MutationUpdateActivityArgs = {
+  ActivityId: Scalars['Float'];
+  data: UpdateActivityInput;
+};
+
+
 export type MutationUpdateActivityTypeArgs = {
   ActivityTypeId: Scalars['Float'];
   data: UpdateActivityTypeInput;
+};
+
+
+export type MutationUpdatePersonalVehicleArgs = {
+  data: UpdatePersonalVehicleInput;
+  personalVehicleId: Scalars['Float'];
+  userId?: InputMaybe<Scalars['Float']>;
+};
+
+
+export type MutationUpdatePostArgs = {
+  data: UpdatePostInput;
+  postId: Scalars['Float'];
 };
 
 
@@ -201,31 +253,23 @@ export type NewPersonalVehicleInput = {
   fuel_type?: InputMaybe<Scalars['String']>;
   moto_engine?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
+  user: ObjectId;
   vehicle_category: Scalars['String'];
   vehicle_type?: InputMaybe<Scalars['String']>;
-  year_of_construction?: InputMaybe<Scalars['Float']>;
+  year_of_construction?: InputMaybe<Scalars['String']>;
+};
+
+export type NewPostInput = {
+  content: Scalars['String'];
+  imageUrl?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
+  user: ObjectId;
 };
 
 export type NewUserInput = {
   email: Scalars['String'];
   nickname: Scalars['String'];
   password: Scalars['String'];
-};
-
-export type ObjectId = {
-  id: Scalars['Int'];
-};
-
-export type PersonalVehicle = {
-  __typename?: 'PersonalVehicle';
-  fuel_type?: Maybe<Scalars['String']>;
-  id: Scalars['Int'];
-  moto_engine?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  user: User;
-  vehicle_category: Scalars['String'];
-  vehicle_type?: Maybe<Scalars['String']>;
-  year_of_construction?: Maybe<Scalars['Float']>;
 };
 
 export type ObjectId = {
@@ -259,6 +303,7 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
+  getActivities: Array<Activity>;
   getActivitiesTypes: Array<ActivityType>;
   getActivitiesTypesPagination: Array<ActivityType>;
   getActivityTypesById: ActivityType;
@@ -268,14 +313,21 @@ export type Query = {
   getFollowing: Array<User>;
   getFollowingByUser: Array<User>;
   getFuelTypes: Array<Scalars['String']>;
+  getLikes: Array<Like>;
   getMotoEngines: Array<Scalars['String']>;
   getPersonalVehicles: Array<PersonalVehicle>;
+  getPosts: Array<Post>;
   getUnits: Array<Scalars['String']>;
   getUsersPagination: Array<User>;
   getVehicleDecade: Array<Scalars['String']>;
   getVehicleTypes: Array<Scalars['String']>;
   profile: User;
   searchUser: Array<User>;
+};
+
+
+export type QueryGetActivitiesArgs = {
+  userId?: InputMaybe<Scalars['Float']>;
 };
 
 
@@ -300,20 +352,6 @@ export type QueryGetFollowingByUserArgs = {
 };
 
 
-export type QueryGetPersonalVehiclesArgs = {
-  userId: Scalars['Float'];
-};
-
-export type QueryGetFollowersByUserArgs = {
-  userId: Scalars['Float'];
-};
-
-
-export type QueryGetFollowingByUserArgs = {
-  userId: Scalars['Float'];
-};
-
-
 export type QueryGetLikesArgs = {
   postId?: InputMaybe<Scalars['Float']>;
 };
@@ -326,6 +364,12 @@ export type QueryGetPersonalVehiclesArgs = {
 
 export type QueryGetPostsArgs = {
   title?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGetUsersPaginationArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -412,8 +456,10 @@ export type User = {
   isBlocked: Scalars['Boolean'];
   isOnline: Scalars['Boolean'];
   lastName?: Maybe<Scalars['String']>;
+  likes: Array<Like>;
   nickname: Scalars['String'];
   personalVehicles?: Maybe<Array<PersonalVehicle>>;
+  posts?: Maybe<Array<Post>>;
   role: Scalars['String'];
 };
 
@@ -467,7 +513,14 @@ export type CreatePersonalVehicleMutationVariables = Exact<{
 }>;
 
 
-export type CreatePersonalVehicleMutation = { __typename?: 'Mutation', createPersonalVehicle: { __typename?: 'PersonalVehicle', id: number, name: string, moto_engine?: string | null, vehicle_category: string, year_of_construction?: number | null, vehicle_type?: string | null, fuel_type?: string | null } };
+export type CreatePersonalVehicleMutation = { __typename?: 'Mutation', createPersonalVehicle: { __typename?: 'PersonalVehicle', id: number, name: string, moto_engine?: string | null, vehicle_category: string, year_of_construction?: string | null, vehicle_type?: string | null, fuel_type?: string | null } };
+
+export type CreatePostMutationVariables = Exact<{
+  data: NewPostInput;
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, nbOfLikes?: number | null, created_at: any, user: { __typename?: 'User', id: number } } };
 
 export type DeleteActivityTypeMutationVariables = Exact<{
   activityTypeId: Scalars['Float'];
@@ -475,6 +528,20 @@ export type DeleteActivityTypeMutationVariables = Exact<{
 
 
 export type DeleteActivityTypeMutation = { __typename?: 'Mutation', deleteActivityType: string };
+
+export type DeletePersonalVehicleMutationVariables = Exact<{
+  personalVehicleId: Scalars['Float'];
+}>;
+
+
+export type DeletePersonalVehicleMutation = { __typename?: 'Mutation', deletePersonalVehicle: string };
+
+export type DeletePostMutationVariables = Exact<{
+  postId: Scalars['Float'];
+}>;
+
+
+export type DeletePostMutation = { __typename?: 'Mutation', deletePost: string };
 
 export type DeleteUserMutationVariables = Exact<{
   userId?: InputMaybe<Scalars['Float']>;
@@ -520,12 +587,24 @@ export type GetActivityTypesByIdQueryVariables = Exact<{
 
 export type GetActivityTypesByIdQuery = { __typename?: 'Query', getActivityTypesById: { __typename?: 'ActivityType', category: string, id: number, emissions: number, name: string, unit: string, attributes?: { __typename?: 'Attr', madeInFrance?: number | null, secondHandClothes?: number | null, secondHandPhones?: number | null } | null, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, vehicleType?: string | null, vehicleDecade?: string | null, motoEngine?: string | null } | null } };
 
+export type GetLikesQueryVariables = Exact<{
+  postId?: InputMaybe<Scalars['Float']>;
+}>;
+
+
+export type GetLikesQuery = { __typename?: 'Query', getLikes: Array<{ __typename?: 'Like', id: number, post: { __typename?: 'Post', id: number }, user: { __typename?: 'User', id: number } }> };
+
 export type GetPersonalVehiclesQueryVariables = Exact<{
   userId?: InputMaybe<Scalars['Float']>;
 }>;
 
 
-export type GetPersonalVehiclesQuery = { __typename?: 'Query', getPersonalVehicles: Array<{ __typename?: 'PersonalVehicle', id: number, fuel_type?: string | null, moto_engine?: string | null, name: string, vehicle_category: string, vehicle_type?: string | null, year_of_construction?: number | null, user: { __typename?: 'User', id: number } }> };
+export type GetPersonalVehiclesQuery = { __typename?: 'Query', getPersonalVehicles: Array<{ __typename?: 'PersonalVehicle', id: number, name: string, vehicle_category: string, vehicle_type?: string | null, fuel_type?: string | null, year_of_construction?: string | null, moto_engine?: string | null, created_at: any, user: { __typename?: 'User', id: number } }> };
+
+export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, created_at: any, nbOfLikes?: number | null, user: { __typename?: 'User', id: number, nickname: string }, likes: Array<{ __typename?: 'Like', id: number }> }> };
 
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -825,68 +904,6 @@ export function useCreatePersonalVehicleMutation(baseOptions?: Apollo.MutationHo
 export type CreatePersonalVehicleMutationHookResult = ReturnType<typeof useCreatePersonalVehicleMutation>;
 export type CreatePersonalVehicleMutationResult = Apollo.MutationResult<CreatePersonalVehicleMutation>;
 export type CreatePersonalVehicleMutationOptions = Apollo.BaseMutationOptions<CreatePersonalVehicleMutation, CreatePersonalVehicleMutationVariables>;
-export const DeleteActivityTypeDocument = gql`
-    mutation DeleteActivityType($activityTypeId: Float!) {
-  deleteActivityType(ActivityTypeId: $activityTypeId)
-}
-    `;
-export type DeleteActivityTypeMutationFn = Apollo.MutationFunction<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>;
-
-/**
- * __useDeleteActivityTypeMutation__
- *
- * To run a mutation, you first call `useDeleteActivityTypeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteActivityTypeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteActivityTypeMutation, { data, loading, error }] = useDeleteActivityTypeMutation({
- *   variables: {
- *      activityTypeId: // value for 'activityTypeId'
- *   },
- * });
- */
-export function useDeleteActivityTypeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>(DeleteActivityTypeDocument, options);
-      }
-export type DeleteActivityTypeMutationHookResult = ReturnType<typeof useDeleteActivityTypeMutation>;
-export type DeleteActivityTypeMutationResult = Apollo.MutationResult<DeleteActivityTypeMutation>;
-export type DeleteActivityTypeMutationOptions = Apollo.BaseMutationOptions<DeleteActivityTypeMutation, DeleteActivityTypeMutationVariables>;
-export const DeleteProfileDocument = gql`
-    mutation DeleteProfile($userId: Float!) {
-  deleteProfile(userId: $userId)
-}
-    `;
-export type DeleteProfileMutationFn = Apollo.MutationFunction<DeleteProfileMutation, DeleteProfileMutationVariables>;
-
-/**
- * __useCreatePersonalVehicleMutation__
- *
- * To run a mutation, you first call `useCreatePersonalVehicleMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreatePersonalVehicleMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createPersonalVehicleMutation, { data, loading, error }] = useCreatePersonalVehicleMutation({
- *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useCreatePersonalVehicleMutation(baseOptions?: Apollo.MutationHookOptions<CreatePersonalVehicleMutation, CreatePersonalVehicleMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreatePersonalVehicleMutation, CreatePersonalVehicleMutationVariables>(CreatePersonalVehicleDocument, options);
-      }
-export type CreatePersonalVehicleMutationHookResult = ReturnType<typeof useCreatePersonalVehicleMutation>;
-export type CreatePersonalVehicleMutationResult = Apollo.MutationResult<CreatePersonalVehicleMutation>;
-export type CreatePersonalVehicleMutationOptions = Apollo.BaseMutationOptions<CreatePersonalVehicleMutation, CreatePersonalVehicleMutationVariables>;
 export const CreatePostDocument = gql`
     mutation CreatePost($data: NewPostInput!) {
   createPost(data: $data) {
@@ -1110,10 +1127,6 @@ export const GetFuelTypesDocument = gql`
  *   },
  * });
  */
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 87dbdf2 (upd form)
 export function useGetFuelTypesQuery(baseOptions?: Apollo.QueryHookOptions<GetFuelTypesQuery, GetFuelTypesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetFuelTypesQuery, GetFuelTypesQueryVariables>(GetFuelTypesDocument, options);
@@ -1130,10 +1143,6 @@ export type GetFuelTypesQueryHookResult = ReturnType<typeof useGetFuelTypesQuery
 export type GetFuelTypesLazyQueryHookResult = ReturnType<typeof useGetFuelTypesLazyQuery>;
 export type GetFuelTypesSuspenseQueryHookResult = ReturnType<typeof useGetFuelTypesSuspenseQuery>;
 export type GetFuelTypesQueryResult = Apollo.QueryResult<GetFuelTypesQuery, GetFuelTypesQueryVariables>;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 6634203 (add form 2/2 & validation error accessibility fix)
 export const GetMotoEnginesDocument = gql`
     query getMotoEngines {
   getMotoEngines
@@ -1171,65 +1180,6 @@ export type GetMotoEnginesQueryHookResult = ReturnType<typeof useGetMotoEnginesQ
 export type GetMotoEnginesLazyQueryHookResult = ReturnType<typeof useGetMotoEnginesLazyQuery>;
 export type GetMotoEnginesSuspenseQueryHookResult = ReturnType<typeof useGetMotoEnginesSuspenseQuery>;
 export type GetMotoEnginesQueryResult = Apollo.QueryResult<GetMotoEnginesQuery, GetMotoEnginesQueryVariables>;
-<<<<<<< HEAD
-export const GetUnitsDocument = gql`
-    query getUnits {
-  getUnits
-=======
-export function useGetFuelTypesQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetFuelTypesQuery,
-    GetFuelTypesQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetFuelTypesQuery, GetFuelTypesQueryVariables>(
-    GetFuelTypesDocument,
-    options
-  );
->>>>>>> c032919 (upd)
-}
-export function useGetFuelTypesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetFuelTypesQuery,
-    GetFuelTypesQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetFuelTypesQuery, GetFuelTypesQueryVariables>(
-    GetFuelTypesDocument,
-    options
-  );
-}
-export function useGetFuelTypesSuspenseQuery(
-  baseOptions?: Apollo.SuspenseQueryHookOptions<
-    GetFuelTypesQuery,
-    GetFuelTypesQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<GetFuelTypesQuery, GetFuelTypesQueryVariables>(
-    GetFuelTypesDocument,
-    options
-  );
-}
-export type GetFuelTypesQueryHookResult = ReturnType<
-  typeof useGetFuelTypesQuery
->;
-export type GetFuelTypesLazyQueryHookResult = ReturnType<
-  typeof useGetFuelTypesLazyQuery
->;
-export type GetFuelTypesSuspenseQueryHookResult = ReturnType<
-  typeof useGetFuelTypesSuspenseQuery
->;
-export type GetFuelTypesQueryResult = Apollo.QueryResult<
-  GetFuelTypesQuery,
-  GetFuelTypesQueryVariables
->;
-=======
->>>>>>> 87dbdf2 (upd form)
-=======
->>>>>>> 6634203 (add form 2/2 & validation error accessibility fix)
 export const GetUnitsDocument = gql`
     query getUnits {
   getUnits
@@ -1396,8 +1346,6 @@ export type GetActivityTypesByIdQueryHookResult = ReturnType<typeof useGetActivi
 export type GetActivityTypesByIdLazyQueryHookResult = ReturnType<typeof useGetActivityTypesByIdLazyQuery>;
 export type GetActivityTypesByIdSuspenseQueryHookResult = ReturnType<typeof useGetActivityTypesByIdSuspenseQuery>;
 export type GetActivityTypesByIdQueryResult = Apollo.QueryResult<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>;
-<<<<<<< HEAD
-<<<<<<< HEAD
 export const GetLikesDocument = gql`
     query GetLikes($postId: Float) {
   getLikes(postId: $postId) {
@@ -1444,11 +1392,6 @@ export type GetLikesQueryHookResult = ReturnType<typeof useGetLikesQuery>;
 export type GetLikesLazyQueryHookResult = ReturnType<typeof useGetLikesLazyQuery>;
 export type GetLikesSuspenseQueryHookResult = ReturnType<typeof useGetLikesSuspenseQuery>;
 export type GetLikesQueryResult = Apollo.QueryResult<GetLikesQuery, GetLikesQueryVariables>;
-=======
-<<<<<<< HEAD
->>>>>>> 87dbdf2 (upd form)
-=======
->>>>>>> 13893ae (Window screen bug fixed + Style Dashboard | Backoffice)
 export const GetPersonalVehiclesDocument = gql`
     query GetPersonalVehicles($userId: Float) {
   getPersonalVehicles(userId: $userId) {
@@ -1593,8 +1536,6 @@ export function useProfileSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOp
         }
 export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type ProfileSuspenseQueryHookResult = ReturnType<typeof useProfileSuspenseQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
 export const LikeAndDislikePostDocument = gql`
@@ -1628,19 +1569,6 @@ export function useLikeAndDislikePostMutation(baseOptions?: Apollo.MutationHookO
 export type LikeAndDislikePostMutationHookResult = ReturnType<typeof useLikeAndDislikePostMutation>;
 export type LikeAndDislikePostMutationResult = Apollo.MutationResult<LikeAndDislikePostMutation>;
 export type LikeAndDislikePostMutationOptions = Apollo.BaseMutationOptions<LikeAndDislikePostMutation, LikeAndDislikePostMutationVariables>;
-=======
-export type ProfileSuspenseQueryHookResult = ReturnType<
-  typeof useProfileSuspenseQuery
->;
-export type ProfileQueryResult = Apollo.QueryResult<
-  ProfileQuery,
-  ProfileQueryVariables
->;
->>>>>>> c032919 (upd)
-=======
-export type ProfileSuspenseQueryHookResult = ReturnType<typeof useProfileSuspenseQuery>;
-export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
->>>>>>> 87dbdf2 (upd form)
 export const LoginDocument = gql`
     mutation Login($data: LoginInput!) {
   login(data: $data)
@@ -1924,8 +1852,6 @@ export function useUpdateActivityTypeMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateActivityTypeMutationHookResult = ReturnType<typeof useUpdateActivityTypeMutation>;
 export type UpdateActivityTypeMutationResult = Apollo.MutationResult<UpdateActivityTypeMutation>;
 export type UpdateActivityTypeMutationOptions = Apollo.BaseMutationOptions<UpdateActivityTypeMutation, UpdateActivityTypeMutationVariables>;
-<<<<<<< HEAD
-<<<<<<< HEAD
 export const UpdatePersonalVehicleDocument = gql`
     mutation UpdatePersonalVehicle($data: UpdatePersonalVehicleInput!, $personalVehicleId: Float!) {
   updatePersonalVehicle(data: $data, personalVehicleId: $personalVehicleId) {
@@ -2008,64 +1934,6 @@ export function useUpdatePostMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
 export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>;
 export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
-=======
-=======
-export type SignupMutationOptions = Apollo.BaseMutationOptions<
-  SignupMutation,
-  SignupMutationVariables
->;
->>>>>>> e62c933 (upd)
->>>>>>> c032919 (upd)
-export const UpdateProfileDocument = gql`
-  mutation UpdateProfile($data: UpdateUserInput!) {
-    updateProfile(data: $data) {
-      id
-      email
-      nickname
-      firstName
-      lastName
-      avatarUrl
-=======
->>>>>>> 99004c5 (upd form)
-    }
-    attributes {
-      madeInFrance
-      secondHandClothes
-      secondHandPhones
-    }
-    id
-  }
-}
-    `;
-export type UpdateActivityTypeMutationFn = Apollo.MutationFunction<UpdateActivityTypeMutation, UpdateActivityTypeMutationVariables>;
-
-/**
- * __useUpdateActivityTypeMutation__
- *
- * To run a mutation, you first call `useUpdateActivityTypeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateActivityTypeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateActivityTypeMutation, { data, loading, error }] = useUpdateActivityTypeMutation({
- *   variables: {
- *      activityTypeId: // value for 'activityTypeId'
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useUpdateActivityTypeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateActivityTypeMutation, UpdateActivityTypeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateActivityTypeMutation, UpdateActivityTypeMutationVariables>(UpdateActivityTypeDocument, options);
-      }
-export type UpdateActivityTypeMutationHookResult = ReturnType<typeof useUpdateActivityTypeMutation>;
-export type UpdateActivityTypeMutationResult = Apollo.MutationResult<UpdateActivityTypeMutation>;
-export type UpdateActivityTypeMutationOptions = Apollo.BaseMutationOptions<UpdateActivityTypeMutation, UpdateActivityTypeMutationVariables>;
-=======
->>>>>>> 13893ae (Window screen bug fixed + Style Dashboard | Backoffice)
 export const UpdateProfileDocument = gql`
     mutation UpdateProfile($data: UpdateUserInput!) {
   updateProfile(data: $data) {
