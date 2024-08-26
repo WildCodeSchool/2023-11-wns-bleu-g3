@@ -11,6 +11,7 @@ import {
 import User from "./User";
 import Like from "./Like";
 import { ObjectId } from "../types";
+import { Length } from "class-validator";
 
 @Entity()
 @ObjectType()
@@ -52,6 +53,7 @@ class Post extends BaseEntity {
 
 @InputType()
 export class NewPostInput {
+  @Length(2, 100)
   @Field()
   title: string;
 
@@ -67,6 +69,7 @@ export class NewPostInput {
 
 @InputType()
 export class UpdatePostInput {
+  @Length(2, 100)
   @Field({ nullable: true })
   title?: string;
 
