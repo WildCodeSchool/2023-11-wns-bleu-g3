@@ -9,24 +9,7 @@ import { useState, useEffect } from "react";
 import ModalDeletePost from "./modal-delete-post";
 import ModalUpdatePost from "./modal-update-post";
 
-const PostItem = ({
-  post,
-}: {
-  post: {
-    id: number;
-    created_at: string;
-    title: string;
-    content: string;
-    imageUrl: string;
-    nbOfLikes: number;
-    user: {
-      nickname: string;
-    };
-    likes: {
-      id: number;
-    }[];
-  };
-}) => {
+const PostItem = ({ post }: { post: any }) => {
   const [isUpdatePostModalOpen, setIsUpdatePostModalOpen] = useState(false);
   const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
   const [localLikes, setLocalLikes] = useState(post.nbOfLikes);
