@@ -115,15 +115,6 @@ async function main() {
     content:
       "Chaque appareil électroménager à la vente affiche désormais une étiquette avec un diagnostic de sa consommation, classée de A +++ à D. Un appareil de classe A +++ consomme de 20 % à 50 % d’énergie en moins qu’un autre de classe A +.\nSelon l’Agence de l’environnement et de la maîtrise de l’énergie (Ademe), si tous les ménages français choisissaient les appareils les plus économes en s’équipant, on économiserait 4,9 TWh/an, soit la consommation d’électricité domestique de 2 millions de personnes.\nPréférez des ampoules LED, qui présentent de multiples avantages : lumineuses immédiatement, peu consommatrices d’énergies, d’une longue durée de vie et dégageant peu de chaleur.",
     user: user,
-  const user6 = new User();
-  Object.assign(user6, {
-    nickname: "LucasTerre",
-    email: "lucas7890@app.com",
-    password: "Visitor42@!",
-    firstName: "Lucas",
-    lastName: "West",
-    avatarUrl: "https://media1.tenor.com/m/UKIJv9wAbbIAAAAC/meme-mood.gif",
-    createdAt: "2024-03-12T11:51:05.555Z",
   });
   await post1.save();
 
