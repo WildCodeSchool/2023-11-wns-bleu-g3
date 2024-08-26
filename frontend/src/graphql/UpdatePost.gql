@@ -1,0 +1,9 @@
+mutation UpdatePost($data: UpdatePostInput!, $postId: Float!) {
+  updatePost(data: $data, postId: $postId) {
+    id
+    title
+    content
+    imageUrl
+    nbOfLikes
+  }
+}

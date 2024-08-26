@@ -7,9 +7,12 @@ import {
   VehicleDecade,
   VehicleType,
   MotoEngine,
+  VehicleCategory,
 } from "./entities/Enums/Vehicle_Attributes";
 import fs from "fs";
 import path from "path";
+import PersonalVehicle from "./entities/PersonalVehicle";
+import Post from "./entities/Post";
 
 export async function clearDB() {
   const runner = db.createQueryRunner();
@@ -78,6 +81,86 @@ async function main() {
     emailVerified: true,
   });
   await admin.save();
+
+  const personalVehicle1 = new PersonalVehicle();
+  Object.assign(personalVehicle1, {
+    name: "Mon super vélo",
+    vehicle_category: VehicleCategory.Bike,
+    user: user,
+  });
+  await personalVehicle1.save();
+
+  const personalVehicle2 = new PersonalVehicle();
+  Object.assign(personalVehicle2, {
+    name: "Porsche Cayenne",
+    vehicle_category: VehicleCategory.Car,
+    fuel_type: FuelType.Petrol,
+    vehicle_type: VehicleType.Luxury,
+    year_of_construction: VehicleDecade.Decade2020s,
+    user: user,
+  });
+  await personalVehicle2.save();
+
+  const personalVehicle3 = new PersonalVehicle();
+  Object.assign(personalVehicle3, {
+    name: "Ma moto électrique",
+    vehicle_category: VehicleCategory.Motorbike,
+    moto_engine: MotoEngine.Electric,
+    user: user,
+  });
+  await personalVehicle3.save();
+
+  const post1 = new Post();
+  Object.assign(post1, {
+    title: "Limiter sa consommation d’électricité",
+    content:
+      "Chaque appareil électroménager à la vente affiche désormais une étiquette avec un diagnostic de sa consommation, classée de A +++ à D. Un appareil de classe A +++ consomme de 20 % à 50 % d’énergie en moins qu’un autre de classe A +.\nSelon l’Agence de l’environnement et de la maîtrise de l’énergie (Ademe), si tous les ménages français choisissaient les appareils les plus économes en s’équipant, on économiserait 4,9 TWh/an, soit la consommation d’électricité domestique de 2 millions de personnes.\nPréférez des ampoules LED, qui présentent de multiples avantages : lumineuses immédiatement, peu consommatrices d’énergies, d’une longue durée de vie et dégageant peu de chaleur.",
+    user: user,
+  });
+  await post1.save();
+
+  const post2 = new Post();
+  Object.assign(post2, {
+    title:
+      "Alimentation : moins de viande, plus de légumes locaux et de saison",
+    content:
+      "La viande rouge est plus émettrice que la viande blanche (volaille) du fait de la taille des animaux, qui nécessitent davantage d’alimentation et d’espace pour l’élevage.\nUne manière de diminuer son empreinte carbone est de réduire la consommation de viande (notamment rouge) et de veiller, si possible, à manger local.\nMais cela ne fait pas tout : il faut également veiller à consommer au maximum des produits de saison. Dans le cas contraire, ces fruits et légumes sont cultivés sous serres chauffées ou importées, en avion ou en bateau, et ont un bilan carbone beaucoup plus conséquent.\nEn décembre, oubliez les tomates et les framboises !",
+    imageUrl:
+      "https://webzine.voyage/wp-content/uploads/fruits-legumes-saison.jpg",
+    user: user2,
+  });
+  await post2.save();
+
+  const post3 = new Post();
+  Object.assign(post3, {
+    title: "Réduire sa consommation d’eau",
+    content:
+      "Installez un mousseur, également appelé « brise-jet », sur vos robinets (hors baignoire), qui réduit le volume d’eau tout en en conservant la pression. Simple d’installation et peu cher (moins de 15 euros), il peut faire économiser plus de 50 % de votre consommation d’eau sur vos robinets.\nPour les plus téméraires (de préférence habitant en maison), vous pouvez installer des toilettes sèches, où la « production » est recouverte de sciure ou de copeaux de bois – qui empêchent par ailleurs les mauvaises odeurs – pour ensuite l’utiliser pour en faire du compost ou de la biométhanisation (production de chaleur ou d’électricité).",
+    user: user1,
+  });
+  await post3.save();
+
+  const post4 = new Post();
+  Object.assign(post4, {
+    title: "Plus de transports en commun ou de vélo",
+    content:
+      "Les transports constituent la première source d’émissions de gaz à effet de serre en France (27,8 % des émissions totales du pays en 2012). La quasi-totalité (92 %) provient du transport routier.\nLes voitures hybrides ne représentent encore que 2 % du parc automibile, mais l’offre se développe. Mêlant moteur électrique pour les vitesses faibles et moteur thermique pour les plus élevées, elles permettent à la fois de faire des économies en carburant et de rejeter moins de gaz à effet de serre.\nLes véhicules électriques sont plus confidentiels encore mais sont, de loin, les moins polluants. Avant, peut-être, l’essor de la voiture à hydrogène.\nPour les trajets urbains, essayez de privilégier les transports en commun ou les voitures en autopartage, en plein développement. Le mieux, en termes d’émissions de gaz à effet de serre, étant bien sûr la marche ou le vélo, d’autant plus avec le développement des voies cyclables (bien que la France soit encore à la traîne en Europe) et des systèmes de vélos en libre-service.",
+    imageUrl:
+      "https://s3.pub1.infomaniak.cloud/object/v1/AUTH_c42f0b398b014edbad1011f531a5bda8/lekaba-cms-uploads/Infographieveloelectrique_45e8d089ba.png",
+    user: user2,
+  });
+  await post4.save();
+
+  const post5 = new Post();
+  Object.assign(post5, {
+    title: "Essayer de tendre vers le zéro déchet",
+    content:
+      "Arriver au zéro déchet, un objectif ambitieux mais pas impossible à atteindre... Pour y arriver, nous vous recommandons de vous fixer des objectifs atteignables :\n- évitez les produits trop emballés : repérez le magasin de vente en vrac le plus proche de chez vous pour vos achats ;\n- préférez les produits réutilisables aux produits jetables : essayez les couches lavables pour vos enfants, prévoyez couverts et verres lavables pour vos pique-niques et vos réceptions, pensez à avoir en permanence un cabas pour faire vos courses, apportez une gourde recyclable au bureau ;\n- vous vous sentez l'âme d'un apprenti chimiste ? Lancez-vous dans la conception de produits d'entretien, voire de crèmes cosmétiques en suivant attentivement les recettes proposées sur la toile ;\n- réutilisez, transformez, améliorez : conservez par exemple les boîtes d'emballages de vos produits pour y mettre vos bijoux, vos accessoires, les jeux de vos enfants etc.",
+    imageUrl:
+      "https://www.1jour1actu.com/wp-content/uploads/2019/04/01-zeroDechet-copie.jpg",
+    user: user,
+  });
+  await post5.save();
 
   // Json Reader
   const filePath = path.resolve(__dirname, "../src/data/defaultDB.json");
