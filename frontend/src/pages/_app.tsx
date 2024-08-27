@@ -5,6 +5,12 @@ import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 import { ToastContainer } from "react-toastify";
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
+if (process.env.NODE_ENV !== "production") {
+  loadDevMessages();
+  loadErrorMessages();
+}
 
 function App({ Component, pageProps }: AppProps) {
   return (

@@ -104,6 +104,7 @@ export type Mutation = {
   logout: Scalars['String'];
   resetPassword: Scalars['Boolean'];
   resetPasswordRequest: Scalars['Boolean'];
+  toggleBlockUser: Array<Scalars['String']>;
   unfollow: Scalars['String'];
   updateActivity: Activity;
   updateActivityType: ActivityType;
@@ -193,6 +194,11 @@ export type MutationResetPasswordArgs = {
 
 export type MutationResetPasswordRequestArgs = {
   data: ResetPasswordRequestInput;
+};
+
+
+export type MutationToggleBlockUserArgs = {
+  userIds: Array<Scalars['Int']>;
 };
 
 
@@ -312,6 +318,7 @@ export type Query = {
   getPersonalVehicles: Array<PersonalVehicle>;
   getPosts: Array<Post>;
   getUnits: Array<Scalars['String']>;
+  getUsersPagination: Array<User>;
   getVehicleDecade: Array<Scalars['String']>;
   getVehicleTypes: Array<Scalars['String']>;
   profile: User;
@@ -357,6 +364,12 @@ export type QueryGetPersonalVehiclesArgs = {
 
 export type QueryGetPostsArgs = {
   title?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGetUsersPaginationArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -433,13 +446,15 @@ export type User = {
   __typename?: 'User';
   activities?: Maybe<Array<Activity>>;
   avatarUrl?: Maybe<Scalars['String']>;
-  blocked: Scalars['Boolean'];
+  blocked_at?: Maybe<Scalars['DateTimeISO']>;
   createdAt: Scalars['String'];
   email: Scalars['String'];
   firstName?: Maybe<Scalars['String']>;
   followers: Array<Follow>;
   following: Array<Follow>;
   id: Scalars['Float'];
+  isBlocked: Scalars['Boolean'];
+  isOnline: Scalars['Boolean'];
   lastName?: Maybe<Scalars['String']>;
   likes: Array<Like>;
   nickname: Scalars['String'];
@@ -470,6 +485,14 @@ export type GetActivitiesTypesPaginationQueryVariables = Exact<{
 
 
 export type GetActivitiesTypesPaginationQuery = { __typename?: 'Query', getActivitiesTypesPagination: Array<{ __typename?: 'ActivityType', category: string, emissions: number, id: number, name: string, unit: string }> };
+
+export type GetUsersPaginationQueryVariables = Exact<{
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetUsersPaginationQuery = { __typename?: 'Query', getUsersPagination: Array<{ __typename?: 'User', id: number, email: string, nickname: string, role: string, avatarUrl?: string | null, createdAt: string, blocked_at?: any | null, isBlocked: boolean }> };
 
 export type ConfirmEmailMutationVariables = Exact<{
   emailToken: Scalars['String'];
@@ -636,6 +659,13 @@ export type SignupMutationVariables = Exact<{
 
 export type SignupMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: number, nickname: string, email: string, avatarUrl?: string | null } };
 
+export type ToggleBlockUserMutationVariables = Exact<{
+  userIds: Array<Scalars['Int']> | Scalars['Int'];
+}>;
+
+
+export type ToggleBlockUserMutation = { __typename?: 'Mutation', toggleBlockUser: Array<string> };
+
 export type UpdateActivityTypeMutationVariables = Exact<{
   activityTypeId: Scalars['Float'];
   data: UpdateActivityTypeInput;
@@ -713,6 +743,54 @@ export type GetActivitiesTypesPaginationQueryHookResult = ReturnType<typeof useG
 export type GetActivitiesTypesPaginationLazyQueryHookResult = ReturnType<typeof useGetActivitiesTypesPaginationLazyQuery>;
 export type GetActivitiesTypesPaginationSuspenseQueryHookResult = ReturnType<typeof useGetActivitiesTypesPaginationSuspenseQuery>;
 export type GetActivitiesTypesPaginationQueryResult = Apollo.QueryResult<GetActivitiesTypesPaginationQuery, GetActivitiesTypesPaginationQueryVariables>;
+export const GetUsersPaginationDocument = gql`
+    query GetUsersPagination($offset: Int, $limit: Int) {
+  getUsersPagination(offset: $offset, limit: $limit) {
+    id
+    email
+    nickname
+    role
+    avatarUrl
+    createdAt
+    blocked_at
+    isBlocked
+  }
+}
+    `;
+
+/**
+ * __useGetUsersPaginationQuery__
+ *
+ * To run a query within a React component, call `useGetUsersPaginationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersPaginationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersPaginationQuery({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetUsersPaginationQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>(GetUsersPaginationDocument, options);
+      }
+export function useGetUsersPaginationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>(GetUsersPaginationDocument, options);
+        }
+export function useGetUsersPaginationSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>(GetUsersPaginationDocument, options);
+        }
+export type GetUsersPaginationQueryHookResult = ReturnType<typeof useGetUsersPaginationQuery>;
+export type GetUsersPaginationLazyQueryHookResult = ReturnType<typeof useGetUsersPaginationLazyQuery>;
+export type GetUsersPaginationSuspenseQueryHookResult = ReturnType<typeof useGetUsersPaginationSuspenseQuery>;
+export type GetUsersPaginationQueryResult = Apollo.QueryResult<GetUsersPaginationQuery, GetUsersPaginationQueryVariables>;
 export const ConfirmEmailDocument = gql`
     mutation ConfirmEmail($emailToken: String!) {
   confirmEmail(emailToken: $emailToken)
@@ -1695,6 +1773,37 @@ export function useSignupMutation(baseOptions?: Apollo.MutationHookOptions<Signu
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export const ToggleBlockUserDocument = gql`
+    mutation ToggleBlockUser($userIds: [Int!]!) {
+  toggleBlockUser(userIds: $userIds)
+}
+    `;
+export type ToggleBlockUserMutationFn = Apollo.MutationFunction<ToggleBlockUserMutation, ToggleBlockUserMutationVariables>;
+
+/**
+ * __useToggleBlockUserMutation__
+ *
+ * To run a mutation, you first call `useToggleBlockUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleBlockUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleBlockUserMutation, { data, loading, error }] = useToggleBlockUserMutation({
+ *   variables: {
+ *      userIds: // value for 'userIds'
+ *   },
+ * });
+ */
+export function useToggleBlockUserMutation(baseOptions?: Apollo.MutationHookOptions<ToggleBlockUserMutation, ToggleBlockUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ToggleBlockUserMutation, ToggleBlockUserMutationVariables>(ToggleBlockUserDocument, options);
+      }
+export type ToggleBlockUserMutationHookResult = ReturnType<typeof useToggleBlockUserMutation>;
+export type ToggleBlockUserMutationResult = Apollo.MutationResult<ToggleBlockUserMutation>;
+export type ToggleBlockUserMutationOptions = Apollo.BaseMutationOptions<ToggleBlockUserMutation, ToggleBlockUserMutationVariables>;
 export const UpdateActivityTypeDocument = gql`
     mutation UpdateActivityType($activityTypeId: Float!, $data: UpdateActivityTypeInput!) {
   updateActivityType(ActivityTypeId: $activityTypeId, data: $data) {

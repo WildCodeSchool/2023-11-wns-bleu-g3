@@ -40,7 +40,6 @@ async function main() {
     nickname: "Gretaaaaa",
     email: "greenGreta@app.com",
     password: "Visitor42@!",
-    firstName: "Greta",
     lastName: "Thunberg",
     avatarUrl:
       "https://cdn-s-www.estrepublicain.fr/images/829E79B4-6141-4B09-A1A4-C8CA53D382BE/NW_raw/greta-thunberg-a-caen-ce-dimanche-photo-jean-francois-monier-afp-1563726733.jpg",
@@ -68,7 +67,6 @@ async function main() {
     password: "Visitor42@!",
     avatarUrl: "https://m.media-amazon.com/images/I/61RlSyFFobL._AC_SX522_.jpg",
     createdAt: "2024-04-20T07:19:22.111Z",
-    blocked: true,
   });
   await user2.save();
 
@@ -81,6 +79,66 @@ async function main() {
     emailVerified: true,
   });
   await admin.save();
+
+  const user3 = new User();
+  Object.assign(user3, {
+    nickname: "ClaireNature",
+    email: "claire5678@app.com",
+    password: "Visitor42@!",
+    firstName: "Claire",
+    lastName: "Nature",
+    avatarUrl: "https://randomuser.me/api/portraits/women/72.jpg",
+    createdAt: "2024-03-12T08:22:35.222Z",
+  });
+  await user3.save();
+
+  const user4 = new User();
+  Object.assign(user4, {
+    nickname: "JulienEco",
+    email: "julien9012@app.com",
+    password: "Visitor42@!",
+    firstName: "Julien",
+    lastName: "Eco",
+    avatarUrl: "https://randomuser.me/api/portraits/men/44.jpg",
+    createdAt: "2024-03-12T09:35:45.333Z",
+  });
+  await user4.save();
+
+  const user5 = new User();
+  Object.assign(user5, {
+    nickname: "SophieGreen",
+    email: "sophie3456@app.com",
+    password: "Visitor42@!",
+    firstName: "Sophie",
+    lastName: "Green",
+    avatarUrl: "https://randomuser.me/api/portraits/women/14.jpg",
+    createdAt: "2024-03-12T10:48:55.444Z",
+  });
+  await user5.save();
+
+  const user6 = new User();
+  Object.assign(user6, {
+    nickname: "LucasTerre",
+    email: "lucas7890@app.com",
+    password: "Visitor42@!",
+    firstName: "Lucas",
+    lastName: "West",
+    avatarUrl: "https://media1.tenor.com/m/UKIJv9wAbbIAAAAC/meme-mood.gif",
+    createdAt: "2024-03-12T11:51:05.555Z",
+  });
+  await user6.save();
+
+  const user7 = new User();
+  Object.assign(user7, {
+    nickname: "ElodieFaune",
+    email: "elodie4321@app.com",
+    password: "Visitor42@!",
+    firstName: "Elodie",
+    lastName: "Faune",
+    avatarUrl: "https://randomuser.me/api/portraits/women/17.jpg",
+    createdAt: "2024-03-12T12:54:15.666Z",
+  });
+  await user7.save();
 
   const personalVehicle1 = new PersonalVehicle();
   Object.assign(personalVehicle1, {

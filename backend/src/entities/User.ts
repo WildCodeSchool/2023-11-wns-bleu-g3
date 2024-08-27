@@ -1,5 +1,5 @@
 import { hash } from "argon2";
-import { IsEmail, IsStrongPassword, Length } from "class-validator";
+import { IsBoolean, IsEmail, IsStrongPassword, Length } from "class-validator";
 import { Field, InputType, ObjectType } from "type-graphql";
 import {
   BaseEntity,
@@ -74,10 +74,6 @@ class User extends BaseEntity {
   @Column({ default: false })
   emailVerified: boolean;
 
-  @Field()
-  @Column({ default: false })
-  blocked: boolean;
-
   @CreateDateColumn()
   @Field()
   createdAt: string;
@@ -105,6 +101,17 @@ class User extends BaseEntity {
   @OneToMany(() => Like, (like) => like.user)
   @Field(() => [Like])
   likes: Like[];
+  @Field()
+  @Column({ default: false })
+  isBlocked: boolean;
+
+  @Field(() => Date, { nullable: true })
+  @Column({ type: "timestamp", nullable: true })
+  blocked_at: Date | null;
+
+  @Field()
+  @Column({ default: false })
+  isOnline: boolean;
 }
 
 @InputType()

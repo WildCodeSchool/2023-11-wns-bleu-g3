@@ -27,14 +27,16 @@ export default function SideAdmin({ isOpen }: { isOpen: any }) {
       <div className="px-3 py-4 bg-anchor flex flex-col justify-between h-full">
         <ul className="flex flex-col gap-4 ">
           <div className="gap-4 flex flex-col">
-            <SideAdminItem href="/admin/activities" name="Types d'activité" />
+            <SideAdminItem href="/admin/dashboard" name="Dashboard Admin" />
+            <SideAdminItem href="/admin/users" name="Utilisateurs" />
+            <SideAdminItem href="/admin/posts" name="Moderation Posts" />
+            <SideAdminItem href="/admin/activities" name="Activités Type" />
             <SideAdminItem
               href="/admin/newActivType"
-              name="Nouveau type d'activité"
+              name="Ajouté Activité Type"
             />
-            <SideAdminItem href="/admin/users" name="Utilisateurs" />
-            <SideAdminItem href="/admin/donations" name="Donations" />
-            <SideAdminItem href="#" name="Déconnexion" />
+            <SideAdminItem href="/admin/donations" name="Consulter Donations" />
+            <SideAdminItem href="/dashboard" name="Retour a l'Accueil" />
           </div>
 
           <div className="md:hidden flex flex-col gap-2 py-4">
