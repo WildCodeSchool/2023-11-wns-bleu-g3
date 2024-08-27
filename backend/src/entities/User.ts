@@ -1,5 +1,5 @@
 import { hash } from "argon2";
-import { IsEmail, IsStrongPassword, Length } from "class-validator";
+import { IsBoolean, IsEmail, IsStrongPassword, Length } from "class-validator";
 import { Field, InputType, ObjectType } from "type-graphql";
 import {
   BaseEntity,

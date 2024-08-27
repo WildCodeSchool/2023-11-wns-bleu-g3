@@ -96,7 +96,6 @@ export default function UpdateActivity() {
         vehicleDecade: formJSON.vehicleDecade as string,
       },
     };
-
     console.log("form data:", formJSON);
 
     try {
