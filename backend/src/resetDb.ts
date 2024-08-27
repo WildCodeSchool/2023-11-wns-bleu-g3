@@ -42,7 +42,7 @@ async function main() {
     password: "Visitor42@!",
     lastName: "Thunberg",
     avatarUrl:
-      "https://e7.pngegg.com/pngimages/193/660/png-clipart-computer-icons-woman-avatar-avatar-girl-black-hair-logo-thumbnail.png",
+      "https://cdn-s-www.estrepublicain.fr/images/829E79B4-6141-4B09-A1A4-C8CA53D382BE/NW_raw/greta-thunberg-a-caen-ce-dimanche-photo-jean-francois-monier-afp-1563726733.jpg",
     createdAt: "2024-01-03T07:19:22.111Z",
   });
   await user.save();
