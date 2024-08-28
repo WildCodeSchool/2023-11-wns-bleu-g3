@@ -238,7 +238,13 @@ export default function TableAdminUsers() {
                       },
                     }).then(() => window.location.reload())
                   }
-                  expression={user.isBlocked ? "debloquer" : "bloquer"}
+                  expression={
+                    user.role !== "admin"
+                      ? user.isBlocked
+                        ? "debloquer"
+                        : "bloquer"
+                      : "empty"
+                  }
                   mappedVar={user}
                 />
                 <ModalBin

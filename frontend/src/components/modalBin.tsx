@@ -78,6 +78,8 @@ export default function ModalBin({
         </button>
       );
       break;
+    case "empty": //need for a placeholder (fake space 2rem) to avoid table layout issue
+      btn = <div className="w-[2rem] h-[2rem]" aria-hidden="true"></div>;
   }
 
   return (
