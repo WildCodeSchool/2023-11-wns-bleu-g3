@@ -5,11 +5,16 @@ query GetUserByNickname($nickname: String!) {
     firstName
     lastName
     avatarUrl
+    posts {
+      id
+    }
     followers {
       id
+      avatarUrl
     }
     following {
       id
+      avatarUrl
     }
   }
 }

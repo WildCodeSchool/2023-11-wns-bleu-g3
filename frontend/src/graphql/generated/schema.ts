@@ -613,14 +613,14 @@ export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, email: string, nickname: string, avatarUrl?: string | null, role: string, firstName?: string | null, lastName?: string | null } };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, email: string, nickname: string, avatarUrl?: string | null, role: string, firstName?: string | null, lastName?: string | null, posts?: Array<{ __typename?: 'Post', id: number }> | null, followers?: Array<{ __typename?: 'User', id: number, avatarUrl?: string | null }> | null, following?: Array<{ __typename?: 'User', id: number, avatarUrl?: string | null }> | null } };
 
 export type GetUserByNicknameQueryVariables = Exact<{
   nickname: Scalars['String'];
 }>;
 
 
-export type GetUserByNicknameQuery = { __typename?: 'Query', getUserByNickname?: { __typename?: 'User', id: number, nickname: string, firstName?: string | null, lastName?: string | null, avatarUrl?: string | null, followers?: Array<{ __typename?: 'User', id: number }> | null, following?: Array<{ __typename?: 'User', id: number }> | null } | null };
+export type GetUserByNicknameQuery = { __typename?: 'Query', getUserByNickname?: { __typename?: 'User', id: number, nickname: string, firstName?: string | null, lastName?: string | null, avatarUrl?: string | null, posts?: Array<{ __typename?: 'Post', id: number }> | null, followers?: Array<{ __typename?: 'User', id: number, avatarUrl?: string | null }> | null, following?: Array<{ __typename?: 'User', id: number, avatarUrl?: string | null }> | null } | null };
 
 export type LikeAndDislikePostMutationVariables = Exact<{
   postId: Scalars['Float'];
@@ -1554,6 +1554,17 @@ export const ProfileDocument = gql`
     role
     firstName
     lastName
+    posts {
+      id
+    }
+    followers {
+      id
+      avatarUrl
+    }
+    following {
+      id
+      avatarUrl
+    }
   }
 }
     `;
@@ -1597,11 +1608,16 @@ export const GetUserByNicknameDocument = gql`
     firstName
     lastName
     avatarUrl
+    posts {
+      id
+    }
     followers {
       id
+      avatarUrl
     }
     following {
       id
+      avatarUrl
     }
   }
 }
