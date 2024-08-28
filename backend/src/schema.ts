@@ -7,6 +7,7 @@ import PersonalVehicleResolver from "./resolvers/PersonalVehicleResolver";
 import { FollowerResolver } from "./resolvers/FollowerResolver";
 import PostResolver from "./resolvers/PostResolver";
 import LikeResolver from "./resolvers/LikeResolver";
+import DonationResolver from "./resolvers/DonationResolver";
 
 export default buildSchema({
   resolvers: [
@@ -17,6 +18,7 @@ export default buildSchema({
     FollowerResolver,
     PostResolver,
     LikeResolver,
+    DonationResolver,
   ],
   authChecker,
 });
