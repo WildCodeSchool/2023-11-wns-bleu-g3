@@ -144,6 +144,7 @@ async function main() {
   Object.assign(personalVehicle1, {
     name: "Mon super vélo",
     vehicle_category: VehicleCategory.Bike,
+    emissionByKm: 13,
     user: user,
   });
   await personalVehicle1.save();
@@ -155,6 +156,7 @@ async function main() {
     fuel_type: FuelType.Petrol,
     vehicle_type: VehicleType.Luxury,
     year_of_construction: VehicleDecade.Decade2020s,
+    emissionByKm: 104,
     user: user,
   });
   await personalVehicle2.save();
@@ -162,8 +164,9 @@ async function main() {
   const personalVehicle3 = new PersonalVehicle();
   Object.assign(personalVehicle3, {
     name: "Ma moto électrique",
-    vehicle_category: VehicleCategory.Motorbike,
-    moto_engine: MotoEngine.Electric,
+    vehicle_category: VehicleCategory.Moto,
+    moto_engine: MotoEngine.Engine500plus,
+    emissionByKm: 132,
     user: user,
   });
   await personalVehicle3.save();

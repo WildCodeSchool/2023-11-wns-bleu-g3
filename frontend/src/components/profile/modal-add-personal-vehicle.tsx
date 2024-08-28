@@ -32,7 +32,6 @@ const ModalAddPersonalVehicle = ({
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
     formJSON.user = { id: user?.profile.id };
-
     createPersonalVehicle({ variables: { data: formJSON } })
       .then((res) => {
         setIsAddPersonalVehicleModalOpen(false);
@@ -80,7 +79,7 @@ const ModalAddPersonalVehicle = ({
                       >
                         <option disabled value=""></option>
                         <option value="Voiture">Voiture</option>
-                        <option value="Moto/scooter">Moto/Scooter</option>
+                        <option value="Moto">Moto</option>
                         <option value="Vélo électrique">Vélo électrique</option>
                       </select>
                     </label>
@@ -135,7 +134,7 @@ const ModalAddPersonalVehicle = ({
                       </>
                     )}
 
-                    {selectedVehicle === "Moto/scooter" && (
+                    {selectedVehicle === "Moto" && (
                       <label htmlFor="moto_engine">
                         Type de cylindrée
                         <select

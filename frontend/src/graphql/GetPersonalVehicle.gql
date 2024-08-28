@@ -8,6 +8,7 @@ query GetPersonalVehicles($userId: Float) {
     year_of_construction
     moto_engine
     created_at
+    emissionByKm
     user {
       id
     }
