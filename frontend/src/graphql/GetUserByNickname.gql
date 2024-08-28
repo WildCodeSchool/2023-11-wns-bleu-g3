@@ -1,0 +1,14 @@
+query GetUserByNickname($nickname: String!) {
+  getUserByNickname(nickname: $nickname) {
+    nickname
+    firstName
+    lastName
+    avatarUrl
+    followers {
+      id
+    }
+    following {
+      id
+    }
+  }
+}

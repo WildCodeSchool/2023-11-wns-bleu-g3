@@ -318,6 +318,7 @@ export type Query = {
   getPersonalVehicles: Array<PersonalVehicle>;
   getPosts: Array<Post>;
   getUnits: Array<Scalars['String']>;
+  getUserByNickname?: Maybe<User>;
   getUsersPagination: Array<User>;
   getVehicleDecade: Array<Scalars['String']>;
   getVehicleTypes: Array<Scalars['String']>;
@@ -364,6 +365,11 @@ export type QueryGetPersonalVehiclesArgs = {
 
 export type QueryGetPostsArgs = {
   title?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGetUserByNicknameArgs = {
+  nickname: Scalars['String'];
 };
 
 
@@ -450,8 +456,8 @@ export type User = {
   createdAt: Scalars['String'];
   email: Scalars['String'];
   firstName?: Maybe<Scalars['String']>;
-  followers: Array<Follow>;
-  following: Array<Follow>;
+  followers?: Maybe<Array<Follow>>;
+  following?: Maybe<Array<Follow>>;
   id: Scalars['Float'];
   isBlocked: Scalars['Boolean'];
   isOnline: Scalars['Boolean'];
@@ -610,6 +616,13 @@ export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, email: string, nickname: string, avatarUrl?: string | null, role: string, firstName?: string | null, lastName?: string | null } };
+
+export type GetUserByNicknameQueryVariables = Exact<{
+  nickname: Scalars['String'];
+}>;
+
+
+export type GetUserByNicknameQuery = { __typename?: 'Query', getUserByNickname?: { __typename?: 'User', nickname: string, firstName?: string | null, lastName?: string | null, avatarUrl?: string | null, followers?: Array<{ __typename?: 'Follow', id: number }> | null, following?: Array<{ __typename?: 'Follow', id: number }> | null } | null };
 
 export type LikeAndDislikePostMutationVariables = Exact<{
   postId: Scalars['Float'];
@@ -1538,6 +1551,55 @@ export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileSuspenseQueryHookResult = ReturnType<typeof useProfileSuspenseQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
+export const GetUserByNicknameDocument = gql`
+    query GetUserByNickname($nickname: String!) {
+  getUserByNickname(nickname: $nickname) {
+    nickname
+    firstName
+    lastName
+    avatarUrl
+    followers {
+      id
+    }
+    following {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserByNicknameQuery__
+ *
+ * To run a query within a React component, call `useGetUserByNicknameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByNicknameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByNicknameQuery({
+ *   variables: {
+ *      nickname: // value for 'nickname'
+ *   },
+ * });
+ */
+export function useGetUserByNicknameQuery(baseOptions: Apollo.QueryHookOptions<GetUserByNicknameQuery, GetUserByNicknameQueryVariables> & ({ variables: GetUserByNicknameQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByNicknameQuery, GetUserByNicknameQueryVariables>(GetUserByNicknameDocument, options);
+      }
+export function useGetUserByNicknameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByNicknameQuery, GetUserByNicknameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByNicknameQuery, GetUserByNicknameQueryVariables>(GetUserByNicknameDocument, options);
+        }
+export function useGetUserByNicknameSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserByNicknameQuery, GetUserByNicknameQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserByNicknameQuery, GetUserByNicknameQueryVariables>(GetUserByNicknameDocument, options);
+        }
+export type GetUserByNicknameQueryHookResult = ReturnType<typeof useGetUserByNicknameQuery>;
+export type GetUserByNicknameLazyQueryHookResult = ReturnType<typeof useGetUserByNicknameLazyQuery>;
+export type GetUserByNicknameSuspenseQueryHookResult = ReturnType<typeof useGetUserByNicknameSuspenseQuery>;
+export type GetUserByNicknameQueryResult = Apollo.QueryResult<GetUserByNicknameQuery, GetUserByNicknameQueryVariables>;
 export const LikeAndDislikePostDocument = gql`
     mutation LikeAndDislikePost($postId: Float!) {
   likeAndDislikePost(postId: $postId)
