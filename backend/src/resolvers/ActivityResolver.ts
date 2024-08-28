@@ -29,7 +29,7 @@ class ActivityResolver {
     }
 
     const activities = await Activity.find({
-      relations: { user: true, activityType: true },
+      relations: { user: true/*, activityType: true */},
       where: { user: { id: userIdToFetch } },
     });
     return activities;
