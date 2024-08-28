@@ -1,6 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import Loading from "@/components/loading";
-import { useGetUserByNicknameQuery } from "@/graphql/generated/schema";
+import {
+  useGetUserByNicknameQuery,
+  useFollowMutation,
+  useUnfollowMutation,
+  useProfileQuery,
+} from "@/graphql/generated/schema";
 import LayoutLoggedInUser from "@/layouts/layout-logged-in-user";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -8,6 +13,13 @@ import { useState, useEffect } from "react";
 export default function Profile() {
   const params = useParams();
   const [nickname, setNickname] = useState("");
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+
+  const { data: currentUser } = useProfileQuery({
+    errorPolicy: "ignore",
+  });
 
   useEffect(() => {
     if (params?.nickname) {
@@ -20,6 +32,33 @@ export default function Profile() {
     skip: !nickname,
   });
 
+  const [follow] = useFollowMutation({
+    onCompleted: () => {
+      setIsFollowing(true);
+      setFollowersCount((prev) => prev + 1);
+    },
+  });
+
+  const [unfollow] = useUnfollowMutation({
+    onCompleted: () => {
+      setIsFollowing(false);
+      setFollowersCount((prev) => prev - 1);
+    },
+  });
+
+  useEffect(() => {
+    if (data?.getUserByNickname) {
+      const user = data.getUserByNickname;
+      const currentUserFollowing =
+        user.followers?.some(
+          (follower) => follower.id === currentUser?.profile.id
+        ) || false;
+      setIsFollowing(currentUserFollowing);
+      setFollowersCount(user.followers?.length || 0);
+      setFollowingCount(user.following?.length || 0);
+    }
+  }, [data]);
+
   if (!nickname || loading) {
     return <Loading />;
   }
@@ -29,6 +68,18 @@ export default function Profile() {
   }
 
   const user = data?.getUserByNickname;
+
+  const handleFollowToggle = async () => {
+    if (isFollowing) {
+      if (user) {
+        await unfollow({ variables: { userId: user.id } });
+      }
+    } else {
+      if (user) {
+        await follow({ variables: { userId: user.id } });
+      }
+    }
+  };
 
   return (
     <LayoutLoggedInUser>
@@ -64,13 +115,13 @@ export default function Profile() {
           <div className="flex justify-center space-x-12">
             <div className="text-center">
               <p className="text-2xl font-bold text-gray-900">
-                {user?.followers ? user?.followers.length : 0}
+                {followersCount}
               </p>
               <p className="text-gray-600 mt-1">Followers</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-gray-900">
-                {user?.following ? user?.following.length : 0}
+                {followingCount}
               </p>
               <p className="text-gray-600 mt-1">Following</p>
             </div>
@@ -78,7 +129,12 @@ export default function Profile() {
         </div>
 
         <div className="flex justify-center">
-          <button className="btn btn-reef w-1/4">Suivre</button>
+          <button
+            className={`btn ${isFollowing ? "btn-error" : "btn-reef"} w-1/4`}
+            onClick={handleFollowToggle}
+          >
+            {isFollowing ? "Ne plus suivre" : "Suivre"}
+          </button>
         </div>
       </div>
     </LayoutLoggedInUser>
