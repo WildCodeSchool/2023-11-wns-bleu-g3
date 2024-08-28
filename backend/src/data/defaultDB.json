@@ -72,6 +72,42 @@
     }
   },
   {
+    "name": "Voiture Moyenne Essence",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 131,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": null,
+      "vehicleDecade": null,
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Diesel",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 123,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": null,
+      "vehicleDecade": null,
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Electrique",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 96,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": null,
+      "vehicleDecade": null,
+      "motoEngine": null
+    }
+  },
+  {
     "name": "Moto moins de 125 cc",
     "category": "Moto",
     "unit": "Distance",
@@ -108,7 +144,7 @@
     }
   },
   {
-    "name": "Avion moins de 500km",
+    "name": "Avion 0 à 500 km",
     "category": "Plane",
     "unit": "Distance",
     "emissions": 285,
@@ -129,7 +165,7 @@
     "vehicleAttributes": null
   },
   {
-    "name": "Avion plus de 3500km",
+    "name": "Avion 3500 à 150000000 km",
     "category": "Plane",
     "unit": "Distance",
     "emissions": 152,
@@ -168,6 +204,13 @@
     "category": "Boat",
     "unit": "Distance",
     "emissions": 267,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Bus",
+    "category": "Bus",
+    "unit": "Distance",
+    "emissions": 104,
     "vehicleAttributes": null
   },
   {
@@ -255,28 +298,28 @@
     "vehicleAttributes": null
   },
   {
-    "name": "Apple",
+    "name": "téléphone Apple",
     "category": "Electronics",
     "unit": "PerUnit",
     "emissions": 62000,
     "vehicleAttributes": null
   },
   {
-    "name": "Huawei",
+    "name": "téléphone Huawei",
     "category": "Electronics",
     "unit": "PerUnit",
     "emissions": 71000,
     "vehicleAttributes": null
   },
   {
-    "name": "Samsung",
+    "name": "téléphone Samsung",
     "category": "Electronics",
     "unit": "PerUnit",
     "emissions": 49000,
     "vehicleAttributes": null
   },
   {
-    "name": "Autre",
+    "name": "téléphone Autre",
     "category": "Electronics",
     "unit": "PerUnit",
     "emissions": 60000,

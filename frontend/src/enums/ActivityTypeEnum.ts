@@ -3,5 +3,4 @@ export enum ActivityTypeEnum {
   Heating = "Chauffage",
   Clothing = "Achat vêtement",
   Electronics = "Achat électronique",
-  Others = "Autres",
 }

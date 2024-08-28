@@ -1,0 +1,6 @@
+query GetActivityTypesByCategory($getActivityTypesByCategory: Category!) {
+  getActivityTypesByCategory(category: $getActivityTypesByCategory) {
+    name
+    emissions
+  }
+}
