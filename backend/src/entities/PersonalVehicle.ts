@@ -15,6 +15,7 @@ import {
   FuelType,
   VehicleType,
   MotoEngine,
+  VehicleDecade,
 } from "./Enums/Vehicle_Attributes";
 import { ObjectId } from "../types";
 
@@ -50,10 +51,14 @@ class PersonalVehicle extends BaseEntity {
   @Field(() => User)
   user: User;
 
+  @Column()
+  @Field()
+  emissionByKm: number;
+
   // Car
   @Column({ nullable: true })
   @Field({ nullable: true })
-  year_of_construction?: string;
+  year_of_construction?: VehicleDecade;
 
   @Column({
     type: "enum",

@@ -1,10 +1,5 @@
-import { Min } from "class-validator";
-import {
-  Field,
-  InputType,
-  ObjectType,
-  Int,
-} from "type-graphql";
+import { Length, Min } from "class-validator";
+import { Field, InputType, ObjectType, Int } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -35,7 +30,7 @@ class Activity extends BaseEntity {
   @Field()
   name: string;
 
-  @Column()
+  @Column({ default: 1 })
   @Field()
   quantity: number;
 
@@ -46,7 +41,7 @@ class Activity extends BaseEntity {
   @Column({
     type: "enum",
     enum: ReccurenceInterval,
-    nullable: true
+    nullable: true,
   })
   @Field({ nullable: true })
   reccurence_interval?: ReccurenceInterval;
@@ -56,11 +51,11 @@ class Activity extends BaseEntity {
   @Min(0)
   reccurence_count?: number;
 
-  @Column({ type: "timestamp" })
+  @Column({ default: new Date() })
   @Field()
   starts_at: Date;
 
-  @Column({ type: "timestamp", nullable: true })
+  @Column({ nullable: true })
   @Field({ nullable: true })
   ends_at?: Date;
 
@@ -82,14 +77,20 @@ class Activity extends BaseEntity {
   @ManyToOne(() => ActivityType, (activityType) => activityType.id)
   @Field(() => ActivityType)
   activityType: ActivityType;
+
+  @Column()
+  @Field()
+  emissionPerMonth: number;
 }
 
 @InputType()
 export class NewActivityInput {
   @Field()
+  @Length(5, 150)
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
+  @Min(0)
   quantity: number;
 
   @Field()
@@ -114,8 +115,8 @@ export class NewActivityInput {
   @Field()
   is_made_in_france: boolean;
 
-  @Field(() => ObjectId)
-  activityType: ObjectId;
+  @Field()
+  type: string;
 }
 
 @InputType()

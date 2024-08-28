@@ -48,7 +48,7 @@ export default function SideLoggedInUser({ isOpen }: { isOpen: any }) {
               </div>
             </form>
             <SideLoggedInUserItem href="/dashboard" name="Tableau de bord" />
-            <SideLoggedInUserItem href="#" name="Ajouter une dépense" />
+            <SideLoggedInUserItem href="/new-activity" name="Ajouter une dépense" />
             <SideLoggedInUserItem href="#" name="Mes dépenses" />
             <SideLoggedInUserItem href="#" name="Donations" />
             <SideLoggedInUserItem href="/feed" name="Les bons plans" />
