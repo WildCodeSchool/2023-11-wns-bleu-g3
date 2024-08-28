@@ -13,6 +13,8 @@ const PAGE_SIZE = 8;
 export default function TableActivities() {
   const router = useRouter();
   // pagination offset limit
+  const router = useRouter();
+  // pagination offset limit
   const [page, setPage] = useState(0);
   const [notEndPage, setNotEndPage] = useState(true);
 

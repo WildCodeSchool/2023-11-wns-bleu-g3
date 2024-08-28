@@ -3,7 +3,12 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import Activities from "../activities";
+import { FormEvent, useEffect, useState } from "react";
+import Activities from "../activities";
 import {
+  GetActivityTypesByIdDocument,
+  UpdateActivityTypeDocument,
+  UpdateActivityTypeInput,
   GetActivityTypesByIdDocument,
   UpdateActivityTypeDocument,
   UpdateActivityTypeInput,
@@ -15,7 +20,11 @@ import {
   useGetVehicleDecadeQuery,
   useGetVehicleTypesQuery,
   useUpdateActivityTypeMutation,
+  useUpdateActivityTypeMutation,
 } from "@/graphql/generated/schema";
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
+import { updateSourceFile } from "typescript";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
 import { updateSourceFile } from "typescript";
@@ -23,6 +32,7 @@ import { updateSourceFile } from "typescript";
 export default function UpdateActivity() {
   const [error, setError] = useState({ message: "", errorInput: "" });
   const router = useRouter();
+
 
   const { id } = router.query;
 
@@ -125,6 +135,7 @@ export default function UpdateActivity() {
   return (
     <LayoutAdmin>
       <form className="max-w-3xl mx-auto mt-3 p-5" onSubmit={handleSubmit}>
+      <form className="max-w-3xl mx-auto mt-3 p-5" onSubmit={handleSubmit}>
         <div>
           <p className="pb-2 text-lg font-medium text-gray-700">
             Modifie type activité
@@ -134,6 +145,9 @@ export default function UpdateActivity() {
           </h1>
           <br />
           <p className="text-sm text-gray-600 mb-4">
+            Vous avez la possibilité de modifier les caractéristiques de ce type
+            d'activité, comme la catégorie, la valeur d'émission de CO
+            <sub>2</sub> et l'unité de mesure.
             Vous avez la possibilité de modifier les caractéristiques de ce type
             d'activité, comme la catégorie, la valeur d'émission de CO
             <sub>2</sub> et l'unité de mesure.
@@ -185,6 +199,7 @@ export default function UpdateActivity() {
         <div className="mb-3">
           <label
             htmlFor="unit"
+            htmlFor="unit"
             className="block mb-2 text-sm font-medium text-gray-900"
           >
             Unité Mesure
@@ -197,19 +212,24 @@ export default function UpdateActivity() {
           >
             {units.map((unit) => (
               <option value={unit}>{unit}</option>
+              <option value={unit}>{unit}</option>
             ))}
           </select>
         </div>
 
         {selectedOption === "Voiture" ? (
+        {selectedOption === "Voiture" ? (
           <div className="mb-3">
             <label
+              htmlFor="vehicletype"
               htmlFor="vehicletype"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
               Type Voiture
             </label>
             <select
+              id="vehicletype"
+              name="vehicletype"
               id="vehicletype"
               name="vehicletype"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
@@ -221,16 +241,21 @@ export default function UpdateActivity() {
             </select>
           </div>
         ) : null}
+        ) : null}
 
+        {selectedOption === "Voiture" ? (
         {selectedOption === "Voiture" ? (
           <div className="mb-3">
             <label
+              htmlFor="fuelType"
               htmlFor="fuelType"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
               Carburant
             </label>
             <select
+              id="fuelType"
+              name="fuelType"
               id="fuelType"
               name="fuelType"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -242,16 +267,21 @@ export default function UpdateActivity() {
             </select>
           </div>
         ) : null}
+        ) : null}
 
+        {selectedOption === "Voiture" ? (
         {selectedOption === "Voiture" ? (
           <div className="mb-3">
             <label
+              htmlFor="vehicleDecade"
               htmlFor="vehicleDecade"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
               Décennie Voiture
             </label>
             <select
+              id="vehicleDecade"
+              name="vehicleDecade"
               id="vehicleDecade"
               name="vehicleDecade"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
@@ -262,6 +292,7 @@ export default function UpdateActivity() {
               ))}
             </select>
           </div>
+        ) : null}
         ) : null}
 
         {selectedOption === "Moto" ? (
@@ -293,6 +324,13 @@ export default function UpdateActivity() {
           className="text-lightPearl bg-reef hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 py-2.5 text-center"
         >
           Modifier
+        </button>
+        <button
+          type="button"
+          onClick={() => router.push("/admin/activities")}
+          className="text-lightPearl bg-anchor hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 ml-3 py-2.5 text-center"
+        >
+          Annuler
         </button>
         <button
           type="button"
