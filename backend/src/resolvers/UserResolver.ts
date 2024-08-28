@@ -282,6 +282,27 @@ class UserResolver {
     if (findusers.length === 0) throw new GraphQLError("Users were not found.");
     return findusers;
   }
+
+  @Authorized([UserRole.User])
+  @Query(() => User, { nullable: true })
+  async getUserByNickname(
+    @Ctx() ctx: Context,
+    @Arg("nickname") nickname: string,
+  ): Promise<User | null> {
+    if (!ctx.currentUser) {
+      throw new GraphQLError("You need to be logged in");
+    }
+
+    const user = await User.findOneBy({
+      nickname: nickname,
+    });
+
+    if (!user) {
+      throw new GraphQLError("User not found");
+    }
+
+    return user;
+  }
 }
 
 export default UserResolver;
