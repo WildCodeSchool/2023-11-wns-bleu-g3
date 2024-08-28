@@ -83,12 +83,12 @@ class User extends BaseEntity {
   activities?: Activity[];
 
   @OneToMany(() => Follow, (follow) => follow.follower)
-  @Field(() => [Follow])
-  following: Follow[];
+  @Field(() => [Follow], { nullable: true })
+  following?: Follow[];
 
   @OneToMany(() => Follow, (follow) => follow.following)
-  @Field(() => [Follow])
-  followers: Follow[];
+  @Field(() => [Follow], { nullable: true })
+  followers?: Follow[];
 
   @OneToMany(() => PersonalVehicle, (personalVehicle) => personalVehicle.user)
   @Field(() => [PersonalVehicle], { nullable: true })
