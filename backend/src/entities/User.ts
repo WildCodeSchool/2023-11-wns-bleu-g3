@@ -1,5 +1,5 @@
 import { hash } from "argon2";
-import { IsBoolean, IsEmail, IsStrongPassword, Length } from "class-validator";
+import { IsEmail, IsStrongPassword, Length } from "class-validator";
 import { Field, InputType, ObjectType } from "type-graphql";
 import {
   BaseEntity,
@@ -7,11 +7,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import Activity from "./Activity";
-import { Follow } from "./Follow";
 import PersonalVehicle from "./PersonalVehicle";
 import Post from "./Post";
 import Like from "./Like";
@@ -82,13 +83,22 @@ class User extends BaseEntity {
   @Field(() => [Activity], { nullable: true })
   activities?: Activity[];
 
-  @OneToMany(() => Follow, (follow) => follow.follower)
-  @Field(() => [Follow], { nullable: true })
-  following?: Follow[];
+  @ManyToMany(() => User, (user) => user.following)
+  @JoinTable({
+    name: "follow",
+    joinColumn: {
+      name: "follower_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "followed_id",
+      referencedColumnName: "id",
+    },
+  })
+  followers: User[];
 
-  @OneToMany(() => Follow, (follow) => follow.following)
-  @Field(() => [Follow], { nullable: true })
-  followers?: Follow[];
+  @ManyToMany(() => User, (user) => user.followers)
+  following: User[];
 
   @OneToMany(() => PersonalVehicle, (personalVehicle) => personalVehicle.user)
   @Field(() => [PersonalVehicle], { nullable: true })
