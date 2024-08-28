@@ -111,7 +111,7 @@ export default function TopbarLoggedInUser({
                   className="w-8 h-8 rounded-full"
                 />
                 <a
-                  href={`/user/${user.id}/${user.nickname}`}
+                  href={`/user/${user.nickname}`}
                   className="text-gray-900 w-full py-2"
                 >
                   {user.nickname}
