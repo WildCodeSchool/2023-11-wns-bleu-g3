@@ -114,6 +114,7 @@ class User extends BaseEntity {
   @OneToMany(() => Like, (like) => like.user)
   @Field(() => [Like])
   likes: Like[];
+
   @Field()
   @Column({ default: false })
   isBlocked: boolean;
