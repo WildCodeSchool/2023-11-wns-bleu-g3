@@ -94,19 +94,18 @@ export default function TableAdminPosts() {
               key={post.imageUrl}
               className="border-t border-gray-500 bg-pearl text-reef hover:bg-shore hover:text-anchor"
             >
-              <th
-                scope="row"
-                className="px-2 py-1 md:px-6 md:py-4 font-medium whitespace-nowrap"
-              >
-                <img
-                  className="w-10 h-10 rounded-sm  bg-shore"
-                  src={
-                    post.imageUrl
-                      ? post.imageUrl
-                      : "@/public/img/greenfoot-logo.png"
-                  }
-                  alt="error display photo"
-                />
+              <th scope="row" className="px-2 py-1 md:px-6 md:py-4  ">
+                {post.imageUrl ? (
+                  <img
+                    className="w-10 h-10 rounded-sm  bg-shore"
+                    src={post.imageUrl}
+                    alt=""
+                  />
+                ) : (
+                  <span className="m-auto material-icons text-neutral-500 text-[2.3rem] ">
+                    article
+                  </span>
+                )}
               </th>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
                 {post.title}
@@ -115,8 +114,11 @@ export default function TableAdminPosts() {
                 {post.created_at}
               </td>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell"></td>
-              <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
-                {post.nbOfLikes}
+              <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell ">
+                <div className="flex gap-x-2">
+                  <span className="text-xl">{post.nbOfLikes}</span>
+                  <span className="material-icons ">favorite</span>
+                </div>
               </td>
               <td className="px-1 py-1 md:px-2 md:py-4 flex space-x-1 md:space-x-2">
                 {/* <Link
@@ -136,6 +138,11 @@ export default function TableAdminPosts() {
                   expression="supprimer"
                   mappedVar={activity}
                 /> */}
+                <div className="flex">
+                  <span className="m-auto material-icons text-neutral-500 text-3xl">
+                    feature_search
+                  </span>
+                </div>
               </td>
             </tr>
           ))}
