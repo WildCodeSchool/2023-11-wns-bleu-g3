@@ -22,7 +22,7 @@ export class FollowResolver {
       relations: ["followers"],
     });
 
-    return user!.followers;
+    return user!.followers || [];
   }
 
   @Authorized()
@@ -42,7 +42,7 @@ export class FollowResolver {
       relations: ["following"],
     });
 
-    return user!.following;
+    return user!.following || [];
   }
 
   @Authorized()

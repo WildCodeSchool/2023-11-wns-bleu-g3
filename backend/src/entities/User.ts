@@ -95,10 +95,12 @@ class User extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  followers: User[];
+  @Field(() => [User], { nullable: true })
+  followers?: User[];
 
   @ManyToMany(() => User, (user) => user.followers)
-  following: User[];
+  @Field(() => [User], { nullable: true })
+  following?: User[];
 
   @OneToMany(() => PersonalVehicle, (personalVehicle) => personalVehicle.user)
   @Field(() => [PersonalVehicle], { nullable: true })

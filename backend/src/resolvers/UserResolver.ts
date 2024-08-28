@@ -287,14 +287,17 @@ class UserResolver {
   @Query(() => User, { nullable: true })
   async getUserByNickname(
     @Ctx() ctx: Context,
-    @Arg("nickname") nickname: string,
+    @Arg("nickname") nickname: string
   ): Promise<User | null> {
     if (!ctx.currentUser) {
       throw new GraphQLError("You need to be logged in");
     }
 
-    const user = await User.findOneBy({
-      nickname: nickname,
+    const user = await User.findOne({
+      where: {
+        nickname: nickname,
+      },
+      relations: ["followers", "following"],
     });
 
     if (!user) {
