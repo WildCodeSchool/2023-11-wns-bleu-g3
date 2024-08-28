@@ -1,5 +1,6 @@
 query GetUserByNickname($nickname: String!) {
   getUserByNickname(nickname: $nickname) {
+    id
     nickname
     firstName
     lastName

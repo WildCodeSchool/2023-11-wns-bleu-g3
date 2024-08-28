@@ -620,7 +620,7 @@ export type GetUserByNicknameQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByNicknameQuery = { __typename?: 'Query', getUserByNickname?: { __typename?: 'User', nickname: string, firstName?: string | null, lastName?: string | null, avatarUrl?: string | null, followers?: Array<{ __typename?: 'User', id: number }> | null, following?: Array<{ __typename?: 'User', id: number }> | null } | null };
+export type GetUserByNicknameQuery = { __typename?: 'Query', getUserByNickname?: { __typename?: 'User', id: number, nickname: string, firstName?: string | null, lastName?: string | null, avatarUrl?: string | null, followers?: Array<{ __typename?: 'User', id: number }> | null, following?: Array<{ __typename?: 'User', id: number }> | null } | null };
 
 export type LikeAndDislikePostMutationVariables = Exact<{
   postId: Scalars['Float'];
@@ -1592,6 +1592,7 @@ export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVa
 export const GetUserByNicknameDocument = gql`
     query GetUserByNickname($nickname: String!) {
   getUserByNickname(nickname: $nickname) {
+    id
     nickname
     firstName
     lastName
