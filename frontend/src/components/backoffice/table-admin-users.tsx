@@ -229,29 +229,31 @@ export default function TableAdminUsers() {
               </td>
               <td className="py-4">{formatTimestamp(user.createdAt)}</td>
               <td className="px-6 py-4">{user.role}</td>
-              <td className="px-6  flex gap-x-8">
-                <ModalBin
-                  operation={() =>
-                    blockToggle({
-                      variables: {
-                        userIds: [user.id],
-                      },
-                    }).then(() => window.location.reload())
-                  }
-                  expression={
-                    user.role !== "admin"
-                      ? user.isBlocked
-                        ? "debloquer"
-                        : "bloquer"
-                      : "empty"
-                  }
-                  mappedVar={user}
-                />
-                <ModalBin
-                  operation=""
-                  expression="supprimer"
-                  mappedVar={user}
-                />
+              <td className="px-6 py-4 ">
+                <div className="flex gap-x-4">
+                  <ModalBin
+                    operation={() =>
+                      blockToggle({
+                        variables: {
+                          userIds: [user.id],
+                        },
+                      }).then(() => window.location.reload())
+                    }
+                    expression={
+                      user.role !== "admin"
+                        ? user.isBlocked
+                          ? "debloquer"
+                          : "bloquer"
+                        : "empty"
+                    }
+                    mappedVar={user}
+                  />
+                  <ModalBin
+                    operation=""
+                    expression="supprimer"
+                    mappedVar={user}
+                  />
+                </div>
               </td>
             </tr>
           ))}
