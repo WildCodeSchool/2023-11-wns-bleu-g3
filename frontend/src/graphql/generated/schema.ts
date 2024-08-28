@@ -333,7 +333,7 @@ export type Post = {
   likes: Array<Like>;
   nbOfLikes?: Maybe<Scalars['Float']>;
   title?: Maybe<Scalars['String']>;
-  user: User;
+  user?: Maybe<User>;
 };
 
 export type Query = {
@@ -352,6 +352,7 @@ export type Query = {
   getMotoEngines: Array<Scalars['String']>;
   getPersonalVehicles: Array<PersonalVehicle>;
   getPosts: Array<Post>;
+  getPostsPagination: Array<Post>;
   getUnits: Array<Scalars['String']>;
   getUserActivities: Array<Activity>;
   getUserByNickname?: Maybe<User>;
@@ -414,6 +415,7 @@ export type QueryGetPostsArgs = {
 };
 
 
+<<<<<<< HEAD
 export type QueryGetUserActivitiesArgs = {
   category?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -427,6 +429,11 @@ export type QueryGetUserActivitiesArgs = {
 
 export type QueryGetUserByNicknameArgs = {
   nickname: Scalars['String'];
+=======
+export type QueryGetPostsPaginationArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+>>>>>>> b5b09cb (bo table admin posts)
 };
 
 
@@ -549,6 +556,14 @@ export type GetActivitiesTypesPaginationQueryVariables = Exact<{
 
 export type GetActivitiesTypesPaginationQuery = { __typename?: 'Query', getActivitiesTypesPagination: Array<{ __typename?: 'ActivityType', category: string, emissions: number, id: number, name: string, unit: string }> };
 
+export type GetPostsPaginationQueryVariables = Exact<{
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetPostsPaginationQuery = { __typename?: 'Query', getPostsPagination: Array<{ __typename?: 'Post', id: number, created_at: any, nbOfLikes?: number | null, title?: string | null, imageUrl?: string | null, user?: { __typename?: 'User', id: number } | null }> };
+
 export type GetUsersPaginationQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -597,7 +612,7 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, nbOfLikes?: number | null, created_at: any, user: { __typename?: 'User', id: number } } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, nbOfLikes?: number | null, created_at: any, user?: { __typename?: 'User', id: number } | null } };
 
 export type DeleteActivityMutationVariables = Exact<{
   activityId: Scalars['Float'];
@@ -712,7 +727,7 @@ export type GetPersonalVehiclesQuery = { __typename?: 'Query', getPersonalVehicl
 export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, created_at: any, nbOfLikes?: number | null, user: { __typename?: 'User', id: number, nickname: string }, likes: Array<{ __typename?: 'Like', id: number }> }> };
+export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, created_at: any, nbOfLikes?: number | null, user?: { __typename?: 'User', id: number, nickname: string } | null, likes: Array<{ __typename?: 'Like', id: number }> }> };
 
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -877,6 +892,54 @@ export type GetActivitiesTypesPaginationQueryHookResult = ReturnType<typeof useG
 export type GetActivitiesTypesPaginationLazyQueryHookResult = ReturnType<typeof useGetActivitiesTypesPaginationLazyQuery>;
 export type GetActivitiesTypesPaginationSuspenseQueryHookResult = ReturnType<typeof useGetActivitiesTypesPaginationSuspenseQuery>;
 export type GetActivitiesTypesPaginationQueryResult = Apollo.QueryResult<GetActivitiesTypesPaginationQuery, GetActivitiesTypesPaginationQueryVariables>;
+export const GetPostsPaginationDocument = gql`
+    query GetPostsPagination($offset: Int, $limit: Int) {
+  getPostsPagination(offset: $offset, limit: $limit) {
+    id
+    created_at
+    nbOfLikes
+    title
+    imageUrl
+    user {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPostsPaginationQuery__
+ *
+ * To run a query within a React component, call `useGetPostsPaginationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPostsPaginationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPostsPaginationQuery({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetPostsPaginationQuery(baseOptions?: Apollo.QueryHookOptions<GetPostsPaginationQuery, GetPostsPaginationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPostsPaginationQuery, GetPostsPaginationQueryVariables>(GetPostsPaginationDocument, options);
+      }
+export function useGetPostsPaginationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPostsPaginationQuery, GetPostsPaginationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPostsPaginationQuery, GetPostsPaginationQueryVariables>(GetPostsPaginationDocument, options);
+        }
+export function useGetPostsPaginationSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetPostsPaginationQuery, GetPostsPaginationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPostsPaginationQuery, GetPostsPaginationQueryVariables>(GetPostsPaginationDocument, options);
+        }
+export type GetPostsPaginationQueryHookResult = ReturnType<typeof useGetPostsPaginationQuery>;
+export type GetPostsPaginationLazyQueryHookResult = ReturnType<typeof useGetPostsPaginationLazyQuery>;
+export type GetPostsPaginationSuspenseQueryHookResult = ReturnType<typeof useGetPostsPaginationSuspenseQuery>;
+export type GetPostsPaginationQueryResult = Apollo.QueryResult<GetPostsPaginationQuery, GetPostsPaginationQueryVariables>;
 export const GetUsersPaginationDocument = gql`
     query GetUsersPagination($offset: Int, $limit: Int) {
   getUsersPagination(offset: $offset, limit: $limit) {
