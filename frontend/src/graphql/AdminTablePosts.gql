@@ -6,7 +6,8 @@ query GetPostsPagination($offset: Int, $limit: Int) {
     title
     imageUrl
     user {
-      id
+      id,
+      nickname
     }
   }
 }

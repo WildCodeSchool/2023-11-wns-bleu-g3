@@ -333,7 +333,7 @@ export type Post = {
   likes: Array<Like>;
   nbOfLikes?: Maybe<Scalars['Float']>;
   title?: Maybe<Scalars['String']>;
-  user?: Maybe<User>;
+  user: User;
 };
 
 export type Query = {
@@ -524,7 +524,6 @@ export type User = {
   following?: Maybe<Array<User>>;
   id: Scalars['Float'];
   isBlocked: Scalars['Boolean'];
-  isOnline: Scalars['Boolean'];
   lastName?: Maybe<Scalars['String']>;
   likes: Array<Like>;
   nickname: Scalars['String'];
@@ -562,7 +561,7 @@ export type GetPostsPaginationQueryVariables = Exact<{
 }>;
 
 
-export type GetPostsPaginationQuery = { __typename?: 'Query', getPostsPagination: Array<{ __typename?: 'Post', id: number, created_at: any, nbOfLikes?: number | null, title?: string | null, imageUrl?: string | null, user?: { __typename?: 'User', id: number } | null }> };
+export type GetPostsPaginationQuery = { __typename?: 'Query', getPostsPagination: Array<{ __typename?: 'Post', id: number, created_at: any, nbOfLikes?: number | null, title?: string | null, imageUrl?: string | null, user: { __typename?: 'User', id: number, nickname: string } }> };
 
 export type GetUsersPaginationQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']>;
@@ -612,7 +611,7 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, nbOfLikes?: number | null, created_at: any, user?: { __typename?: 'User', id: number } | null } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, nbOfLikes?: number | null, created_at: any, user: { __typename?: 'User', id: number } } };
 
 export type DeleteActivityMutationVariables = Exact<{
   activityId: Scalars['Float'];
@@ -727,7 +726,7 @@ export type GetPersonalVehiclesQuery = { __typename?: 'Query', getPersonalVehicl
 export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, created_at: any, nbOfLikes?: number | null, user?: { __typename?: 'User', id: number, nickname: string } | null, likes: Array<{ __typename?: 'Like', id: number }> }> };
+export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, created_at: any, nbOfLikes?: number | null, user: { __typename?: 'User', id: number, nickname: string }, likes: Array<{ __typename?: 'Like', id: number }> }> };
 
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -902,6 +901,7 @@ export const GetPostsPaginationDocument = gql`
     imageUrl
     user {
       id
+      nickname
     }
   }
 }

@@ -25,7 +25,7 @@ export default function SideAdmin({ isOpen }: { isOpen: any }) {
       } overflow-y-auto`}
     >
       <div className="px-3 py-4 bg-anchor flex flex-col justify-between h-full">
-        <ul className="flex flex-col gap-4 ">
+        <ul className="flex flex-col gap-5 justify-between h-full">
           <div className="gap-4 flex flex-col">
             <SideAdminItem href="/admin/dashboard" name="Dashboard Admin" />
             <SideAdminItem href="/admin/users" name="Utilisateurs" />
@@ -36,25 +36,21 @@ export default function SideAdmin({ isOpen }: { isOpen: any }) {
               name="Ajouté Activité Type"
             />
             <SideAdminItem href="/admin/donations" name="Consulter Donations" />
-            <SideAdminItem href="/dashboard" name="Retour a l'Accueil" />
           </div>
 
-          <div className="md:hidden flex flex-col gap-2 py-4">
-            <button
-              className="btn btn-shore bg-gray-100"
-              onClick={() => router.push("/profile")}
-            >
+          <div className="flex  flex-col gap-3 py-2 mb-2 ">
+            <a className="btn btn-shore bg-gray-300 text-left" href="/profile">
               Mon compte
-            </button>
+            </a>
             <button
-              className="btn btn-error"
+              className=" text-gray-400 py-[0.3rem]   rounded-lg bg-red-900 bg-opacity-50  hover:bg-opacity-80"
               onClick={async () => {
                 await logout();
                 router.push("/");
                 client.resetStore();
               }}
             >
-              Déconnexion
+              <span className="material-icons text-xl">logout</span>
             </button>
           </div>
         </ul>

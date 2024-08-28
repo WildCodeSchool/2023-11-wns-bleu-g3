@@ -50,7 +50,7 @@ export default function ModalBin({
       );
       break;
     case "empty": //need for a placeholder (fake space 2rem) to avoid table layout issue
-      btn = <div className="w-[1.5rem] h-[2rem]:" aria-hidden="true"></div>;
+      btn = <div className="w-[1.5rem] h-[2rem] mr-1" aria-hidden="true"></div>;
   }
 
   return (

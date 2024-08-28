@@ -69,6 +69,12 @@ export default function TableAdminPosts() {
               scope="col"
               className="px-2 py-1 md:px-6 md:py-3 hidden md:table-cell"
             >
+              User
+            </th>
+            <th
+              scope="col"
+              className="px-2 py-1 md:px-6 md:py-3 hidden md:table-cell"
+            >
               Date Publication
             </th>
             <th
@@ -97,7 +103,7 @@ export default function TableAdminPosts() {
               <th scope="row" className="px-2 py-1 md:px-6 md:py-4  ">
                 {post.imageUrl ? (
                   <img
-                    className="w-10 h-10 rounded-sm  bg-shore"
+                    className="w-14 h-14 object-cover rounded-sm  bg-shore"
                     src={post.imageUrl}
                     alt=""
                   />
@@ -111,6 +117,9 @@ export default function TableAdminPosts() {
                 {post.title}
               </td>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
+                {post.user.nickname}
+              </td>
+              <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
                 {post.created_at}
               </td>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell"></td>
@@ -120,28 +129,11 @@ export default function TableAdminPosts() {
                   <span className="material-icons ">favorite</span>
                 </div>
               </td>
-              <td className="px-1 py-1 md:px-2 md:py-4 flex space-x-1 md:space-x-2">
-                {/* <Link
-                  href={`/admin/upd_activity/${activity.id}`}
-                  className="font-medium text-anchor hover:underline"
-                >
-                  <Icon name="edit" size="" color="reef" />
-                </Link>
-                <ModalBin
-                  operation={() =>
-                    deleteActiv({
-                      variables: {
-                        activityTypeId: activity.id,
-                      },
-                    }).then(() => window.location.reload())
-                  }
-                  expression="supprimer"
-                  mappedVar={activity}
-                /> */}
+              <td className="px-1 py-1 md:px-2 md:py-4  space-x-1 md:space-x-2">
                 <div className="flex">
-                  <span className="m-auto material-icons text-neutral-500 text-3xl">
-                    feature_search
-                  </span>
+                  <button className=" material-icons text-neutral-500 text-3xl">
+                    plagiarism
+                  </button>
                 </div>
               </td>
             </tr>
