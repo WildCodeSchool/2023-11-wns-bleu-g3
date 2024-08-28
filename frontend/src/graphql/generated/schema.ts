@@ -19,6 +19,7 @@ export type Scalars = {
 export type Activity = {
   __typename?: 'Activity';
   activityType: ActivityType;
+  emissionPerMonth: Scalars['Float'];
   ends_at?: Maybe<Scalars['DateTimeISO']>;
   id: Scalars['Int'];
   is_made_in_france: Scalars['Boolean'];
@@ -66,6 +67,37 @@ export type Attr_Input = {
   secondHandPhones?: InputMaybe<Scalars['Float']>;
 };
 
+export enum Category {
+  Appliances = 'Appliances',
+  Bike = 'Bike',
+  Boat = 'Boat',
+  Bus = 'Bus',
+  Car = 'Car',
+  Clothing = 'Clothing',
+  Cooling = 'Cooling',
+  Electronics = 'Electronics',
+  Food = 'Food',
+  Heating = 'Heating',
+  Leisure = 'Leisure',
+  Lighting = 'Lighting',
+  Moto = 'Moto',
+  Others = 'Others',
+  Plane = 'Plane',
+  Renewables = 'Renewables',
+  Services = 'Services',
+  Train = 'Train',
+  Waste = 'Waste',
+  Water = 'Water'
+}
+
+export type Follow = {
+  __typename?: 'Follow';
+  follower: User;
+  following: User;
+  id: Scalars['Float'];
+};
+
+
 export type Like = {
   __typename?: 'Like';
   id: Scalars['Float'];
@@ -81,7 +113,7 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   confirmEmail: Scalars['Boolean'];
-  createActivity: Activity;
+  createActivity: Scalars['Float'];
   createActivityType: ActivityType;
   createPersonalVehicle: PersonalVehicle;
   createPost: Post;
@@ -230,16 +262,16 @@ export type MutationUpdateProfileArgs = {
 };
 
 export type NewActivityInput = {
-  activityType: ObjectId;
   ends_at?: InputMaybe<Scalars['DateTimeISO']>;
   is_made_in_france: Scalars['Boolean'];
   is_reccurent: Scalars['Boolean'];
   is_secondhand: Scalars['Boolean'];
   name: Scalars['String'];
-  quantity: Scalars['Float'];
+  quantity?: InputMaybe<Scalars['Float']>;
   reccurence_count?: InputMaybe<Scalars['Float']>;
   reccurence_interval?: InputMaybe<Scalars['String']>;
   starts_at: Scalars['DateTimeISO'];
+  type: Scalars['String'];
 };
 
 export type NewPersonalVehicleInput = {
@@ -272,6 +304,7 @@ export type ObjectId = {
 export type PersonalVehicle = {
   __typename?: 'PersonalVehicle';
   created_at: Scalars['DateTimeISO'];
+  emissionByKm: Scalars['Float'];
   fuel_type?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   moto_engine?: Maybe<Scalars['String']>;
@@ -299,6 +332,7 @@ export type Query = {
   getActivities: Array<Activity>;
   getActivitiesTypes: Array<ActivityType>;
   getActivitiesTypesPagination: Array<ActivityType>;
+  getActivityTypesByCategory: Array<ActivityType>;
   getActivityTypesById: ActivityType;
   getCategories: Array<Scalars['String']>;
   getFollowersByUser: Array<User>;
@@ -326,6 +360,11 @@ export type QueryGetActivitiesArgs = {
 export type QueryGetActivitiesTypesPaginationArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryGetActivityTypesByCategoryArgs = {
+  category: Category;
 };
 
 
@@ -498,6 +537,13 @@ export type ConfirmEmailMutationVariables = Exact<{
 
 export type ConfirmEmailMutation = { __typename?: 'Mutation', confirmEmail: boolean };
 
+export type CreateActivityMutationVariables = Exact<{
+  data: NewActivityInput;
+}>;
+
+
+export type CreateActivityMutation = { __typename?: 'Mutation', createActivity: number };
+
 export type CreateActivityTypeMutationVariables = Exact<{
   data: ActivityTypeInput;
 }>;
@@ -584,6 +630,12 @@ export type FollowMutationVariables = Exact<{
 
 export type FollowMutation = { __typename?: 'Mutation', follow: { __typename?: 'User', id: number } };
 
+export type GetActivityTypesByCategoryQueryVariables = Exact<{
+  getActivityTypesByCategory: Category;
+}>;
+
+export type GetActivityTypesByCategoryQuery = { __typename?: 'Query', getActivityTypesByCategory: Array<{ __typename?: 'ActivityType', name: string, emissions: number }> };
+
 export type GetActivityTypesByIdQueryVariables = Exact<{
   getActivityTypesById: Scalars['Int'];
 }>;
@@ -603,7 +655,7 @@ export type GetPersonalVehiclesQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonalVehiclesQuery = { __typename?: 'Query', getPersonalVehicles: Array<{ __typename?: 'PersonalVehicle', id: number, name: string, vehicle_category: string, vehicle_type?: string | null, fuel_type?: string | null, year_of_construction?: string | null, moto_engine?: string | null, created_at: any, user: { __typename?: 'User', id: number } }> };
+export type GetPersonalVehiclesQuery = { __typename?: 'Query', getPersonalVehicles: Array<{ __typename?: 'PersonalVehicle', id: number, name: string, vehicle_category: string, vehicle_type?: string | null, fuel_type?: string | null, year_of_construction?: string | null, moto_engine?: string | null, created_at: any, emissionByKm: number, user: { __typename?: 'User', id: number } }> };
 
 export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -840,6 +892,37 @@ export function useConfirmEmailMutation(baseOptions?: Apollo.MutationHookOptions
 export type ConfirmEmailMutationHookResult = ReturnType<typeof useConfirmEmailMutation>;
 export type ConfirmEmailMutationResult = Apollo.MutationResult<ConfirmEmailMutation>;
 export type ConfirmEmailMutationOptions = Apollo.BaseMutationOptions<ConfirmEmailMutation, ConfirmEmailMutationVariables>;
+export const CreateActivityDocument = gql`
+    mutation CreateActivity($data: NewActivityInput!) {
+  createActivity(data: $data)
+}
+    `;
+export type CreateActivityMutationFn = Apollo.MutationFunction<CreateActivityMutation, CreateActivityMutationVariables>;
+
+/**
+ * __useCreateActivityMutation__
+ *
+ * To run a mutation, you first call `useCreateActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createActivityMutation, { data, loading, error }] = useCreateActivityMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateActivityMutation(baseOptions?: Apollo.MutationHookOptions<CreateActivityMutation, CreateActivityMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateActivityMutation, CreateActivityMutationVariables>(CreateActivityDocument, options);
+      }
+export type CreateActivityMutationHookResult = ReturnType<typeof useCreateActivityMutation>;
+export type CreateActivityMutationResult = Apollo.MutationResult<CreateActivityMutation>;
+export type CreateActivityMutationOptions = Apollo.BaseMutationOptions<CreateActivityMutation, CreateActivityMutationVariables>;
 export const CreateActivityTypeDocument = gql`
     mutation CreateActivityType($data: ActivityTypeInput!) {
   createActivityType(data: $data) {
@@ -1309,6 +1392,7 @@ export type GetVehicleTypesQueryHookResult = ReturnType<typeof useGetVehicleType
 export type GetVehicleTypesLazyQueryHookResult = ReturnType<typeof useGetVehicleTypesLazyQuery>;
 export type GetVehicleTypesSuspenseQueryHookResult = ReturnType<typeof useGetVehicleTypesSuspenseQuery>;
 export type GetVehicleTypesQueryResult = Apollo.QueryResult<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>;
+                                                        
 export const FollowDocument = gql`
     mutation Follow($userId: Float!) {
   follow(userId: $userId) {
@@ -1342,6 +1426,48 @@ export function useFollowMutation(baseOptions?: Apollo.MutationHookOptions<Follo
 export type FollowMutationHookResult = ReturnType<typeof useFollowMutation>;
 export type FollowMutationResult = Apollo.MutationResult<FollowMutation>;
 export type FollowMutationOptions = Apollo.BaseMutationOptions<FollowMutation, FollowMutationVariables>;
+
+export const GetActivityTypesByCategoryDocument = gql`
+    query GetActivityTypesByCategory($getActivityTypesByCategory: Category!) {
+  getActivityTypesByCategory(category: $getActivityTypesByCategory) {
+    name
+    emissions
+  }
+}
+    `;
+
+/**
+ * __useGetActivityTypesByCategoryQuery__
+ *
+ * To run a query within a React component, call `useGetActivityTypesByCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActivityTypesByCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActivityTypesByCategoryQuery({
+ *   variables: {
+ *      getActivityTypesByCategory: // value for 'getActivityTypesByCategory'
+ *   },
+ * });
+ */
+export function useGetActivityTypesByCategoryQuery(baseOptions: Apollo.QueryHookOptions<GetActivityTypesByCategoryQuery, GetActivityTypesByCategoryQueryVariables> & ({ variables: GetActivityTypesByCategoryQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetActivityTypesByCategoryQuery, GetActivityTypesByCategoryQueryVariables>(GetActivityTypesByCategoryDocument, options);
+      }
+export function useGetActivityTypesByCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActivityTypesByCategoryQuery, GetActivityTypesByCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetActivityTypesByCategoryQuery, GetActivityTypesByCategoryQueryVariables>(GetActivityTypesByCategoryDocument, options);
+        }
+export function useGetActivityTypesByCategorySuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetActivityTypesByCategoryQuery, GetActivityTypesByCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetActivityTypesByCategoryQuery, GetActivityTypesByCategoryQueryVariables>(GetActivityTypesByCategoryDocument, options);
+        }
+export type GetActivityTypesByCategoryQueryHookResult = ReturnType<typeof useGetActivityTypesByCategoryQuery>;
+export type GetActivityTypesByCategoryLazyQueryHookResult = ReturnType<typeof useGetActivityTypesByCategoryLazyQuery>;
+export type GetActivityTypesByCategorySuspenseQueryHookResult = ReturnType<typeof useGetActivityTypesByCategorySuspenseQuery>;
+export type GetActivityTypesByCategoryQueryResult = Apollo.QueryResult<GetActivityTypesByCategoryQuery, GetActivityTypesByCategoryQueryVariables>;
 export const GetActivityTypesByIdDocument = gql`
     query GetActivityTypesById($getActivityTypesById: Int!) {
   getActivityTypesById(id: $getActivityTypesById) {
@@ -1381,6 +1507,7 @@ export const GetActivityTypesByIdDocument = gql`
  *   },
  * });
  */
+                                                                   
 export function useGetActivityTypesByIdQuery(baseOptions: Apollo.QueryHookOptions<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables> & ({ variables: GetActivityTypesByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>(GetActivityTypesByIdDocument, options);
@@ -1454,6 +1581,7 @@ export const GetPersonalVehiclesDocument = gql`
     year_of_construction
     moto_engine
     created_at
+    emissionByKm
     user {
       id
     }
