@@ -16,6 +16,7 @@ import Activity from "./Activity";
 import PersonalVehicle from "./PersonalVehicle";
 import Post from "./Post";
 import Like from "./Like";
+import Donation from "./Donation";
 
 export enum UserRole {
   Admin = "admin",
@@ -124,6 +125,10 @@ class User extends BaseEntity {
   @Field()
   @Column({ default: false })
   isOnline: boolean;
+
+  @OneToMany(() => Donation, (post) => post.user)
+  @Field(() => [Donation], { nullable: true })
+  donation?: Donation[];
 }
 
 @InputType()

@@ -6,6 +6,7 @@ import Activity from "./entities/Activity";
 import PersonalVehicle from "./entities/PersonalVehicle";
 import Post from "./entities/Post";
 import Like from "./entities/Like";
+import Donation from "./entities/Donation";
 
 const db = new DataSource({
   type: "postgres",
@@ -14,7 +15,15 @@ const db = new DataSource({
   username: env.DB_USER,
   password: env.DB_PASS,
   database: env.DB_NAME,
-  entities: [User, ActivityType, Activity, PersonalVehicle, Post, Like],
+  entities: [
+    User,
+    ActivityType,
+    Activity,
+    PersonalVehicle,
+    Post,
+    Like,
+    Donation,
+  ],
   synchronize: true,
   logging: env.NODE_ENV === "test",
 });

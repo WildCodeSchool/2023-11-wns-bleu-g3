@@ -1,0 +1,10 @@
+mutation CreateDonation($data: NewDonationInput!) {
+  createDonation(data: $data) {
+    id
+    dateOfDonation
+    amount
+    user {
+      nickname
+    }
+  }
+}
