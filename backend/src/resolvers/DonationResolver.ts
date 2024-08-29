@@ -31,11 +31,9 @@ class DonationResolver {
   ): Promise<Donation[]> {
     if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
 
-    const userIdToFetch = userId ?? ctx.currentUser.id;
-
     const donations = await Donation.find({
       relations: { user: true },
-      where: { user: { id: userIdToFetch } },
+      where: { user: { id: userId } },
     });
 
     return donations;
