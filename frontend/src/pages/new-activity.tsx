@@ -111,6 +111,8 @@ export default function NewActivity() {
         -formJSON.ends_at.getTimezoneOffset()
       );
     } else formJSON.ends_at = null;
+    console.log("🚀 ~ handleSubmit ~ formJSON:", formJSON)
+    console.log("🚀 ~ awaitcreateActivity ~ data:", data)
 
     try {
       await newActivitySchema.validate(formJSON, { abortEarly: false });
