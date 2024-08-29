@@ -18,7 +18,7 @@ export type Scalars = {
 
 export type Activity = {
   __typename?: 'Activity';
-  activityType: ActivityType;
+  category?: Maybe<Scalars['String']>;
   emissionPerMonth: Scalars['Float'];
   ends_at?: Maybe<Scalars['DateTimeISO']>;
   id: Scalars['Int'];
@@ -35,7 +35,6 @@ export type Activity = {
 
 export type ActivityType = {
   __typename?: 'ActivityType';
-  activities: Array<Activity>;
   attributes?: Maybe<Attr>;
   category: Scalars['String'];
   emissions: Scalars['Float'];
@@ -89,14 +88,6 @@ export enum Category {
   Waste = 'Waste',
   Water = 'Water'
 }
-
-export type Follow = {
-  __typename?: 'Follow';
-  follower: User;
-  following: User;
-  id: Scalars['Float'];
-};
-
 
 export type Like = {
   __typename?: 'Like';
@@ -422,7 +413,6 @@ export type ResetPasswordRequestInput = {
 };
 
 export type UpdateActivityInput = {
-  activityType: ObjectId;
   ends_at?: InputMaybe<Scalars['DateTimeISO']>;
   is_made_in_france: Scalars['Boolean'];
   is_reccurent: Scalars['Boolean'];
@@ -630,9 +620,15 @@ export type FollowMutationVariables = Exact<{
 
 export type FollowMutation = { __typename?: 'Mutation', follow: { __typename?: 'User', id: number } };
 
+export type GetActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetActivitiesQuery = { __typename?: 'Query', getActivities: Array<{ __typename?: 'Activity', id: number, name: string, quantity: number, is_reccurent: boolean, reccurence_interval?: string | null, reccurence_count?: number | null, starts_at: any, ends_at?: any | null, is_secondhand: boolean, is_made_in_france: boolean, emissionPerMonth: number, category?: string | null, user: { __typename?: 'User', nickname: string } }> };
+
 export type GetActivityTypesByCategoryQueryVariables = Exact<{
   getActivityTypesByCategory: Category;
 }>;
+
 
 export type GetActivityTypesByCategoryQuery = { __typename?: 'Query', getActivityTypesByCategory: Array<{ __typename?: 'ActivityType', name: string, emissions: number }> };
 
@@ -1392,7 +1388,6 @@ export type GetVehicleTypesQueryHookResult = ReturnType<typeof useGetVehicleType
 export type GetVehicleTypesLazyQueryHookResult = ReturnType<typeof useGetVehicleTypesLazyQuery>;
 export type GetVehicleTypesSuspenseQueryHookResult = ReturnType<typeof useGetVehicleTypesSuspenseQuery>;
 export type GetVehicleTypesQueryResult = Apollo.QueryResult<GetVehicleTypesQuery, GetVehicleTypesQueryVariables>;
-                                                        
 export const FollowDocument = gql`
     mutation Follow($userId: Float!) {
   follow(userId: $userId) {
@@ -1426,7 +1421,59 @@ export function useFollowMutation(baseOptions?: Apollo.MutationHookOptions<Follo
 export type FollowMutationHookResult = ReturnType<typeof useFollowMutation>;
 export type FollowMutationResult = Apollo.MutationResult<FollowMutation>;
 export type FollowMutationOptions = Apollo.BaseMutationOptions<FollowMutation, FollowMutationVariables>;
+export const GetActivitiesDocument = gql`
+    query GetActivities {
+  getActivities {
+    id
+    name
+    quantity
+    is_reccurent
+    reccurence_interval
+    reccurence_count
+    starts_at
+    ends_at
+    user {
+      nickname
+    }
+    is_secondhand
+    is_made_in_france
+    emissionPerMonth
+    category
+  }
+}
+    `;
 
+/**
+ * __useGetActivitiesQuery__
+ *
+ * To run a query within a React component, call `useGetActivitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActivitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActivitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetActivitiesQuery(baseOptions?: Apollo.QueryHookOptions<GetActivitiesQuery, GetActivitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetActivitiesQuery, GetActivitiesQueryVariables>(GetActivitiesDocument, options);
+      }
+export function useGetActivitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActivitiesQuery, GetActivitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetActivitiesQuery, GetActivitiesQueryVariables>(GetActivitiesDocument, options);
+        }
+export function useGetActivitiesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetActivitiesQuery, GetActivitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetActivitiesQuery, GetActivitiesQueryVariables>(GetActivitiesDocument, options);
+        }
+export type GetActivitiesQueryHookResult = ReturnType<typeof useGetActivitiesQuery>;
+export type GetActivitiesLazyQueryHookResult = ReturnType<typeof useGetActivitiesLazyQuery>;
+export type GetActivitiesSuspenseQueryHookResult = ReturnType<typeof useGetActivitiesSuspenseQuery>;
+export type GetActivitiesQueryResult = Apollo.QueryResult<GetActivitiesQuery, GetActivitiesQueryVariables>;
 export const GetActivityTypesByCategoryDocument = gql`
     query GetActivityTypesByCategory($getActivityTypesByCategory: Category!) {
   getActivityTypesByCategory(category: $getActivityTypesByCategory) {
@@ -1507,7 +1554,6 @@ export const GetActivityTypesByIdDocument = gql`
  *   },
  * });
  */
-                                                                   
 export function useGetActivityTypesByIdQuery(baseOptions: Apollo.QueryHookOptions<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables> & ({ variables: GetActivityTypesByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>(GetActivityTypesByIdDocument, options);

@@ -48,6 +48,13 @@ export default function NewActivity() {
     errorPolicy: "ignore",
   });
 
+  const { data: shifting } = useGetActivityTypesByCategoryQuery({
+    variables: {
+      getActivityTypesByCategory: Category.Heating,
+    },
+    errorPolicy: "ignore",
+  });
+
   const { data: heating } = useGetActivityTypesByCategoryQuery({
     variables: {
       getActivityTypesByCategory: Category.Heating,
@@ -105,6 +112,8 @@ export default function NewActivity() {
       );
       formJSON.ends_at = addMinutes(formJSON.ends_at, -formJSON.ends_at.getTimezoneOffset())
     } else formJSON.ends_at = null;
+    console.log("🚀 ~ handleSubmit ~ formJSON:", formJSON)
+    console.log("🚀 ~ awaitcreateActivity ~ data:", data)
 
     try {
       await newActivitySchema.validate(formJSON, { abortEarly: false });
