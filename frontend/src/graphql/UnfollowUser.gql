@@ -1,0 +1,5 @@
+mutation Unfollow($userId: Float!) {
+  unfollow(userId: $userId) {
+    id
+  }
+}

@@ -7,5 +7,16 @@ query Profile {
     role
     firstName
     lastName
+    posts {
+      id
+    }
+    followers {
+      id
+      avatarUrl
+    }
+    following {
+      id
+      avatarUrl
+    }
   }
 }

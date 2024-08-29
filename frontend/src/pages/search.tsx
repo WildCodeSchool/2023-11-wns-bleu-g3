@@ -1,7 +1,6 @@
 import { useSearchUserQuery } from "@/graphql/generated/schema";
 import LayoutLoggedInUser from "@/layouts/layout-logged-in-user";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 
 export default function Search() {
   const searchParams = useSearchParams();
@@ -22,8 +21,8 @@ export default function Search() {
       <section className="py-6 flex flex-wrap">
         {users?.searchUser.map((user) => (
           <a
-            href={`/user/${user.id}/${user.nickname}`}
-            className="relative flex w-full md:w-1/4 flex-col rounded-xl bg-clip-border text-gray-700 bg-white p-3 shadow-sm"
+            href={`/user/${user.nickname}`}
+            className="relative flex w-full md:w-1/2 flex-col rounded-xl bg-clip-border text-gray-700 bg-white p-3 shadow-sm"
             key={user.id}
           >
             <div className="relative flex items-center gap-4 pt-0 pb-8 mx-0 mt-4 overflow-hidden text-gray-700 bg-transparent shadow-none rounded-xl bg-clip-border">
