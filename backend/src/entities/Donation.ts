@@ -37,9 +37,6 @@ class Donation extends BaseEntity {
 export class NewDonationInput {
   @Field()
   amount: number;
-
-  // @Field(() => ObjectId)
-  // user: ObjectId;
 }
 
 export default Donation;
