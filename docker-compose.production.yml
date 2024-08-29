@@ -22,6 +22,11 @@ services:
       DB_USER: ${DB_USER}
       JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
       NODE_ENV: ${NODE_ENV}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      EMAIL_FROM: ${EMAIL_FROM}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
     depends_on:
       db:

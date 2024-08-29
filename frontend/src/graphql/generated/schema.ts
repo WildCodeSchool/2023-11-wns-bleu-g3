@@ -353,6 +353,7 @@ export type Query = {
   getPersonalVehicles: Array<PersonalVehicle>;
   getPosts: Array<Post>;
   getUnits: Array<Scalars['String']>;
+  getUserActivities: Array<Activity>;
   getUserByNickname?: Maybe<User>;
   getUsersPagination: Array<User>;
   getVehicleDecade: Array<Scalars['String']>;
@@ -410,6 +411,17 @@ export type QueryGetPersonalVehiclesArgs = {
 
 export type QueryGetPostsArgs = {
   title?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGetUserActivitiesArgs = {
+  category?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<Scalars['String']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Scalars['String']>;
+  orderDir?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['Float']>;
 };
 
 
@@ -587,6 +599,13 @@ export type CreatePostMutationVariables = Exact<{
 
 export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, title?: string | null, content?: string | null, imageUrl?: string | null, nbOfLikes?: number | null, created_at: any, user: { __typename?: 'User', id: number } } };
 
+export type DeleteActivityMutationVariables = Exact<{
+  activityId: Scalars['Float'];
+}>;
+
+
+export type DeleteActivityMutation = { __typename?: 'Mutation', deleteActivity: string };
+
 export type DeleteActivityTypeMutationVariables = Exact<{
   activityTypeId: Scalars['Float'];
 }>;
@@ -699,6 +718,18 @@ export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'User', id: number, email: string, nickname: string, avatarUrl?: string | null, role: string, firstName?: string | null, lastName?: string | null, posts?: Array<{ __typename?: 'Post', id: number }> | null, followers?: Array<{ __typename?: 'User', id: number, avatarUrl?: string | null }> | null, following?: Array<{ __typename?: 'User', id: number, avatarUrl?: string | null }> | null } };
+
+export type GetUserActivitiesQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Scalars['String']>;
+  orderDir?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  category: Scalars['String'];
+}>;
+
+
+export type GetUserActivitiesQuery = { __typename?: 'Query', getUserActivities: Array<{ __typename?: 'Activity', id: number, name: string, quantity: number, is_reccurent: boolean, reccurence_interval?: string | null, reccurence_count?: number | null, starts_at: any, ends_at?: any | null, is_secondhand: boolean, is_made_in_france: boolean, emissionPerMonth: number, category?: string | null, user: { __typename?: 'User', nickname: string } }> };
 
 export type GetUserByNicknameQueryVariables = Exact<{
   nickname: Scalars['String'];
@@ -1117,6 +1148,37 @@ export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const DeleteActivityDocument = gql`
+    mutation DeleteActivity($activityId: Float!) {
+  deleteActivity(ActivityId: $activityId)
+}
+    `;
+export type DeleteActivityMutationFn = Apollo.MutationFunction<DeleteActivityMutation, DeleteActivityMutationVariables>;
+
+/**
+ * __useDeleteActivityMutation__
+ *
+ * To run a mutation, you first call `useDeleteActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteActivityMutation, { data, loading, error }] = useDeleteActivityMutation({
+ *   variables: {
+ *      activityId: // value for 'activityId'
+ *   },
+ * });
+ */
+export function useDeleteActivityMutation(baseOptions?: Apollo.MutationHookOptions<DeleteActivityMutation, DeleteActivityMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteActivityMutation, DeleteActivityMutationVariables>(DeleteActivityDocument, options);
+      }
+export type DeleteActivityMutationHookResult = ReturnType<typeof useDeleteActivityMutation>;
+export type DeleteActivityMutationResult = Apollo.MutationResult<DeleteActivityMutation>;
+export type DeleteActivityMutationOptions = Apollo.BaseMutationOptions<DeleteActivityMutation, DeleteActivityMutationVariables>;
 export const DeleteActivityTypeDocument = gql`
     mutation DeleteActivityType($activityTypeId: Float!) {
   deleteActivityType(ActivityTypeId: $activityTypeId)
@@ -1893,6 +1955,72 @@ export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileSuspenseQueryHookResult = ReturnType<typeof useProfileSuspenseQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
+export const GetUserActivitiesDocument = gql`
+    query GetUserActivities($limit: Int, $offset: Int, $orderBy: String, $orderDir: String, $name: String, $category: String!) {
+  getUserActivities(
+    limit: $limit
+    offset: $offset
+    orderBy: $orderBy
+    orderDir: $orderDir
+    name: $name
+    category: $category
+  ) {
+    id
+    name
+    quantity
+    is_reccurent
+    reccurence_interval
+    reccurence_count
+    starts_at
+    ends_at
+    user {
+      nickname
+    }
+    is_secondhand
+    is_made_in_france
+    emissionPerMonth
+    category
+  }
+}
+    `;
+
+/**
+ * __useGetUserActivitiesQuery__
+ *
+ * To run a query within a React component, call `useGetUserActivitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserActivitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserActivitiesQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      orderBy: // value for 'orderBy'
+ *      orderDir: // value for 'orderDir'
+ *      name: // value for 'name'
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useGetUserActivitiesQuery(baseOptions: Apollo.QueryHookOptions<GetUserActivitiesQuery, GetUserActivitiesQueryVariables> & ({ variables: GetUserActivitiesQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserActivitiesQuery, GetUserActivitiesQueryVariables>(GetUserActivitiesDocument, options);
+      }
+export function useGetUserActivitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserActivitiesQuery, GetUserActivitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserActivitiesQuery, GetUserActivitiesQueryVariables>(GetUserActivitiesDocument, options);
+        }
+export function useGetUserActivitiesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserActivitiesQuery, GetUserActivitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserActivitiesQuery, GetUserActivitiesQueryVariables>(GetUserActivitiesDocument, options);
+        }
+export type GetUserActivitiesQueryHookResult = ReturnType<typeof useGetUserActivitiesQuery>;
+export type GetUserActivitiesLazyQueryHookResult = ReturnType<typeof useGetUserActivitiesLazyQuery>;
+export type GetUserActivitiesSuspenseQueryHookResult = ReturnType<typeof useGetUserActivitiesSuspenseQuery>;
+export type GetUserActivitiesQueryResult = Apollo.QueryResult<GetUserActivitiesQuery, GetUserActivitiesQueryVariables>;
 export const GetUserByNicknameDocument = gql`
     query GetUserByNickname($nickname: String!) {
   getUserByNickname(nickname: $nickname) {
