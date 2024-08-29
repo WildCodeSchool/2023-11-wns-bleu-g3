@@ -1,8 +1,27 @@
 import LayoutAdmin from "@/layouts/layout-admin";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut, Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+} from "chart.js";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title
+);
 
 export default function Dashboard() {
   const data = {
@@ -28,8 +47,42 @@ export default function Dashboard() {
       },
     },
   };
+  // second chart
 
-  //examples
+  const lineData = {
+    labels: ["Avr", "May", "June", "Jull", "Aout", "Sept"],
+    datasets: [
+      {
+        label: "Utilisateurs",
+        data: [4, 3.8, 3.5, 3.2, 2.8, 2.5],
+        backgroundColor: "rgba(58, 141, 166, 1)",
+        tension: 0.8,
+        fill: true,
+      },
+      {
+        label: "Donations (par K)",
+        data: [3.5, 3.2, 2.3, 3.8, 3.2, 2.8],
+        backgroundColor: "rgba(192, 214, 216, 1)",
+      },
+    ],
+  };
+
+  const lineOptions = {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: "Noveaux Utilisateurs",
+      },
+      scales: {
+        y: {
+          beginAtZero: true, //y-axis
+        },
+      },
+    },
+  };
+
+  //examples notifications
   const percentage = "73%";
 
   const notifs = [
@@ -133,44 +186,52 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="mt-6">
-          <div className="bg-white shadow-lg rounded-lg p-6 h-[35vh]">
-            <h2 className="text-xl font-semibold mb-4">Notifications</h2>
-            {notifs.map((notif) => (
-              <a
-                href="#"
-                className="block w-full p-2 mt-5 bg-pearl border border-gray-200 rounded-lg shadow-lg hover:bg-gray-100"
-              >
-                {" "}
-                <div className="flex justify-between">
-                  <p className="pl-4 font-normal text-anchor ">
-                    {notif.message}
-                  </p>
-                  <button
-                    type="button"
-                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                    data-modal-hide="default-modal"
-                  >
-                    <svg
-                      className="w-3 h-3"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 14 14"
+        {/* second row Dashboard */}
+        <div className="flex justify-between mt-6">
+          <div className="w-[38%] bg-white shadow-lg rounded-lg p-5 h-[35vh] justify-center ">
+            <div className="pl-[0.40rem] pb-1 m-auto h-[29svh] w-[28vw]  items-start justify-center">
+              <Line data={lineData} options={lineOptions} />
+            </div>
+          </div>
+          <div className=" w-[60%] ">
+            <div className="bg-white shadow-lg rounded-lg p-6 h-[35vh]">
+              <h2 className="text-xl font-semibold mb-4">Notifications</h2>
+              {notifs.map((notif) => (
+                <a
+                  href="#"
+                  className="block w-full p-2 mt-5 bg-pearl border border-gray-200 rounded-lg shadow-lg hover:bg-gray-100"
+                >
+                  {" "}
+                  <div className="flex justify-between">
+                    <p className="pl-4 font-normal text-anchor ">
+                      {notif.message}
+                    </p>
+                    <button
+                      type="button"
+                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                      data-modal-hide="default-modal"
                     >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                      />
-                    </svg>
-                    <span className="sr-only">Close modal</span>
-                  </button>
-                </div>
-              </a>
-            ))}
+                      <svg
+                        className="w-3 h-3"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 14"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                        />
+                      </svg>
+                      <span className="sr-only">Close modal</span>
+                    </button>
+                  </div>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>
