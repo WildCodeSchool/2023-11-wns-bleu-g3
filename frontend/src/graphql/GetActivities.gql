@@ -1,0 +1,19 @@
+query GetActivities {
+  getActivities {
+    id
+    name
+    quantity
+    is_reccurent
+    reccurence_interval
+    reccurence_count
+    starts_at
+    ends_at
+    user {
+      nickname
+    }
+    is_secondhand
+    is_made_in_france
+    emissionPerMonth
+    category
+  }
+}

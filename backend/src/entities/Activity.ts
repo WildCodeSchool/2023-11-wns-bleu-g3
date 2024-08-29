@@ -19,6 +19,14 @@ export enum ReccurenceInterval {
   Year = "an",
 }
 
+export enum ActivityCategory {
+  Shifting = "Déplacement",
+  Heating = "Chauffage",
+  Clothing = "Achat vêtement",
+  Electronics = "Achat électronique",
+  Other = "Autre",
+}
+
 @Entity()
 @ObjectType()
 class Activity extends BaseEntity {
@@ -73,6 +81,9 @@ class Activity extends BaseEntity {
   @Column({ default: false })
   @Field()
   is_made_in_france: boolean;
+  @Column({ default: ""})
+  @Field({ nullable: true })
+  category: ActivityCategory;
 
   // @ManyToOne(() => ActivityType, (activityType) => activityType.id)
   // @Field(() => ActivityType)
