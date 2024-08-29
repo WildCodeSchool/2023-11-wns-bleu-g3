@@ -39,7 +39,10 @@ export default function SideAdmin({ isOpen }: { isOpen: any }) {
           </div>
 
           <div className="flex  flex-col gap-3 py-2 mb-2 ">
-            <a className="btn btn-shore bg-gray-300 text-left" href="/profile">
+            <a
+              className="btn bg-neutral-900 hover:bg-neutral-950 text-left bg-opacity-90 text-gray-600"
+              href="/profile"
+            >
               Mon compte
             </a>
             <button

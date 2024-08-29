@@ -32,8 +32,8 @@ export default function TopbarAdmin({
       </div>
 
       <div className="flex gap-x-3">
-        <div className="relative">
-          <button>
+        <div className="relative mx-2">
+          <button className="hover:bg-black focus:bg-opacity-60 px-1 rounded-full    ">
             <span className="material-icons text-[2.4rem] text-white pt-1">
               notifications
             </span>

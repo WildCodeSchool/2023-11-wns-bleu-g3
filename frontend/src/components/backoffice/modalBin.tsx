@@ -58,7 +58,7 @@ export default function ModalBin({
       {btn}
       {isOpen ? (
         <>
-          <div className=" justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
+          <div className="md:ml-[13%] sm:ml-0 justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none ">
             <div className="relative p-4 w-full max-w-md max-h-full">
               <div className="relative bg-lightPearl rounded-lg shadow ">
                 <button

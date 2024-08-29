@@ -1,13 +1,14 @@
-import Icon from "@/components/icon";
 import {
   useDeleteActivityTypeMutation,
   useGetPostsPaginationQuery,
 } from "@/graphql/generated/schema";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import ModalBin from "../modalBin";
+
+import ModalBin from "./modalBin";
+import ModalPost from "./modalPost";
 import { useRouter } from "next/router";
-import formatTimestamp from "./formatTimestamp";
+
+import { useDeletePostMutation } from "@/graphql/generated/schema";
 
 const PAGE_SIZE = 8;
 
@@ -17,7 +18,7 @@ export default function TableAdminPosts() {
   const [page, setPage] = useState(0);
   const [notEndPage, setNotEndPage] = useState(true);
 
-  const [deleteActiv] = useDeleteActivityTypeMutation();
+  const [deletepost] = useDeletePostMutation();
 
   const { data, loading, error } = useGetPostsPaginationQuery({
     variables: {
@@ -114,7 +115,7 @@ export default function TableAdminPosts() {
                   </span>
                 )}
               </th>
-              <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
+              <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell max-w-[28ch] truncate">
                 {post.title}
               </td>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
@@ -134,10 +135,24 @@ export default function TableAdminPosts() {
               </td>
               <td className="px-1 py-1 md:px-2 md:py-4  space-x-1 md:space-x-2">
                 <div className="flex gap-x-1">
-                  <button className=" material-icons text-neutral-500 text-3xl">
-                    plagiarism
-                  </button>
-                  <ModalBin expression="supprimer" mappedVar="" operation="" />
+                  <ModalPost
+                    title={post.title}
+                    content={post.content}
+                    imgUrl={post.imageUrl}
+                  />
+
+                  <ModalBin
+                    expression="supprimer"
+                    mappedVar={post}
+                    operation={() =>
+                      deletepost({
+                        variables: {
+                          postId: post.id,
+                          userId: post.user.id,
+                        },
+                      }).then(() => window.location.reload())
+                    }
+                  />
                 </div>
               </td>
             </tr>

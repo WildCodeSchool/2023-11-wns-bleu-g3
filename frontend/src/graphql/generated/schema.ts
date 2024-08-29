@@ -561,7 +561,7 @@ export type GetPostsPaginationQueryVariables = Exact<{
 }>;
 
 
-export type GetPostsPaginationQuery = { __typename?: 'Query', getPostsPagination: Array<{ __typename?: 'Post', id: number, created_at: any, nbOfLikes?: number | null, title?: string | null, imageUrl?: string | null, user: { __typename?: 'User', id: number, nickname: string } }> };
+export type GetPostsPaginationQuery = { __typename?: 'Query', getPostsPagination: Array<{ __typename?: 'Post', id: number, created_at: any, nbOfLikes?: number | null, title?: string | null, imageUrl?: string | null, content?: string | null, user: { __typename?: 'User', id: number, nickname: string } }> };
 
 export type GetUsersPaginationQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']>;
@@ -636,6 +636,7 @@ export type DeletePersonalVehicleMutation = { __typename?: 'Mutation', deletePer
 
 export type DeletePostMutationVariables = Exact<{
   postId: Scalars['Float'];
+  userId?: InputMaybe<Scalars['Float']>;
 }>;
 
 
@@ -899,6 +900,7 @@ export const GetPostsPaginationDocument = gql`
     nbOfLikes
     title
     imageUrl
+    content
     user {
       id
       nickname
@@ -1305,8 +1307,8 @@ export type DeletePersonalVehicleMutationHookResult = ReturnType<typeof useDelet
 export type DeletePersonalVehicleMutationResult = Apollo.MutationResult<DeletePersonalVehicleMutation>;
 export type DeletePersonalVehicleMutationOptions = Apollo.BaseMutationOptions<DeletePersonalVehicleMutation, DeletePersonalVehicleMutationVariables>;
 export const DeletePostDocument = gql`
-    mutation DeletePost($postId: Float!) {
-  deletePost(postId: $postId)
+    mutation DeletePost($postId: Float!, $userId: Float) {
+  deletePost(postId: $postId, userId: $userId)
 }
     `;
 export type DeletePostMutationFn = Apollo.MutationFunction<DeletePostMutation, DeletePostMutationVariables>;
@@ -1325,6 +1327,7 @@ export type DeletePostMutationFn = Apollo.MutationFunction<DeletePostMutation, D
  * const [deletePostMutation, { data, loading, error }] = useDeletePostMutation({
  *   variables: {
  *      postId: // value for 'postId'
+ *      userId: // value for 'userId'
  *   },
  * });
  */

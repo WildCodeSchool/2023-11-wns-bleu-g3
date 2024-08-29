@@ -5,7 +5,7 @@ import {
 } from "@/graphql/generated/schema";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import ModalBin from "../modalBin";
+import ModalBin from "./modalBin";
 import formatTimestamp from "./formatTimestamp";
 
 const PAGE_SIZE = 6;

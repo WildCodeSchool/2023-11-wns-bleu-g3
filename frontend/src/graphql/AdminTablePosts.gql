@@ -5,6 +5,7 @@ query GetPostsPagination($offset: Int, $limit: Int) {
     nbOfLikes
     title
     imageUrl
+    content
     user {
       id,
       nickname
