@@ -95,7 +95,7 @@ class UserResolver {
   async profile(@Ctx() ctx: Context) {
     if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
     return User.findOneOrFail({
-      relations: { personalVehicles: true },
+      relations: { personalVehicles: true, followers: true, following: true },
       where: { id: ctx.currentUser.id },
     });
   }
@@ -281,6 +281,30 @@ class UserResolver {
     });
     if (findusers.length === 0) throw new GraphQLError("Users were not found.");
     return findusers;
+  }
+
+  @Authorized([UserRole.User])
+  @Query(() => User, { nullable: true })
+  async getUserByNickname(
+    @Ctx() ctx: Context,
+    @Arg("nickname") nickname: string
+  ): Promise<User | null> {
+    if (!ctx.currentUser) {
+      throw new GraphQLError("You need to be logged in");
+    }
+
+    const user = await User.findOne({
+      where: {
+        nickname: nickname,
+      },
+      relations: ["followers", "following"],
+    });
+
+    if (!user) {
+      throw new GraphQLError("User not found");
+    }
+
+    return user;
   }
 }
 
