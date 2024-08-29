@@ -1,5 +1,6 @@
 import { Resolver, Query, Mutation, Arg, Authorized, Ctx } from "type-graphql";
 import Activity, {
+  ActivityCategory,
   ReccurenceInterval,
   UpdateActivityInput,
 } from "../entities/Activity";
@@ -69,31 +70,29 @@ class ActivityResolver {
       if (activityType) {
         newActivity.emissionPerMonth =
           (newActivity.quantity || 1) * activityType.emissions;
-        if (
-          activityType.category === Category.Clothing &&
-          newActivity.is_secondhand
-        ) {
+          if (activityType.category === Category.Clothing) {
+            newActivity.category = ActivityCategory.Clothing;
+          if (newActivity.is_secondhand) {
           newActivity.emissionPerMonth = Math.round(
             newActivity.emissionPerMonth * 0.16
           );
         }
-        if (
-          activityType.category === Category.Clothing &&
-          newActivity.is_made_in_france
-        ) {
+          if (newActivity.is_made_in_france) {
           newActivity.emissionPerMonth = Math.round(
             newActivity.emissionPerMonth * 0.5
           );
         }
-        if (
-          activityType.category === Category.Electronics &&
-          newActivity.is_secondhand
-        ) {
+            }
+        if (activityType.category === Category.Electronics) {
+            newActivity.category = ActivityCategory.Electronics;
+          if (newActivity.is_secondhand) {
           newActivity.emissionPerMonth = Math.round(
             newActivity.emissionPerMonth * 0.13
           );
+          }
         }
         if (activityType.category === Category.Heating) {
+          newActivity.category = ActivityCategory.Heating;
           newActivity.emissionPerMonth = Math.round(
             newActivity.emissionPerMonth / 12
           );
@@ -106,7 +105,9 @@ class ActivityResolver {
         newActivity.emissionPerMonth = vehicle?.emissionByKm
           ? vehicle?.emissionByKm * newActivity.quantity
           : newActivity.quantity;
-        if (!vehicle) {
+        if (vehicle) {
+          newActivity.category = ActivityCategory.Shifting;
+        } else {
           if (data.type === Category.Plane) {
             const planes = await ActivityType.find({
               where: { category: Category.Plane },
@@ -122,6 +123,7 @@ class ActivityResolver {
                     newActivity.quantity > newTab[0] &&
                     newActivity.quantity < newTab[1]
                   ) {
+                    newActivity.category = ActivityCategory.Shifting;
                     newActivity.emissionPerMonth =
                       plane.emissions * newActivity.quantity;
                   }
@@ -133,6 +135,7 @@ class ActivityResolver {
               where: { category: Category.Boat },
             });
             if (boat) {
+              newActivity.category = ActivityCategory.Shifting;
               newActivity.emissionPerMonth =
                 boat.emissions * newActivity.quantity;
             }
@@ -144,6 +147,7 @@ class ActivityResolver {
               },
             });
             if (moto) {
+              newActivity.category = ActivityCategory.Shifting;
               newActivity.emissionPerMonth =
                 moto.emissions * newActivity.quantity;
             }
@@ -156,9 +160,12 @@ class ActivityResolver {
               },
             });
             if (car) {
+              newActivity.category = ActivityCategory.Shifting;
               newActivity.emissionPerMonth =
               car.emissions * newActivity.quantity;
             }
+          } else {
+            newActivity.category = ActivityCategory.Other;
           }
         }
       }
