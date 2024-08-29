@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import ModalBin from "../modalBin";
 import { useRouter } from "next/router";
+import formatTimestamp from "./formatTimestamp";
 
 const PAGE_SIZE = 8;
 
@@ -100,7 +101,7 @@ export default function TableAdminPosts() {
               key={post.imageUrl}
               className="border-t border-gray-500 bg-pearl text-reef hover:bg-shore hover:text-anchor"
             >
-              <th scope="row" className="px-2 py-1 md:px-6 md:py-4  ">
+              <th scope="row" className="px-2 py-1 md:px-6 md:py-4">
                 {post.imageUrl ? (
                   <img
                     className="w-14 h-14 object-cover rounded-sm  bg-shore"
@@ -120,9 +121,11 @@ export default function TableAdminPosts() {
                 {post.user.nickname}
               </td>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
-                {post.created_at}
+                {post.created_at.split("T")[0]}
               </td>
-              <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell"></td>
+              <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
+                <span className="material-icons ">flag</span>
+              </td>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell ">
                 <div className="flex gap-x-2">
                   <span className="text-xl">{post.nbOfLikes}</span>

@@ -6,6 +6,7 @@ import {
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ModalBin from "../modalBin";
+import formatTimestamp from "./formatTimestamp";
 
 const PAGE_SIZE = 6;
 
@@ -50,16 +51,6 @@ export default function TableAdminUsers() {
   const changeMenu = () => {
     setDropMenu(!dropMenu);
   };
-
-  function formatTimestamp(timestamp: string): string {
-    const timestamp2 = parseInt(timestamp, 10);
-    const date = new Date(timestamp2);
-
-    const y = date.getFullYear();
-    const m = (date.getMonth() + 1).toString().padStart(2, "0"); //getmonth() returns 0-11
-    const d = date.getDate().toString().padStart(2, "0");
-    return `${d}/${m}/${y}`;
-  }
 
   return (
     <div className="m-auto w-4/5 mt-8">

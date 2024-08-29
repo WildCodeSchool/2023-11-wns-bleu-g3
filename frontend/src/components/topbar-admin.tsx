@@ -31,7 +31,17 @@ export default function TopbarAdmin({
         </h1>
       </div>
 
-      <div>
+      <div className="flex gap-x-3">
+        <div className="relative">
+          <button>
+            <span className="material-icons text-[2.4rem] text-white pt-1">
+              notifications
+            </span>
+            <span className="absolute top-5 right-[0.15rem] inline-flex items-center justify-center w-1 h-1 p-2.5 text-sm font-medium rounded-full bg-reef text-white">
+              3
+            </span>
+          </button>
+        </div>
         <a href="/dashboard">
           <img
             src={loggedInUser?.profile.avatarUrl || ""}
