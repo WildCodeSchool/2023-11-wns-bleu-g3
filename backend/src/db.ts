@@ -3,7 +3,6 @@ import env from "./env";
 import User from "./entities/User";
 import ActivityType from "./entities/ActivityType";
 import Activity from "./entities/Activity";
-import { Follow } from "./entities/Follow";
 import PersonalVehicle from "./entities/PersonalVehicle";
 import Post from "./entities/Post";
 import Like from "./entities/Like";
@@ -20,7 +19,6 @@ const db = new DataSource({
     User,
     ActivityType,
     Activity,
-    Follow,
     PersonalVehicle,
     Post,
     Like,
