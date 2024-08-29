@@ -18,7 +18,7 @@ export type Scalars = {
 
 export type Activity = {
   __typename?: 'Activity';
-  activityType: ActivityType;
+  category?: Maybe<Scalars['String']>;
   emissionPerMonth: Scalars['Float'];
   ends_at?: Maybe<Scalars['DateTimeISO']>;
   id: Scalars['Int'];
@@ -35,7 +35,6 @@ export type Activity = {
 
 export type ActivityType = {
   __typename?: 'ActivityType';
-  activities: Array<Activity>;
   attributes?: Maybe<Attr>;
   category: Scalars['String'];
   emissions: Scalars['Float'];
@@ -417,7 +416,6 @@ export type ResetPasswordRequestInput = {
 };
 
 export type UpdateActivityInput = {
-  activityType: ObjectId;
   ends_at?: InputMaybe<Scalars['DateTimeISO']>;
   is_made_in_france: Scalars['Boolean'];
   is_reccurent: Scalars['Boolean'];
