@@ -4,10 +4,8 @@ import {
   useToggleBlockUserMutation,
 } from "@/graphql/generated/schema";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import ModalBin from "../modalBin";
-import { time } from "console";
 
 const PAGE_SIZE = 6;
 
@@ -248,9 +246,15 @@ export default function TableAdminUsers() {
                     mappedVar={user}
                   />
                   <ModalBin
-                    operation=""
                     expression="supprimer"
                     mappedVar={user}
+                    operation={() =>
+                      deleteUser({
+                        variables: {
+                          userId: user.id,
+                        },
+                      }).then(() => window.location.reload())
+                    }
                   />
                 </div>
               </td>
