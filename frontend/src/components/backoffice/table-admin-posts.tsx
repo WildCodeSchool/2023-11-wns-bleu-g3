@@ -108,7 +108,7 @@ export default function TableAdminPosts() {
                     alt=""
                   />
                 ) : (
-                  <span className="m-auto material-icons text-neutral-500 text-[2.3rem] ">
+                  <span className="text-center material-icons text-neutral-500 text-[2.5rem] pl-2">
                     article
                   </span>
                 )}
@@ -130,10 +130,11 @@ export default function TableAdminPosts() {
                 </div>
               </td>
               <td className="px-1 py-1 md:px-2 md:py-4  space-x-1 md:space-x-2">
-                <div className="flex">
+                <div className="flex gap-x-1">
                   <button className=" material-icons text-neutral-500 text-3xl">
                     plagiarism
                   </button>
+                  <ModalBin expression="supprimer" mappedVar="" operation="" />
                 </div>
               </td>
             </tr>
