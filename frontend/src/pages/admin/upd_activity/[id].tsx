@@ -3,12 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import Activities from "../activities";
-import { FormEvent, useEffect, useState } from "react";
-import Activities from "../activities";
 import {
-  GetActivityTypesByIdDocument,
-  UpdateActivityTypeDocument,
-  UpdateActivityTypeInput,
   GetActivityTypesByIdDocument,
   UpdateActivityTypeDocument,
   UpdateActivityTypeInput,
@@ -16,23 +11,17 @@ import {
   useGetCategoriesQuery,
   useGetFuelTypesQuery,
   useGetUnitsQuery,
-  useGetMotoEnginesQuery,
   useGetVehicleDecadeQuery,
   useGetVehicleTypesQuery,
-  useUpdateActivityTypeMutation,
   useUpdateActivityTypeMutation,
 } from "@/graphql/generated/schema";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
 import { updateSourceFile } from "typescript";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-
-import { updateSourceFile } from "typescript";
 
 export default function UpdateActivity() {
-  const [error, setError] = useState({ message: "", errorInput: "" });
+  const [error, setError] = useState("");
   const router = useRouter();
-
 
   const { id } = router.query;
 
@@ -58,9 +47,6 @@ export default function UpdateActivity() {
   const { data: d5 } = useGetVehicleTypesQuery();
   const vehiclestypes = d5?.getVehicleTypes || [];
 
-  const { data: d6 } = useGetMotoEnginesQuery();
-  const motoengines = d6?.getMotoEngines || [];
-
   const [selectedOption, setSelectedOption] = useState(
     activity?.category || ""
   );
@@ -78,27 +64,16 @@ export default function UpdateActivity() {
   // update mutation
   // const activId = parseInt( id as string);
 
-  // const activId = parseInt( id as string);
-
   const [updateActivityType] = useUpdateActivityTypeMutation();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    setError({ message: "", errorInput: "" });
+    setError("");
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
 
-    //validation
-    if (
-      !/^\d*\.?\d*$/.test(formJSON.emissions) ||
-      formJSON.emissions.length > 50 ||
-      formJSON.emissions === ""
-    ) {
-      setError({
-        message:
-          "Le champ emissions ne doit pas être vide et doit comporter que des chiffres",
-        errorInput: "emissions",
-      });
+    if (!/^\d*\.?\d*$/.test(formJSON.emissions) || formJSON.emissions === "") {
+      setError("Ton champ emissions ne comporte que des chiffres");
       return;
     }
 
@@ -120,21 +95,20 @@ export default function UpdateActivity() {
         refetchQueries: [
           {
             query: GetActivityTypesByIdDocument,
-            variables: { getActivityTypesById: parseFloat(id as string) },
+            variables: { getActivityTypesById: parseInt(id as string) },
           },
         ],
       });
-      setError({ message: "", errorInput: "" });
+      setError("");
       router.push(`/admin/activities`);
     } catch (e) {
-      setError({ message: "Une erreur est survenue.", errorInput: "general" });
+      setError("une erreur est survenue");
       console.error("Error :", error);
     }
   };
 
   return (
     <LayoutAdmin>
-      <form className="max-w-3xl mx-auto mt-3 p-5" onSubmit={handleSubmit}>
       <form className="max-w-3xl mx-auto mt-3 p-5" onSubmit={handleSubmit}>
         <div>
           <p className="pb-2 text-lg font-medium text-gray-700">
@@ -145,9 +119,6 @@ export default function UpdateActivity() {
           </h1>
           <br />
           <p className="text-sm text-gray-600 mb-4">
-            Vous avez la possibilité de modifier les caractéristiques de ce type
-            d'activité, comme la catégorie, la valeur d'émission de CO
-            <sub>2</sub> et l'unité de mesure.
             Vous avez la possibilité de modifier les caractéristiques de ce type
             d'activité, comme la catégorie, la valeur d'émission de CO
             <sub>2</sub> et l'unité de mesure.
@@ -186,19 +157,13 @@ export default function UpdateActivity() {
             name="emissions"
             id="emissions"
             className={`shadow-sm bg-gray-50 border ${
-              error.errorInput === "emissions"
-                ? "border-red-700"
-                : "border-gray-300"
+              error ? "border-red-700" : "border-gray-300"
             } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3`}
             defaultValue={activity?.emissions || ""}
           />
-          {error.errorInput === "emissions" && (
-            <pre className="text-red-700">{error.message}</pre>
-          )}
         </div>
         <div className="mb-3">
           <label
-            htmlFor="unit"
             htmlFor="unit"
             className="block mb-2 text-sm font-medium text-gray-900"
           >
@@ -212,24 +177,19 @@ export default function UpdateActivity() {
           >
             {units.map((unit) => (
               <option value={unit}>{unit}</option>
-              <option value={unit}>{unit}</option>
             ))}
           </select>
         </div>
 
         {selectedOption === "Voiture" ? (
-        {selectedOption === "Voiture" ? (
           <div className="mb-3">
             <label
-              htmlFor="vehicletype"
               htmlFor="vehicletype"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
               Type Voiture
             </label>
             <select
-              id="vehicletype"
-              name="vehicletype"
               id="vehicletype"
               name="vehicletype"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
@@ -241,21 +201,16 @@ export default function UpdateActivity() {
             </select>
           </div>
         ) : null}
-        ) : null}
 
-        {selectedOption === "Voiture" ? (
         {selectedOption === "Voiture" ? (
           <div className="mb-3">
             <label
-              htmlFor="fuelType"
               htmlFor="fuelType"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
               Carburant
             </label>
             <select
-              id="fuelType"
-              name="fuelType"
               id="fuelType"
               name="fuelType"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -267,21 +222,16 @@ export default function UpdateActivity() {
             </select>
           </div>
         ) : null}
-        ) : null}
 
-        {selectedOption === "Voiture" ? (
         {selectedOption === "Voiture" ? (
           <div className="mb-3">
             <label
-              htmlFor="vehicleDecade"
               htmlFor="vehicleDecade"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
               Décennie Voiture
             </label>
             <select
-              id="vehicleDecade"
-              name="vehicleDecade"
               id="vehicleDecade"
               name="vehicleDecade"
               className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
@@ -293,44 +243,13 @@ export default function UpdateActivity() {
             </select>
           </div>
         ) : null}
-        ) : null}
 
-        {selectedOption === "Moto" ? (
-          <div className="mb-3">
-            <label
-              htmlFor="motoEngine"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Moto Engine
-            </label>
-            <select
-              id="motoEngine"
-              name="motoEngine"
-              className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              defaultValue={activity?.vehicleAttributes?.motoEngine || ""}
-            >
-              {motoengines.map((type) => (
-                <option value={type}>{type}</option>
-              ))}
-            </select>
-          </div>
-        ) : null}
-
-        {error.errorInput === "general" && (
-          <pre className="text-red-700">{error.message}</pre>
-        )}
+        {error !== "" && <pre className="text-red-700">{error}</pre>}
         <button
           type="submit"
           className="text-lightPearl bg-reef hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 py-2.5 text-center"
         >
           Modifier
-        </button>
-        <button
-          type="button"
-          onClick={() => router.push("/admin/activities")}
-          className="text-lightPearl bg-anchor hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 ml-3 py-2.5 text-center"
-        >
-          Annuler
         </button>
         <button
           type="button"
