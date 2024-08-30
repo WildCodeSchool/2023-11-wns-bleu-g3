@@ -13,11 +13,6 @@ export default function SideAdmin({ isOpen }: { isOpen: any }) {
   return (
     <aside
       id="default-sidebar"
-      // className={` md:translate-x-0 h-full  bg-anchor ${
-      //   isOpen === false
-      //     ? "-translate-x-full left-0 z-40 h-full w-64 transition-transform  bg-anchor"
-      //     : "translate-x-0 z-40 left-0 absolute sm:relative w-full h-full transition-transform  bg-anchor"
-      // }`}
       className={`md:translate-x-0 h-[calc(100vh-64px)] ${
         isOpen === false
           ? "-translate-x-full left-0 z-40 w-64 transition-transform"

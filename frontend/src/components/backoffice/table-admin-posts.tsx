@@ -71,7 +71,7 @@ export default function TableAdminPosts() {
               scope="col"
               className="px-2 py-1 md:px-6 md:py-3 hidden md:table-cell"
             >
-              User
+              Utilisateur
             </th>
             <th
               scope="col"
@@ -83,7 +83,7 @@ export default function TableAdminPosts() {
               scope="col"
               className="px-2 py-1 md:px-6 md:py-3 hidden md:table-cell"
             >
-              Signalisé
+              Signaler
             </th>
             <th
               scope="col"
@@ -124,8 +124,11 @@ export default function TableAdminPosts() {
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
                 {post.created_at.split("T")[0]}
               </td>
-              <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
-                <span className="material-icons ">flag</span>
+              <td className="  px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
+                <div className="flex gap-x-2">
+                  <span className="text-xl">0</span>
+                  <span className="material-icons ">flag</span>
+                </div>
               </td>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell ">
                 <div className="flex gap-x-2">

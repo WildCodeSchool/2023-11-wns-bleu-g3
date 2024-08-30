@@ -72,7 +72,7 @@ export default function Dashboard() {
     plugins: {
       title: {
         display: true,
-        text: "Noveaux Utilisateurs",
+        text: "Nouveaux Utilisateurs",
       },
       scales: {
         y: {
