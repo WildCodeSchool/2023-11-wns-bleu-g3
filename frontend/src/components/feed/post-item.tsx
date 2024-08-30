@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 import ModalDeletePost from "./modal-delete-post";
 import ModalUpdatePost from "./modal-update-post";
 
-
 const PostItem = ({ post }: { post: any }) => {
   const [isUpdatePostModalOpen, setIsUpdatePostModalOpen] = useState(false);
   const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
@@ -60,6 +59,7 @@ const PostItem = ({ post }: { post: any }) => {
     <div className="bg-pearl mb-4 lg:border-2 lg:border-reef lg:rounded-lg p-2 w-full">
       <div className="flex justify-between mb-4">
         <p className="font-semibold opacity-85">{post.user.nickname}</p>
+
         <p>{convertDate(post.created_at)}</p>
       </div>
       <div className="mb-4">

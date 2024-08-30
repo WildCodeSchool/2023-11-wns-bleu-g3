@@ -44,7 +44,7 @@ class Post extends BaseEntity {
   @Field(() => [Like])
   likes: Like[];
 
-  @OneToMany(() => Report, (reports) => reports.post)
+  @OneToMany(() => Report, (report) => report.post)
   @Field(() => [Report])
   reports: Report[];
 
