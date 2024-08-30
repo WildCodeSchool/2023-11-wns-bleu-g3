@@ -49,6 +49,18 @@ export default function ModalBin({
         </button>
       );
       break;
+    case "signaler":
+      btn = (
+        <button
+          type="button"
+          className=" text-red-700 flex"
+          onClick={() => setIsOpen(true)}
+        >
+          <span className="material-icons px-2">flag</span>
+          <span className="pt-[0.15rem]">Signaler</span>
+        </button>
+      );
+      break;
     case "empty": //need for a placeholder (fake space 2rem) to avoid table layout issue
       btn = <div className="w-[1.5rem] h-[2rem] mr-1" aria-hidden="true"></div>;
   }
