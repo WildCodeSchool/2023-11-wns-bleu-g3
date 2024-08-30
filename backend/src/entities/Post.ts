@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 import User from "./User";
 import Like from "./Like";
+import Report from "./Report";
 import { ObjectId } from "../types";
 import { Length } from "class-validator";
 
@@ -42,6 +43,10 @@ class Post extends BaseEntity {
   @OneToMany(() => Like, (like) => like.post)
   @Field(() => [Like])
   likes: Like[];
+
+  @OneToMany(() => Report, (reports) => reports.post)
+  @Field(() => [Report])
+  reports: Report[];
 
   @ManyToOne(() => User, (user) => user.posts, {
     cascade: true,

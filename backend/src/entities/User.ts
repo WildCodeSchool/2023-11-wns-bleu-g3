@@ -16,7 +16,11 @@ import Activity from "./Activity";
 import PersonalVehicle from "./PersonalVehicle";
 import Post from "./Post";
 import Like from "./Like";
+<<<<<<< HEAD
 import Donation from "./Donation";
+=======
+import Report from "./Report";
+>>>>>>> 5e0b8f3 (report entity, added to post and user)
 
 export enum UserRole {
   Admin = "admin",
@@ -114,6 +118,10 @@ class User extends BaseEntity {
   @OneToMany(() => Like, (like) => like.user)
   @Field(() => [Like])
   likes: Like[];
+
+  @OneToMany(() => Report, (report) => report.user)
+  @Field(() => [Report])
+  reports: Report[];
 
   @Field()
   @Column({ default: false })
