@@ -164,7 +164,7 @@ async function main() {
 
   const personalVehicle3 = new PersonalVehicle();
   Object.assign(personalVehicle3, {
-    name: "Ma moto électrique",
+    name: "Ma moto",
     vehicle_category: VehicleCategory.Moto,
     moto_engine: MotoEngine.Engine500plus,
     emissionByKm: 132,
