@@ -1,5 +1,5 @@
 import LayoutAdmin from "@/layouts/layout-admin";
-import TableActivities from "@/components/table-admin-activities";
+import TableActivities from "@/components/backoffice/table-admin-activities";
 
 export default function Activities() {
   return (

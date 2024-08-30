@@ -45,10 +45,10 @@ export enum Category {
   Car = "Voiture",
   Plane = "Avion",
   Bus = "Bus",
-  Metro = "Metro Tram",
-  Train = "TGV",
+  Train = "Train",
   Moto = "Moto",
   Boat = "Bateau",
+  Bike = "Vélo électrique",
   Heating = "Chauffage",
   Cooling = "Climatisation",
   Lighting = "Éclairage",
@@ -115,9 +115,9 @@ class ActivityType extends BaseEntity {
   @Field(() => Vehicle_Attr, { nullable: true })
   vehicleAttributes?: Vehicle_Attr;
 
-  @OneToMany(() => Activity, (activity) => activity.activityType)
-  @Field(() => [Activity])
-  activities: Activity[];
+  // @OneToMany(() => Activity, (activity) => activity.activityType)
+  // @Field(() => [Activity])
+  // activities: Activity[];
 }
 
 @InputType()

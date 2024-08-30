@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "./icon";
 import TopbarMenu from "./topbar-menu";
-import { useSearchUserLazyQuery } from "@/graphql/generated/schema";
+import { useProfileQuery, useSearchUserLazyQuery } from "@/graphql/generated/schema";
 
 export default function TopbarLoggedInUser({
   isOpen,
@@ -14,6 +14,12 @@ export default function TopbarLoggedInUser({
   const menuRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [getUsers, { data: users }] = useSearchUserLazyQuery();
+  const { data: loggedInUser } = useProfileQuery();
+
+  let userInitals = loggedInUser?.profile.nickname.slice(0, 1);
+  if (loggedInUser?.profile.firstName && loggedInUser.profile.lastName) {
+    userInitals = `${loggedInUser.profile.firstName.slice(0, 1)}${loggedInUser.profile.lastName.slice(0, 1)}`
+  }
 
   const handleOpenMenu = () => {
     setMenuIsOpen(!menuIsOpen);
@@ -105,7 +111,7 @@ export default function TopbarLoggedInUser({
                   className="w-8 h-8 rounded-full"
                 />
                 <a
-                  href={`/user/${user.id}/${user.nickname}`}
+                  href={`/user/${user.nickname}`}
                   className="text-gray-900 w-full py-2"
                 >
                   {user.nickname}
@@ -121,7 +127,7 @@ export default function TopbarLoggedInUser({
           onClick={handleOpenMenu}
           className="h-14 w-14 rounded-full bg-reef flex justify-center items-center text-xl text-white font-semibold btn hover:bg-anchor transition ease-in-out"
         >
-          GT
+          {userInitals}
         </button>
         {menuIsOpen && (
           <div className="relative">

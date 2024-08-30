@@ -1,4 +1,5 @@
 import client from "@/graphql/client";
+
 import "@/styles/globals.css";
 import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
@@ -14,7 +15,7 @@ if (process.env.NODE_ENV !== "production") {
 function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
-      <div className="flex flex-col h-screen justify-between bg-lightPearl">
+      <div className="flex flex-col min-h-screen h-full justify-between bg-lightPearl">
         <Component {...pageProps} />
       </div>
       <ToastContainer

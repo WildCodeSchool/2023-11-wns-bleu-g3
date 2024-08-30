@@ -1,10 +1,5 @@
 import { Length, Max, Min } from "class-validator";
-import {
-  Field,
-  ObjectType,
-  Int,
-  InputType,
-} from "type-graphql";
+import { Field, ObjectType, Int, InputType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -15,7 +10,13 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import User from "./User";
-import { VehicleCategory, FuelType,  VehicleType, MotoEngine } from "./Enums/Vehicle_Attributes";
+import {
+  VehicleCategory,
+  FuelType,
+  VehicleType,
+  MotoEngine,
+  VehicleDecade,
+} from "./Enums/Vehicle_Attributes";
 import { ObjectId } from "../types";
 
 @Entity()
@@ -36,6 +37,7 @@ class PersonalVehicle extends BaseEntity {
   @Field()
   vehicle_category: VehicleCategory;
 
+  @Field()
   @CreateDateColumn()
   created_at: Date;
 
@@ -49,17 +51,19 @@ class PersonalVehicle extends BaseEntity {
   @Field(() => User)
   user: User;
 
+  @Column()
+  @Field()
+  emissionByKm: number;
+
   // Car
   @Column({ nullable: true })
   @Field({ nullable: true })
-  @Min(1950)
-  @Max(2024)
-  year_of_construction?: number;
+  year_of_construction?: VehicleDecade;
 
   @Column({
     type: "enum",
     enum: VehicleType,
-    nullable: true
+    nullable: true,
   })
   @Field({ nullable: true })
   vehicle_type?: VehicleType;
@@ -67,7 +71,7 @@ class PersonalVehicle extends BaseEntity {
   @Column({
     type: "enum",
     enum: FuelType,
-    nullable: true
+    nullable: true,
   })
   @Field({ nullable: true })
   fuel_type?: FuelType;
@@ -76,7 +80,7 @@ class PersonalVehicle extends BaseEntity {
   @Column({
     type: "enum",
     enum: MotoEngine,
-    nullable: true
+    nullable: true,
   })
   @Field({ nullable: true })
   moto_engine?: MotoEngine;
@@ -92,9 +96,7 @@ export class NewPersonalVehicleInput {
   vehicle_category: VehicleCategory;
 
   @Field({ nullable: true })
-  @Min(1950)
-  @Max(2024)
-  year_of_construction?: number;
+  year_of_construction?: string;
 
   @Field({ nullable: true })
   vehicle_type?: VehicleType;
@@ -119,9 +121,7 @@ export class UpdatePersonalVehicleInput {
   vehicle_category: VehicleCategory;
 
   @Field({ nullable: true })
-  @Min(1950)
-  @Max(2024)
-  year_of_construction?: number;
+  year_of_construction?: string;
 
   @Field({ nullable: true })
   vehicle_type?: VehicleType;
@@ -131,9 +131,6 @@ export class UpdatePersonalVehicleInput {
 
   @Field({ nullable: true })
   moto_engine?: MotoEngine;
-
-  @Field(() => ObjectId)
-  user: ObjectId;
 }
 
 export default PersonalVehicle;

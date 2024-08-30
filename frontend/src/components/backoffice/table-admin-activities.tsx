@@ -3,10 +3,9 @@ import {
   useDeleteActivityTypeMutation,
   useGetActivitiesTypesPaginationQuery,
 } from "@/graphql/generated/schema";
-import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import ModalBin from "./modalBin";
+import ModalBin from "../modalBin";
 import { useRouter } from "next/router";
 
 const PAGE_SIZE = 8;
@@ -33,7 +32,11 @@ export default function TableActivities() {
   }, [data]);
 
   if (loading) {
-    return <p>Chargement...</p>;
+    return (
+      <p className="mt-3 text-center justify-center align-middle m-auto">
+        Chargement...
+      </p>
+    );
   }
 
   if (error) {
@@ -112,6 +115,8 @@ export default function TableActivities() {
                       },
                     }).then(() => window.location.reload())
                   }
+                  expression="supprimer"
+                  mappedVar={activity}
                 />
               </td>
             </tr>

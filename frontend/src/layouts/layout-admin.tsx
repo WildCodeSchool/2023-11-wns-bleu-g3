@@ -1,16 +1,19 @@
-import SideAdmin from "@/components/side-admin";
+import SideAdmin from "@/components/backoffice/side-admin";
 import TopbarAdmin from "@/components/topbar-admin";
-import React, { use, useState } from "react";
+import React, { ReactNode, use, useState } from "react";
 
-export default function LayoutAdmin({ children }: { children: any }) {
+export default function LayoutAdmin({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <>
+    <div className="flex flex-col h-screen overflow-hidden">
       <TopbarAdmin isOpen={isOpen} setIsOpen={setIsOpen} />
-      <main className="flex justify-between bg-lightPearl h-full">
-        <SideAdmin isOpen={isOpen} />
-        <div className="p-4 md:p-6 w-full absolute md:relative">{children}</div>
-      </main>
-    </>
+      <div className="flex flex-1 overflow-hidden bg-lightPearl">
+        <div className={`${isOpen ? "block" : "hidden"} md:block`}>
+          <SideAdmin isOpen={isOpen} />
+        </div>
+        <main className="flex-1 overflow-auto p-4 md:p-6">{children}</main>
+      </div>
+    </div>
   );
 }

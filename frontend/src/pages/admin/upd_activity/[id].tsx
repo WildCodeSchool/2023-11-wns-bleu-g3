@@ -11,6 +11,7 @@ import {
   useGetCategoriesQuery,
   useGetFuelTypesQuery,
   useGetUnitsQuery,
+  useGetMotoEnginesQuery,
   useGetVehicleDecadeQuery,
   useGetVehicleTypesQuery,
   useUpdateActivityTypeMutation,
@@ -20,7 +21,7 @@ import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { updateSourceFile } from "typescript";
 
 export default function UpdateActivity() {
-  const [error, setError] = useState("");
+  const [error, setError] = useState({ message: "", errorInput: "" });
   const router = useRouter();
 
   const { id } = router.query;
@@ -47,6 +48,9 @@ export default function UpdateActivity() {
   const { data: d5 } = useGetVehicleTypesQuery();
   const vehiclestypes = d5?.getVehicleTypes || [];
 
+  const { data: d6 } = useGetMotoEnginesQuery();
+  const motoengines = d6?.getMotoEngines || [];
+
   const [selectedOption, setSelectedOption] = useState(
     activity?.category || ""
   );
@@ -64,16 +68,27 @@ export default function UpdateActivity() {
   // update mutation
   // const activId = parseInt( id as string);
 
+  // const activId = parseInt( id as string);
+
   const [updateActivityType] = useUpdateActivityTypeMutation();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    setError("");
+    setError({ message: "", errorInput: "" });
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const formJSON: any = Object.fromEntries(formData.entries());
 
-    if (!/^\d*\.?\d*$/.test(formJSON.emissions) || formJSON.emissions === "") {
-      setError("Ton champ emissions ne comporte que des chiffres");
+    //validation
+    if (
+      !/^\d*\.?\d*$/.test(formJSON.emissions) ||
+      formJSON.emissions.length > 50 ||
+      formJSON.emissions === ""
+    ) {
+      setError({
+        message:
+          "Le champ emissions ne doit pas être vide et doit comporter que des chiffres",
+        errorInput: "emissions",
+      });
       return;
     }
 
@@ -95,14 +110,14 @@ export default function UpdateActivity() {
         refetchQueries: [
           {
             query: GetActivityTypesByIdDocument,
-            variables: { getActivityTypesById: parseInt(id as string) },
+            variables: { getActivityTypesById: parseFloat(id as string) },
           },
         ],
       });
-      setError("");
+      setError({ message: "", errorInput: "" });
       router.push(`/admin/activities`);
     } catch (e) {
-      setError("une erreur est survenue");
+      setError({ message: "Une erreur est survenue.", errorInput: "general" });
       console.error("Error :", error);
     }
   };
@@ -157,10 +172,15 @@ export default function UpdateActivity() {
             name="emissions"
             id="emissions"
             className={`shadow-sm bg-gray-50 border ${
-              error ? "border-red-700" : "border-gray-300"
+              error.errorInput === "emissions"
+                ? "border-red-700"
+                : "border-gray-300"
             } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3`}
             defaultValue={activity?.emissions || ""}
           />
+          {error.errorInput === "emissions" && (
+            <pre className="text-red-700">{error.message}</pre>
+          )}
         </div>
         <div className="mb-3">
           <label
@@ -244,7 +264,30 @@ export default function UpdateActivity() {
           </div>
         ) : null}
 
-        {error !== "" && <pre className="text-red-700">{error}</pre>}
+        {selectedOption === "Moto" ? (
+          <div className="mb-3">
+            <label
+              htmlFor="motoEngine"
+              className="block mb-2 text-sm font-medium text-gray-900"
+            >
+              Moto Engine
+            </label>
+            <select
+              id="motoEngine"
+              name="motoEngine"
+              className="bg-gray-50 shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              defaultValue={activity?.vehicleAttributes?.motoEngine || ""}
+            >
+              {motoengines.map((type) => (
+                <option value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+
+        {error.errorInput === "general" && (
+          <pre className="text-red-700">{error.message}</pre>
+        )}
         <button
           type="submit"
           className="text-lightPearl bg-reef hover:bg-shore hover:text-anchor focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 mt-2 py-2.5 text-center"

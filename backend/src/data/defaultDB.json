@@ -1,5 +1,101 @@
 [
   {
+    "name": "Voiture Économique Essence Avant90s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 157,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Collection",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Essence Avant2000",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 151,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Essence 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 144,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Essence 2010s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 113,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2010s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Essence 2020s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 86,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Diesel Avant90s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 148,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Collection",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Diesel Avant2000",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 142,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Diesel 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 135,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
     "name": "Voiture Économique Diesel 2010s",
     "category": "Car",
     "unit": "Distance",
@@ -20,6 +116,162 @@
       "fuelType": "Diesel",
       "vehicleType": "Economic",
       "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Electrique Avant90s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 113,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Collection",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Electrique Avant2000",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 109,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Electrique 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 104,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Electrique 2010s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 81,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2010s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Économique Electrique 2020s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 62,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Economic",
+      "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Essence Avant90s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 161,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Collection",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Essence Avant2000",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 154,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Essence 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 147,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Essence 2010s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 137,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Decade2010s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Essence 2020s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 113,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Diesel Avant90s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 151,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Collection",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Diesel Avant2000",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 145,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Diesel 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 138,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Decade2000s",
       "motoEngine": null
     }
   },
@@ -48,6 +300,162 @@
     }
   },
   {
+    "name": "Voiture Sport Electrique Avant90s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 116,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Collection",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Electrique Avant2000",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 111,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Electrique 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 106,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Electrique 2010s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 99,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Decade2010s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Sport Electrique 2020s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 81,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Sports",
+      "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Essence Avant90s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 228,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Collection",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Essence Avant2000",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 212,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Essence 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 184,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Essence 2010s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 159,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2010s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Essence 2020s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 103,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Diesel Avant90s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 214,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Collection",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Diesel Avant2000",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 199,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Diesel 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 173,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
     "name": "Voiture Luxe Diesel 2010s",
     "category": "Car",
     "unit": "Distance",
@@ -68,6 +476,102 @@
       "fuelType": "Diesel",
       "vehicleType": "Luxury",
       "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Electrique Avant90s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 164,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Collection",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Electrique Avant2000",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 153,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade1990s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Electrique 2000s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 132,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2000s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Electrique 2010s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 114,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2010s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Luxe Electrique 2020s",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 74,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": "Luxury",
+      "vehicleDecade": "Decade2020s",
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Essence",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 131,
+    "vehicleAttributes": {
+      "fuelType": "Petrol",
+      "vehicleType": null,
+      "vehicleDecade": null,
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Diesel",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 123,
+    "vehicleAttributes": {
+      "fuelType": "Diesel",
+      "vehicleType": null,
+      "vehicleDecade": null,
+      "motoEngine": null
+    }
+  },
+  {
+    "name": "Voiture Moyenne Electrique",
+    "category": "Car",
+    "unit": "Distance",
+    "emissions": 96,
+    "vehicleAttributes": {
+      "fuelType": "Electric",
+      "vehicleType": null,
+      "vehicleDecade": null,
       "motoEngine": null
     }
   },
@@ -108,7 +612,26 @@
     }
   },
   {
-    "name": "Avion moins de 500km",
+    "name": "Moto électrique",
+    "category": "Moto",
+    "unit": "Distance",
+    "emissions": 6,
+    "vehicleAttributes": {
+      "motoEngine": "Electric",
+      "fuelType": null,
+      "vehicleType": null,
+      "vehicleDecade": null
+    }
+  },
+  {
+    "name": "Vélo électrique",
+    "category": "Bike",
+    "unit": "Distance",
+    "emissions": 13,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Avion 0 à 500 km",
     "category": "Plane",
     "unit": "Distance",
     "emissions": 285,
@@ -129,7 +652,7 @@
     "vehicleAttributes": null
   },
   {
-    "name": "Avion plus de 3500km",
+    "name": "Avion 3500 à 150000000 km",
     "category": "Plane",
     "unit": "Distance",
     "emissions": 152,
@@ -168,6 +691,13 @@
     "category": "Boat",
     "unit": "Distance",
     "emissions": 267,
+    "vehicleAttributes": null
+  },
+  {
+    "name": "Bus",
+    "category": "Bus",
+    "unit": "Distance",
+    "emissions": 104,
     "vehicleAttributes": null
   },
   {
@@ -255,28 +785,28 @@
     "vehicleAttributes": null
   },
   {
-    "name": "Apple",
+    "name": "téléphone Apple",
     "category": "Electronics",
     "unit": "PerUnit",
     "emissions": 62000,
     "vehicleAttributes": null
   },
   {
-    "name": "Huawei",
+    "name": "téléphone Huawei",
     "category": "Electronics",
     "unit": "PerUnit",
     "emissions": 71000,
     "vehicleAttributes": null
   },
   {
-    "name": "Samsung",
+    "name": "téléphone Samsung",
     "category": "Electronics",
     "unit": "PerUnit",
     "emissions": 49000,
     "vehicleAttributes": null
   },
   {
-    "name": "Autre",
+    "name": "téléphone Autre",
     "category": "Electronics",
     "unit": "PerUnit",
     "emissions": 60000,

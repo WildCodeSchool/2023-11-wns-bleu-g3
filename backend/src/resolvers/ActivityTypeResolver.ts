@@ -54,6 +54,15 @@ class ActivityTypeResolver {
     return activityType;
   }
 
+  @Query(() => [ActivityType])
+  async getActivityTypesByCategory(@Arg("category", () => Category) category: Category) {
+    const activityTypes = await ActivityType.find({
+      where: { category },
+    });
+    if (!activityTypes) throw new GraphQLError("not found");
+    return activityTypes;
+  }
+
   //MUTATIONS
   @Authorized([UserRole.Admin])
   @Mutation(() => ActivityType)
@@ -112,7 +121,7 @@ class ActivityTypeResolver {
     return Object.values(VehicleType);
   }
   @Query(() => [String])
-  MotoEngine() {
+  getMotoEngines() {
     return Object.values(MotoEngine);
   }
 }

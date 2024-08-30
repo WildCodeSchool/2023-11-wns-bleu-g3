@@ -1,0 +1,10 @@
+query GetDonations {
+  getDonations {
+    id
+    user {
+      nickname
+    }
+    amount
+    dateOfDonation
+  }
+}

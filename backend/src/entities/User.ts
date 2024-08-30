@@ -7,12 +7,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import Activity from "./Activity";
-import { Follow } from "./Follow";
 import PersonalVehicle from "./PersonalVehicle";
+import Post from "./Post";
+import Like from "./Like";
+import Donation from "./Donation";
 
 export enum UserRole {
   Admin = "admin",
@@ -72,31 +76,59 @@ class User extends BaseEntity {
   @Column({ default: false })
   emailVerified: boolean;
 
-  @Field()
-  @Column({ default: false })
-  blocked: boolean;
-
   @CreateDateColumn()
   @Field()
   createdAt: string;
 
   @OneToMany(() => Activity, (activity) => activity.user)
   @Field(() => [Activity], { nullable: true })
-  activities?: Activity[]; 
+  activities?: Activity[];
 
-  @OneToMany(() => Follow, (follow) => follow.follower)
-  @Field(() => [Follow])
-  following: Follow[];
+  @ManyToMany(() => User, (user) => user.following)
+  @JoinTable({
+    name: "follow",
+    joinColumn: {
+      name: "follower_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "followed_id",
+      referencedColumnName: "id",
+    },
+  })
+  @Field(() => [User], { nullable: true })
+  followers?: User[];
 
-  @OneToMany(() => Follow, (follow) => follow.following)
-  @Field(() => [Follow])
-  followers: Follow[];
-
-
+  @ManyToMany(() => User, (user) => user.followers)
+  @Field(() => [User], { nullable: true })
+  following?: User[];
 
   @OneToMany(() => PersonalVehicle, (personalVehicle) => personalVehicle.user)
   @Field(() => [PersonalVehicle], { nullable: true })
   personalVehicles?: PersonalVehicle[];
+
+  @OneToMany(() => Post, (post) => post.user)
+  @Field(() => [Post], { nullable: true })
+  posts?: Post[];
+
+  @OneToMany(() => Like, (like) => like.user)
+  @Field(() => [Like])
+  likes: Like[];
+  @Field()
+  @Column({ default: false })
+  isBlocked: boolean;
+
+  @Field(() => Date, { nullable: true })
+  @Column({ type: "timestamp", nullable: true })
+  blocked_at: Date | null;
+
+  @Field()
+  @Column({ default: false })
+  isOnline: boolean;
+
+  @OneToMany(() => Donation, (post) => post.user)
+  @Field(() => [Donation], { nullable: true })
+  donation?: Donation[];
 }
 
 @InputType()

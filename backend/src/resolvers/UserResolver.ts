@@ -1,4 +1,12 @@
-import { Arg, Mutation, Query, Ctx, Resolver, Authorized } from "type-graphql";
+import {
+  Arg,
+  Mutation,
+  Query,
+  Ctx,
+  Int,
+  Resolver,
+  Authorized,
+} from "type-graphql";
 import User, {
   LoginInput,
   NewUserInput,
@@ -14,6 +22,8 @@ import { Context } from "../types";
 import crypto from "crypto";
 import mailer from "../mailer";
 import { hash } from "argon2";
+import { UserRole } from "../entities/User";
+import { IsNull } from "typeorm";
 
 @Resolver()
 class UserResolver {
@@ -85,7 +95,7 @@ class UserResolver {
   async profile(@Ctx() ctx: Context) {
     if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
     return User.findOneOrFail({
-      relations: { personalVehicles: true },
+      relations: { personalVehicles: true, followers: true, following: true },
       where: { id: ctx.currentUser.id },
     });
   }
@@ -102,6 +112,9 @@ class UserResolver {
       data.password
     );
     if (!passwordVerified) throw new GraphQLError("Invalid Credentials");
+
+    if (findUser.isBlocked === true)
+      throw new GraphQLError("This account has been suspended.");
 
     const token = jwt.sign(
       {
@@ -150,14 +163,76 @@ class UserResolver {
 
   @Authorized()
   @Mutation(() => String)
-  async deleteProfile(@Arg("userId") id: number) {
-    const UserToDelete = await User.findOneBy({ id });
+  async deleteUser(
+    @Ctx() ctx: Context,
+    @Arg("userId", { nullable: true }) id?: number
+  ) {
+    if (!ctx.currentUser) throw new GraphQLError("You must be authenticated");
 
-    if (!UserToDelete) throw new GraphQLError("Not found");
+    if (ctx.currentUser.role !== "admin") {
+      throw new GraphQLError(
+        "You do not have permission to delete other users"
+      );
+    }
 
-    await UserToDelete.remove();
+    if (!id) {
+      const userToDelete = await User.findOneBy({ id: ctx.currentUser.id });
+      if (!userToDelete) throw new GraphQLError("User not found");
 
+      await userToDelete.remove();
+      ctx.res.clearCookie("token");
+      return "User deleted and logged out successfully";
+    }
+
+    const userToDelete = await User.findOneBy({ id });
+    if (!userToDelete) throw new GraphQLError("User not found");
+
+    await userToDelete.remove();
     return "This user has been deleted";
+  }
+
+  @Authorized([UserRole.Admin])
+  @Mutation(() => [String])
+  async toggleBlockUser(
+    @Ctx() ctx: Context,
+    @Arg("userIds", () => [Int]) ids: number[]
+  ): Promise<string[]> {
+    if (!ctx.currentUser) throw new GraphQLError("You must be authenticated");
+
+    if (ctx.currentUser.role !== "admin") {
+      throw new GraphQLError("You do not have permission to this operation.");
+    }
+
+    //.all for concurrent mapping
+    const results = Promise.all(
+      ids.map(async (userId) => {
+        const user = await User.findOneBy({ id: userId });
+        if (!user) throw new GraphQLError("User not found");
+
+        if (user.role === UserRole.Admin) {
+          throw new GraphQLError("Admins cannot be blocked.");
+        }
+
+        switch (user.isBlocked) {
+          case false:
+            user.isBlocked = true;
+            user.blocked_at = new Date();
+            await user.save();
+
+            return "User blocked and logged out of his account.";
+
+          case true:
+            user.isBlocked = false;
+            await user.save();
+
+            return `${user.nickname} account has been unblocked.`;
+
+          default:
+            throw new GraphQLError(`Unexpected block state.`);
+        }
+      })
+    );
+    return results;
   }
 
   @Authorized()
@@ -180,6 +255,56 @@ class UserResolver {
     } else {
       throw new GraphQLError("Users not found");
     }
+  }
+
+  //table users backoffice
+  @Authorized([UserRole.Admin])
+  @Query(() => [User])
+  async getUsersPagination(
+    @Ctx() ctx: Context,
+    @Arg("offset", () => Int, { nullable: true, defaultValue: 0 })
+    offset: number,
+    @Arg("limit", () => Int, { nullable: true, defaultValue: 9 }) limit: number
+  ) {
+    if (!ctx.currentUser)
+      throw new GraphQLError(
+        "You need to be logged in to have access to this operation."
+      );
+
+    if (ctx.currentUser.role !== "admin") {
+      return new GraphQLError("You do not have permission to this operation.");
+    }
+
+    const findusers = await User.find({
+      skip: offset,
+      take: limit,
+    });
+    if (findusers.length === 0) throw new GraphQLError("Users were not found.");
+    return findusers;
+  }
+
+  @Authorized([UserRole.User])
+  @Query(() => User, { nullable: true })
+  async getUserByNickname(
+    @Ctx() ctx: Context,
+    @Arg("nickname") nickname: string
+  ): Promise<User | null> {
+    if (!ctx.currentUser) {
+      throw new GraphQLError("You need to be logged in");
+    }
+
+    const user = await User.findOne({
+      where: {
+        nickname: nickname,
+      },
+      relations: ["followers", "following"],
+    });
+
+    if (!user) {
+      throw new GraphQLError("User not found");
+    }
+
+    return user;
   }
 }
 
