@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import Icon from "./icon";
 import {
   useProfileQuery,
   useSearchUserLazyQuery,
 } from "@/graphql/generated/schema";
+import TopbarMenu from "./topbar-menu";
 
 export default function TopbarAdmin({
   isOpen,
@@ -11,8 +13,28 @@ export default function TopbarAdmin({
   isOpen: any;
   setIsOpen: any;
 }) {
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const { data: loggedInUser } = useProfileQuery();
-  // console.log(isOpen);
+  const [getUsers, { data: users }] = useSearchUserLazyQuery();
+
+  const handleOpenMenu = () => {
+    setMenuIsOpen(!menuIsOpen);
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuRef]);
+
   return (
     <nav className="flex flex-row justify-between items-center p-4 bg-anchor opacity-85 w-full">
       <div className="flex justify-center items-center gap-2">
@@ -42,13 +64,18 @@ export default function TopbarAdmin({
             </span>
           </button>
         </div>
-        <a href="/dashboard">
+        <button onClick={handleOpenMenu}>
           <img
             src={loggedInUser?.profile.avatarUrl || ""}
             alt={`${loggedInUser?.profile.role}`}
-            className="w-12 h-12 rounded-full mx-4 opacity-90 border-2 border-reef hover:border-whiten hover:opacity-100 "
+            className="w-12 h-12 rounded-full mx-4 opacity-90 border-2 border-reef hover:border-whiten hover:opacity-100 transition ease-in-out mr-5"
           />
-        </a>
+        </button>
+        {menuIsOpen && (
+          <div className="relative">
+            <TopbarMenu />
+          </div>
+        )}
       </div>
 
       {isOpen === false ? (
