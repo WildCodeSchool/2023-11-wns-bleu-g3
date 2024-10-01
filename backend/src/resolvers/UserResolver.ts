@@ -248,7 +248,7 @@ class UserResolver {
         "user.firstName ILIKE :name OR user.lastName ILIKE :name OR user.nickname ILIKE :name",
         { name: `%${name}%` }
       )
-      .andWhere("user.id != :id", { id: ctx.currentUser.id })
+      .andWhere("user.id !== :id", { id: ctx.currentUser.id })
       .getMany();
     if (users.length > 0) {
       return users;
