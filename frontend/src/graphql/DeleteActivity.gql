@@ -1,0 +1,3 @@
+mutation DeleteActivity($activityId: Float!) {
+  deleteActivity(ActivityId: $activityId)
+}

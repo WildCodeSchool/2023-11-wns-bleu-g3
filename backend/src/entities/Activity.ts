@@ -81,6 +81,7 @@ class Activity extends BaseEntity {
   @Column({ default: false })
   @Field()
   is_made_in_france: boolean;
+  
   @Column({ default: ""})
   @Field({ nullable: true })
   category: ActivityCategory;
