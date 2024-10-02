@@ -116,6 +116,9 @@ class UserResolver {
     if (findUser.isBlocked === true)
       throw new GraphQLError("This account has been suspended.");
 
+    if (findUser.emailVerified === false)
+      throw new GraphQLError("You need to verify your email address by clicking on the link sent before you can log in to your account.");
+
     const token = jwt.sign(
       {
         userId: findUser.id,
