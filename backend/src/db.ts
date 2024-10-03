@@ -25,7 +25,7 @@ const db = new DataSource({
     Donation,
   ],
   synchronize: true,
-  logging: env.NODE_ENV === "test",
+  // logging: env.NODE_ENV === "test",
 });
 
 export async function clearDB() {
