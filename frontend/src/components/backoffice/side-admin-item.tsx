@@ -9,9 +9,9 @@ export default function SideAdminItem({
     <li>
       <a
         href={href}
-        className="flex items-center text-sm p-2 text-white rounded-lg  bg-reef hover:bg-white hover:text-black btn transition ease-in-out"
+        className="flex items-center text-sm p-3 text-white rounded-lg  bg-reef hover:bg-white hover:text-black btn transition ease-in-out"
       >
-        {name}{" "}
+        {name}
       </a>
     </li>
   );

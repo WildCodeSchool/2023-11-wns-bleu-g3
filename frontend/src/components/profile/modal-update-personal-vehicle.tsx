@@ -1,11 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import Icon from "../icon";
-import {
-  useDeletePersonalVehicleMutation,
-  useUpdatePersonalVehicleMutation,
-} from "@/graphql/generated/schema";
-import { useRouter } from "next/router";
-import Modal from "../modal";
+import { useUpdatePersonalVehicleMutation } from "@/graphql/generated/schema";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -81,7 +76,7 @@ export default function ModalUpdatePersonalVehicle({
                   >
                     <option disabled value=""></option>
                     <option value="Voiture">Voiture</option>
-                    <option value="Moto/scooter">Moto/Scooter</option>
+                    <option value="Moto">Moto</option>
                     <option value="Vélo électrique">Vélo électrique</option>
                   </select>
                 </label>
@@ -99,8 +94,6 @@ export default function ModalUpdatePersonalVehicle({
                         <option value="Essence">Essence</option>
                         <option value="Diesel">Diesel</option>
                         <option value="Électrique">Électrique</option>
-                        <option value="Hybride">Hybride</option>
-                        <option value="Hydrogène">Hydrogène</option>
                       </select>
                     </label>
                     <label htmlFor="vehicle_type">
@@ -124,7 +117,7 @@ export default function ModalUpdatePersonalVehicle({
                         id="year_of_construction"
                       >
                         <option disabled value=""></option>
-                        <option value="Avant 90s">Avant 1989</option>
+                        <option value="Avant 90s">Voiture de collection</option>
                         <option value="Avant 2000">1990-1999</option>
                         <option value="2000s">2000-2009</option>
                         <option value="2010s">2010-2019</option>
@@ -134,7 +127,7 @@ export default function ModalUpdatePersonalVehicle({
                   </div>
                 )}
 
-                {selectedVehicle === "Moto/scooter" && (
+                {selectedVehicle === "Moto" && (
                   <label htmlFor="moto_engine">
                     Type de cylindrée
                     <select

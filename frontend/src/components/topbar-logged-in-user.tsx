@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import Icon from "./icon";
 import TopbarMenu from "./topbar-menu";
-import { useProfileQuery, useSearchUserLazyQuery } from "@/graphql/generated/schema";
+import {
+  useProfileQuery,
+  useSearchUserLazyQuery,
+} from "@/graphql/generated/schema";
 
 export default function TopbarLoggedInUser({
   isOpen,
@@ -18,7 +21,10 @@ export default function TopbarLoggedInUser({
 
   let userInitals = loggedInUser?.profile.nickname.slice(0, 1);
   if (loggedInUser?.profile.firstName && loggedInUser.profile.lastName) {
-    userInitals = `${loggedInUser.profile.firstName.slice(0, 1)}${loggedInUser.profile.lastName.slice(0, 1)}`
+    userInitals = `${loggedInUser.profile.firstName.slice(
+      0,
+      1
+    )}${loggedInUser.profile.lastName.slice(0, 1)}`;
   }
 
   const handleOpenMenu = () => {
@@ -59,7 +65,6 @@ export default function TopbarLoggedInUser({
     <nav className="flex flex-row justify-between items-center p-4 bg-shore w-full">
       <div className="flex justify-center items-center gap-2">
         <img src="/img/greenfoot-logo.png" alt="" className="w-14" />
-
         <h1 className="text-reef text-xl md:text-3xl font-bold drop-shadow-lg">
           GreenFoot
         </h1>

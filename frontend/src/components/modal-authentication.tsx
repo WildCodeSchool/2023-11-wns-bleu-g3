@@ -54,6 +54,11 @@ export default function ModalAuthentication({
             "Votre compte est actuellement suspendu.\nPour plus d'informations, veuillez contacter l'équipe support GreenFoot."
           );
           break;
+        case "You need to verify your email address by clicking on the link sent before you can log in to your account.":
+          setError(
+            "Vous devez vérifier votre adresse email avant de pouvoir vous connecter."
+          );
+          break;
         default:
           if (e.errors) setError(e.errors.join(", \n"));
       }

@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { useRef } from "react";
 import {
   useGetLikesQuery,
   useLikeAndDislikePostMutation,
@@ -8,13 +9,16 @@ import Icon from "../icon";
 import { useState, useEffect } from "react";
 import ModalDeletePost from "./modal-delete-post";
 import ModalUpdatePost from "./modal-update-post";
-
+import ReportDropdown from "./report-dropdown";
 
 const PostItem = ({ post }: { post: any }) => {
   const [isUpdatePostModalOpen, setIsUpdatePostModalOpen] = useState(false);
   const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
   const [localLikes, setLocalLikes] = useState(post.nbOfLikes);
   const [hasLiked, setHasLiked] = useState(false);
+
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const { data: userData } = useProfileQuery();
   const currentUsername = userData?.profile?.nickname || "";
@@ -56,11 +60,42 @@ const PostItem = ({ post }: { post: any }) => {
     return `${day}/${month}/${year}`;
   };
 
+  const handleOpenMenu = () => {
+    setMenuIsOpen(!menuIsOpen);
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuRef]);
+
   return (
     <div className="bg-pearl mb-4 lg:border-2 lg:border-reef lg:rounded-lg p-2 w-full">
       <div className="flex justify-between mb-4">
         <p className="font-semibold opacity-85">{post.user.nickname}</p>
-        <p>{convertDate(post.created_at)}</p>
+        <div className="flex gap-x-4">
+          <p className="mt-1">{convertDate(post.created_at)}</p>
+          <div className="hidden md:block" ref={menuRef}>
+            <button
+              className="hover:bg-slate-300 focus:bg-slate-300 rounded-full px-1"
+              onClick={handleOpenMenu}
+            >
+              <Icon name="more_vert" size="xl" />
+            </button>
+            {menuIsOpen && (
+              <div className="relative">
+                <ReportDropdown mappedVar="post" />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
       <div className="mb-4">
         <h3 className="text-xl mb-2">{post.title}</h3>

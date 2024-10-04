@@ -12,6 +12,7 @@ import fs from "fs";
 import path from "path";
 import PersonalVehicle from "./entities/PersonalVehicle";
 import Post from "./entities/Post";
+import Donation from "./entities/Donation";
 
 export async function clearDB() {
   const runner = db.createQueryRunner();
@@ -79,6 +80,8 @@ async function main() {
     password: "4dminAdmin@!",
     role: UserRole.Admin,
     emailVerified: true,
+    avatarUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS87FpEHh7b1IAE-l9u-QyhqzZdT6b3Kr8HSQ&s",
   });
   await admin.save();
 
@@ -170,7 +173,7 @@ async function main() {
 
   const personalVehicle3 = new PersonalVehicle();
   Object.assign(personalVehicle3, {
-    name: "Ma moto électrique",
+    name: "Ma moto",
     vehicle_category: VehicleCategory.Moto,
     moto_engine: MotoEngine.Engine500plus,
     emissionByKm: 132,
@@ -229,6 +232,62 @@ async function main() {
     user: user,
   });
   await post5.save();
+
+  const donation1 = new Donation();
+  Object.assign(donation1, {
+    amount: 10,
+    user: user,
+    dateOfDonation: "2023-03-12T07:19:22.111Z",
+  });
+  await donation1.save();
+
+  const donation2 = new Donation();
+  Object.assign(donation2, {
+    amount: 120,
+    user: user1,
+    dateOfDonation: "2023-07-02T07:19:22.111Z",
+  });
+  await donation2.save();
+
+  const donation3 = new Donation();
+  Object.assign(donation3, {
+    amount: 170,
+    user: user5,
+    dateOfDonation: "2023-11-20T07:19:22.111Z",
+  });
+  await donation3.save();
+
+  const donation4 = new Donation();
+  Object.assign(donation4, {
+    amount: 500,
+    user: user7,
+    dateOfDonation: "2023-12-25T07:19:22.111Z",
+  });
+  await donation4.save();
+
+  const donation5 = new Donation();
+  Object.assign(donation5, {
+    amount: 10,
+    user: user3,
+    dateOfDonation: "2024-02-02T07:19:22.111Z",
+  });
+  await donation5.save();
+
+  const donation6 = new Donation();
+  Object.assign(donation6, {
+    amount: 10,
+    user: user6,
+    dateOfDonation: "2024-06-28T07:19:22.111Z",
+  });
+  await donation6.save();
+
+  const donation7 = new Donation();
+  Object.assign(donation7, {
+    amount: 10,
+    user: user2,
+    dateOfDonation: "2024-07-02T07:19:22.111Z",
+  });
+  await donation7.save();
 
   // Json Reader
   const filePath = path.resolve(__dirname, "../src/data/defaultDB.json");

@@ -18,7 +18,6 @@ import { TrainTypeEnum } from "@/enums/TrainTypeEnum";
 import { MotoTypeEnum } from "@/enums/MotoTypeEnum";
 import { CarTypeEnum } from "@/enums/CarTypeEnum";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
 
 export default function NewActivity() {
@@ -128,7 +127,6 @@ export default function NewActivity() {
         }
       });
     } catch (e: any) {
-      console.log(e.errors);
       if (e.errors !== undefined) {
         setError(e.errors.join(", \n"));
       }

@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Arg, Authorized, Ctx } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, Authorized, Ctx, Int } from "type-graphql";
 import Activity, {
   ActivityCategory,
   ReccurenceInterval,
@@ -11,6 +11,18 @@ import ActivityType, { Category } from "../entities/ActivityType";
 import PersonalVehicle from "../entities/PersonalVehicle";
 import { FuelType, MotoEngine } from "../entities/Enums/Vehicle_Attributes";
 import { Between, ILike } from "typeorm";
+
+enum SortingOrder {
+  ASC = "ASC",
+  DESC = "DESC"
+}
+
+enum ActivityOrderBy {
+  NAME = "name",
+  CATEGORY = "category",
+  STARTSAT = "starts_at",
+  EMISSIONPERMONTH = "emissionPerMonth"
+}
 
 @Resolver(Activity)
 class ActivityResolver {
@@ -60,6 +72,41 @@ class ActivityResolver {
     });
 
     return activities;
+  }
+
+  @Authorized()
+  @Query(() => [Activity])
+  async getUserActivities(
+    @Ctx() ctx: Context,
+    @Arg("offset", () => Int, { nullable: true, defaultValue: 0 }) offset: number,
+    @Arg("limit", () => Int, { nullable: true, defaultValue: 9 }) limit: number,
+    @Arg("orderBy", { nullable: true, defaultValue: 9 }) orderBy: ActivityOrderBy,
+    @Arg("orderDir", { nullable: true }) orderDir: SortingOrder,
+    @Arg("userId", { nullable: true }) userId?: number,
+    @Arg("name", { nullable: true }) name?: string,
+    @Arg("category", () => String, { nullable: true }) category?: ActivityCategory
+  ): Promise<Activity[]> {
+
+    if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
+
+    const userIdToFetch = userId ?? ctx.currentUser.id;
+
+    if (userId && ctx.currentUser.role !== "admin") {
+      throw new GraphQLError("You do not have permission.");
+    }
+
+    const activities = await Activity.find({
+      order: {[orderBy] : orderDir},
+      skip: offset,
+      take: limit,
+      relations: { user: true},
+      where: { 
+        user: { id: userIdToFetch },
+        name: name ? ILike(`%${name}%`) : undefined,
+        category: category? category : undefined
+       },
+    });
+    return activities
   }
 
   //MUTATIONS
@@ -233,7 +280,7 @@ class ActivityResolver {
         }
       }
       const month = newActivity.starts_at.getMonth();
-      newActivity.starts_at.setMonth(month + 1);
+      newActivity.starts_at.setMonth(i === 0 ? month : month + 1);
       await newActivity.save();
       totalEmission = totalEmission + newActivity.emissionPerMonth
     }

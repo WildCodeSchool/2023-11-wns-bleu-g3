@@ -55,25 +55,18 @@ export class FollowResolver {
     if (userId === ctx.currentUser.id)
       throw new GraphQLError("You can't follow yourself");
 
-    const currentUser = await User.findOne({
-      where: { id: ctx.currentUser.id },
-      relations: ["following"],
-    });
-
-    if (!currentUser) throw new GraphQLError("Current user not found");
-
     const userToFollow = await User.findOne({ where: { id: userId } });
 
     if (!userToFollow) throw new GraphQLError("User not found");
 
-    if (!currentUser.following) {
-      currentUser.following = [];
+    if (!ctx.currentUser.following) {
+      ctx.currentUser.following = [];
     }
 
-    currentUser.following.push(userToFollow);
-    await currentUser.save();
+    ctx.currentUser.following.push(userToFollow);
+    await ctx.currentUser.save();
 
-    return currentUser;
+    return ctx.currentUser;
   }
 
   @Authorized()
@@ -86,26 +79,19 @@ export class FollowResolver {
     if (userId === ctx.currentUser.id)
       throw new GraphQLError("You can't unfollow yourself");
 
-    const currentUser = await User.findOne({
-      where: { id: ctx.currentUser.id },
-      relations: ["following"],
-    });
-
-    if (!currentUser) throw new GraphQLError("Current user not found");
-
     const userToUnfollow = await User.findOne({ where: { id: userId } });
 
     if (!userToUnfollow) throw new GraphQLError("User not found");
 
-    if (!currentUser.following) {
-      currentUser.following = [];
+    if (!ctx.currentUser.following) {
+      ctx.currentUser.following = [];
     }
 
-    currentUser.following = currentUser.following.filter(
+    ctx.currentUser.following = ctx.currentUser.following.filter(
       (user) => user.id !== userId
     );
-    await currentUser.save();
+    await ctx.currentUser.save();
 
-    return currentUser;
+    return ctx.currentUser;
   }
 }

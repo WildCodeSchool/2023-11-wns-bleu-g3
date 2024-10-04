@@ -8,7 +8,7 @@
     "resetDB": "ts-node-dev src/resetDb.ts",
     "build": "tsc",
     "start:prod": "node build/index.js",
-    "test": "jest",
+    "test": "jest --runInBand",
     "testDB:wait": "docker compose -f docker-compose.integration-tests.yml up testDB --wait"
   },
   "author": "Les Pattes Carbone",
