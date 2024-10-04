@@ -5,7 +5,7 @@ import {
 } from "@/graphql/generated/schema";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import ModalBin from "./modalBin";
+import ModalBin from "./backoffice/modalBin";
 import { useRouter } from "next/router";
 import { ActivityTypeEnum } from "@/enums/ActivityTypeEnum";
 
@@ -49,14 +49,14 @@ export default function TableUserActivities() {
 
   const handleChangeCategory = (e: any) => {
     setCategory(e.target.value);
-    setPage(0)
+    setPage(0);
     refetch();
   };
 
   const handleChangeOrderBy = (order: string) => {
     setOrderBy(order);
     handleChangeOrderDir();
-    setPage(0)
+    setPage(0);
     refetch();
   };
 

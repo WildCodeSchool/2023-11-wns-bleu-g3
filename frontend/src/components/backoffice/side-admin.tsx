@@ -30,7 +30,7 @@ export default function SideAdmin({ isOpen }: { isOpen: any }) {
               href="/admin/newActivType"
               name="Ajouté Activité Type"
             />
-            <SideAdminItem href="/admin/donations" name="Consulter Donations" />
+            {/* <SideAdminItem href="/admin/donations" name="Consulter Donations" /> */}
           </div>
 
           <div className="flex  flex-col gap-3 py-2 mb-2 ">
