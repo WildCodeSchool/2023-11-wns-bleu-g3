@@ -1,4 +1,3 @@
-import { Latitude } from "graphql-scalars/typings/mocks";
 import db from "./db";
 import User, { UserRole } from "./entities/User";
 import ActivityType, { Category, Unit } from "./entities/ActivityType";
@@ -44,6 +43,7 @@ async function main() {
     avatarUrl:
       "https://cdn-s-www.estrepublicain.fr/images/829E79B4-6141-4B09-A1A4-C8CA53D382BE/NW_raw/greta-thunberg-a-caen-ce-dimanche-photo-jean-francois-monier-afp-1563726733.jpg",
     createdAt: "2024-01-03T07:19:22.111Z",
+    emailVerified: true,
   });
   await user.save();
 
@@ -57,6 +57,7 @@ async function main() {
     avatarUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Earth_from_Space.jpg/240px-Earth_from_Space.jpg",
     createdAt: "2024-03-12T07:19:22.111Z",
+    emailVerified: true,
   });
   await user1.save();
 
@@ -67,6 +68,7 @@ async function main() {
     password: "Visitor42@!",
     avatarUrl: "https://m.media-amazon.com/images/I/61RlSyFFobL._AC_SX522_.jpg",
     createdAt: "2024-04-20T07:19:22.111Z",
+    emailVerified: true,
   });
   await user2.save();
 
@@ -89,6 +91,7 @@ async function main() {
     lastName: "Nature",
     avatarUrl: "https://randomuser.me/api/portraits/women/72.jpg",
     createdAt: "2024-03-12T08:22:35.222Z",
+    emailVerified: true,
   });
   await user3.save();
 
@@ -101,6 +104,7 @@ async function main() {
     lastName: "Eco",
     avatarUrl: "https://randomuser.me/api/portraits/men/44.jpg",
     createdAt: "2024-03-12T09:35:45.333Z",
+    emailVerified: true,
   });
   await user4.save();
 
@@ -113,6 +117,7 @@ async function main() {
     lastName: "Green",
     avatarUrl: "https://randomuser.me/api/portraits/women/14.jpg",
     createdAt: "2024-03-12T10:48:55.444Z",
+    emailVerified: true,
   });
   await user5.save();
 
@@ -125,6 +130,7 @@ async function main() {
     lastName: "West",
     avatarUrl: "https://media1.tenor.com/m/UKIJv9wAbbIAAAAC/meme-mood.gif",
     createdAt: "2024-03-12T11:51:05.555Z",
+    emailVerified: true,
   });
   await user6.save();
 
@@ -137,6 +143,7 @@ async function main() {
     lastName: "Faune",
     avatarUrl: "https://randomuser.me/api/portraits/women/17.jpg",
     createdAt: "2024-03-12T12:54:15.666Z",
+    emailVerified: true,
   });
   await user7.save();
 

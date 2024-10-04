@@ -329,6 +329,7 @@ export type Query = {
   getFollowersByUser: Array<User>;
   getFollowingByUser: Array<User>;
   getFuelTypes: Array<Scalars['String']>;
+  getGraphActivities: Array<Activity>;
   getLikes: Array<Like>;
   getMotoEngines: Array<Scalars['String']>;
   getPersonalVehicles: Array<PersonalVehicle>;
@@ -370,6 +371,11 @@ export type QueryGetFollowersByUserArgs = {
 
 
 export type QueryGetFollowingByUserArgs = {
+  userId?: InputMaybe<Scalars['Float']>;
+};
+
+
+export type QueryGetGraphActivitiesArgs = {
   userId?: InputMaybe<Scalars['Float']>;
 };
 
@@ -638,6 +644,11 @@ export type GetActivityTypesByIdQueryVariables = Exact<{
 
 
 export type GetActivityTypesByIdQuery = { __typename?: 'Query', getActivityTypesById: { __typename?: 'ActivityType', category: string, id: number, emissions: number, name: string, unit: string, attributes?: { __typename?: 'Attr', madeInFrance?: number | null, secondHandClothes?: number | null, secondHandPhones?: number | null } | null, vehicleAttributes?: { __typename?: 'Vehicle_Attr', fuelType?: string | null, vehicleType?: string | null, vehicleDecade?: string | null, motoEngine?: string | null } | null } };
+
+export type GetGraphActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGraphActivitiesQuery = { __typename?: 'Query', getGraphActivities: Array<{ __typename?: 'Activity', id: number, starts_at: any, category?: string | null, emissionPerMonth: number }> };
 
 export type GetLikesQueryVariables = Exact<{
   postId?: InputMaybe<Scalars['Float']>;
@@ -1570,6 +1581,48 @@ export type GetActivityTypesByIdQueryHookResult = ReturnType<typeof useGetActivi
 export type GetActivityTypesByIdLazyQueryHookResult = ReturnType<typeof useGetActivityTypesByIdLazyQuery>;
 export type GetActivityTypesByIdSuspenseQueryHookResult = ReturnType<typeof useGetActivityTypesByIdSuspenseQuery>;
 export type GetActivityTypesByIdQueryResult = Apollo.QueryResult<GetActivityTypesByIdQuery, GetActivityTypesByIdQueryVariables>;
+export const GetGraphActivitiesDocument = gql`
+    query GetGraphActivities {
+  getGraphActivities {
+    id
+    starts_at
+    category
+    emissionPerMonth
+  }
+}
+    `;
+
+/**
+ * __useGetGraphActivitiesQuery__
+ *
+ * To run a query within a React component, call `useGetGraphActivitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGraphActivitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGraphActivitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetGraphActivitiesQuery(baseOptions?: Apollo.QueryHookOptions<GetGraphActivitiesQuery, GetGraphActivitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGraphActivitiesQuery, GetGraphActivitiesQueryVariables>(GetGraphActivitiesDocument, options);
+      }
+export function useGetGraphActivitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGraphActivitiesQuery, GetGraphActivitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGraphActivitiesQuery, GetGraphActivitiesQueryVariables>(GetGraphActivitiesDocument, options);
+        }
+export function useGetGraphActivitiesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetGraphActivitiesQuery, GetGraphActivitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetGraphActivitiesQuery, GetGraphActivitiesQueryVariables>(GetGraphActivitiesDocument, options);
+        }
+export type GetGraphActivitiesQueryHookResult = ReturnType<typeof useGetGraphActivitiesQuery>;
+export type GetGraphActivitiesLazyQueryHookResult = ReturnType<typeof useGetGraphActivitiesLazyQuery>;
+export type GetGraphActivitiesSuspenseQueryHookResult = ReturnType<typeof useGetGraphActivitiesSuspenseQuery>;
+export type GetGraphActivitiesQueryResult = Apollo.QueryResult<GetGraphActivitiesQuery, GetGraphActivitiesQueryVariables>;
 export const GetLikesDocument = gql`
     query GetLikes($postId: Float) {
   getLikes(postId: $postId) {

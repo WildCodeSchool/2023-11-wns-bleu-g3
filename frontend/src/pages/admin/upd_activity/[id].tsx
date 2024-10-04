@@ -135,8 +135,8 @@ export default function UpdateActivity() {
           <br />
           <p className="text-sm text-gray-600 mb-4">
             Vous avez la possibilité de modifier les caractéristiques de ce type
-            d'activité, comme la catégorie, la valeur d'émission de CO
-            <sub>2</sub> et l'unité de mesure.
+            d&apos;activité, comme la catégorie, la valeur d&apos;émission de CO
+            <sub>2</sub> et l&apos;unité de mesure.
           </p>
         </div>
         <div className="mb-3">

@@ -1,0 +1,8 @@
+query GetGraphActivities {
+  getGraphActivities {
+    id
+    starts_at
+    category
+    emissionPerMonth
+  }
+}
