@@ -1,5 +1,5 @@
-query GetGraphActivities {
-  getGraphActivities {
+query GetGraphActivities($userId: Float) {
+  getGraphActivities(userId: $userId) {
     id
     starts_at
     category

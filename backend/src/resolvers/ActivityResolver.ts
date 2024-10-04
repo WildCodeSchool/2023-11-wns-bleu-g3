@@ -58,10 +58,6 @@ class ActivityResolver {
 
     const userIdToFetch = userId ?? ctx.currentUser.id;
 
-    if (userId && ctx.currentUser.role !== "admin") {
-      throw new GraphQLError("You do not have permission.");
-    }
-
     const currentDate = new Date()
     const firstDayToDisplay = new Date()
     firstDayToDisplay.setFullYear(currentDate.getFullYear() - 1)
