@@ -16,7 +16,16 @@ const db = new DataSource({
   username: env.DB_USER,
   password: env.DB_PASS,
   database: env.DB_NAME,
-  entities: [User, ActivityType, Activity, PersonalVehicle, Post, Like, Report],
+  entities: [
+    User,
+    ActivityType,
+    Activity,
+    PersonalVehicle,
+    Post,
+    Like,
+    Report,
+    Donation,
+  ],
   synchronize: true,
   // logging: env.NODE_ENV === "test",
 });
