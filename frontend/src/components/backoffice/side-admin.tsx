@@ -13,11 +13,6 @@ export default function SideAdmin({ isOpen }: { isOpen: any }) {
   return (
     <aside
       id="default-sidebar"
-      // className={` md:translate-x-0 h-full  bg-anchor ${
-      //   isOpen === false
-      //     ? "-translate-x-full left-0 z-40 h-full w-64 transition-transform  bg-anchor"
-      //     : "translate-x-0 z-40 left-0 absolute sm:relative w-full h-full transition-transform  bg-anchor"
-      // }`}
       className={`md:translate-x-0 h-[calc(100vh-64px)] ${
         isOpen === false
           ? "-translate-x-full left-0 z-40 w-64 transition-transform"
@@ -25,7 +20,7 @@ export default function SideAdmin({ isOpen }: { isOpen: any }) {
       } overflow-y-auto`}
     >
       <div className="px-3 py-4 bg-anchor flex flex-col justify-between h-full">
-        <ul className="flex flex-col gap-4 ">
+        <ul className="flex flex-col gap-5 justify-between h-full">
           <div className="gap-4 flex flex-col">
             <SideAdminItem href="/admin/dashboard" name="Dashboard Admin" />
             <SideAdminItem href="/admin/users" name="Utilisateurs" />
@@ -35,26 +30,25 @@ export default function SideAdmin({ isOpen }: { isOpen: any }) {
               href="/admin/newActivType"
               name="Ajouté Activité Type"
             />
-            <SideAdminItem href="/admin/donations" name="Consulter Donations" />
-            <SideAdminItem href="/dashboard" name="Retour a l'Accueil" />
+            {/* <SideAdminItem href="/admin/donations" name="Consulter Donations" /> */}
           </div>
 
-          <div className="md:hidden flex flex-col gap-2 py-4">
-            <button
-              className="btn btn-shore bg-gray-100"
-              onClick={() => router.push("/profile")}
+          <div className="flex  flex-col gap-3 py-2 mb-2 ">
+            <a
+              className="btn bg-neutral-900 hover:bg-neutral-950 text-left bg-opacity-90 text-gray-600"
+              href="/profile"
             >
               Mon compte
-            </button>
+            </a>
             <button
-              className="btn btn-error"
+              className=" text-gray-400 py-[0.3rem]   rounded-lg bg-red-900 bg-opacity-50  hover:bg-opacity-80"
               onClick={async () => {
                 await logout();
                 router.push("/");
                 client.resetStore();
               }}
             >
-              Déconnexion
+              <span className="material-icons text-xl">logout</span>
             </button>
           </div>
         </ul>

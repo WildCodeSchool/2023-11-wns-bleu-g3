@@ -6,7 +6,9 @@ import ActivityResolver from "./resolvers/ActivityResolver";
 import PersonalVehicleResolver from "./resolvers/PersonalVehicleResolver";
 import PostResolver from "./resolvers/PostResolver";
 import LikeResolver from "./resolvers/LikeResolver";
+import ReportResolver from "./entities/Report";
 import { FollowResolver } from "./resolvers/FollowResolver";
+import DonationResolver from "./resolvers/DonationResolver";
 
 export default buildSchema({
   resolvers: [
@@ -16,7 +18,9 @@ export default buildSchema({
     PersonalVehicleResolver,
     PostResolver,
     LikeResolver,
-    FollowResolver
+    FollowResolver,
+    DonationResolver,
+    ReportResolver,
   ],
   authChecker,
 });

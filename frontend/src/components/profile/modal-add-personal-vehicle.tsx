@@ -4,7 +4,8 @@ import {
   useCreatePersonalVehicleMutation,
   useProfileQuery,
 } from "@/graphql/generated/schema";
-import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ModalAddPersonalVehicle = ({
   isAddPersonalVehicleModalOpen,
@@ -14,7 +15,6 @@ const ModalAddPersonalVehicle = ({
   setIsAddPersonalVehicleModalOpen: any;
 }) => {
   const [selectedVehicle, setSelectedVehicle] = useState("");
-  const router = useRouter();
   const [createPersonalVehicle] = useCreatePersonalVehicleMutation();
 
   const { data: user } = useProfileQuery({
@@ -35,7 +35,7 @@ const ModalAddPersonalVehicle = ({
     createPersonalVehicle({ variables: { data: formJSON } })
       .then((res) => {
         setIsAddPersonalVehicleModalOpen(false);
-        router.reload();
+        toast.success("Véhicule ajouté !");
       })
       .catch(console.error);
   };
@@ -97,8 +97,6 @@ const ModalAddPersonalVehicle = ({
                             <option value="Essence">Essence</option>
                             <option value="Diesel">Diesel</option>
                             <option value="Électrique">Électrique</option>
-                            <option value="Hybride">Hybride</option>
-                            <option value="Hydrogène">Hydrogène</option>
                           </select>
                         </label>
 
@@ -124,7 +122,9 @@ const ModalAddPersonalVehicle = ({
                             id="year_of_construction"
                           >
                             <option disabled value=""></option>
-                            <option value="Avant 90s">Avant 1989</option>
+                            <option value="Avant 90s">
+                              Voiture de collection
+                            </option>
                             <option value="Avant 2000">1990-1999</option>
                             <option value="2000s">2000-2009</option>
                             <option value="2010s">2010-2019</option>

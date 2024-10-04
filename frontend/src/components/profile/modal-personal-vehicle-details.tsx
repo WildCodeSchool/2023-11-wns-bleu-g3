@@ -1,12 +1,10 @@
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 import Icon from "../icon";
 import { useDeletePersonalVehicleMutation } from "@/graphql/generated/schema";
 import Modal from "../modal";
 import ModalUpdatePersonalVehicle from "./modal-update-personal-vehicle";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { useRouter } from "next/router";
 
 export default function ModalPersonalVehicleDetails({
   setIsPersonalVehicleDetailsModalOpen,
@@ -18,13 +16,11 @@ export default function ModalPersonalVehicleDetails({
   const [isBeingModified, setIsBeingModified] = useState(false);
   const [deletePersonalVehicle] = useDeletePersonalVehicleMutation();
 
-  const router = useRouter();
-
   const handleDeleteVehicle = () => {
     deletePersonalVehicle({ variables: { personalVehicleId: vehicle.id } })
       .then((res) => {
         toast.success("Véhicule supprimé");
-        router.reload();
+        setIsPersonalVehicleDetailsModalOpen(false);
       })
       .catch(console.error);
   };
@@ -95,7 +91,7 @@ export default function ModalPersonalVehicleDetails({
                       </div>
                     )}
 
-                    {vehicle.vehicle_category === "Moto/scooter" && (
+                    {vehicle.vehicle_category === "Moto" && (
                       <label htmlFor="moto_engine">
                         Type de cylindrée
                         <input
@@ -108,6 +104,10 @@ export default function ModalPersonalVehicleDetails({
                         />
                       </label>
                     )}
+
+                    <p className="mt-4">
+                      Emission : {vehicle.emissionByKm} g/km
+                    </p>
 
                     <div className="flex justify-around my-10">
                       <button

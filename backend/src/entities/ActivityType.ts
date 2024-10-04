@@ -115,9 +115,9 @@ class ActivityType extends BaseEntity {
   @Field(() => Vehicle_Attr, { nullable: true })
   vehicleAttributes?: Vehicle_Attr;
 
-  @OneToMany(() => Activity, (activity) => activity.activityType)
-  @Field(() => [Activity])
-  activities: Activity[];
+  // @OneToMany(() => Activity, (activity) => activity.activityType)
+  // @Field(() => [Activity])
+  // activities: Activity[];
 }
 
 @InputType()

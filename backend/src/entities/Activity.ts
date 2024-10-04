@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import User from "./User";
-import ActivityType from "./ActivityType";
-import { ObjectId } from "../types";
+// import ActivityType from "./ActivityType";
+// import { ObjectId } from "../types";
 
 export enum ReccurenceInterval {
   Day = "jour",
@@ -17,6 +17,14 @@ export enum ReccurenceInterval {
   Month = "mois",
   Trimester = "trimestre",
   Year = "an",
+}
+
+export enum ActivityCategory {
+  Shifting = "Déplacement",
+  Heating = "Chauffage",
+  Clothing = "Achat vêtement",
+  Electronics = "Achat électronique",
+  Other = "Autre",
 }
 
 @Entity()
@@ -73,10 +81,14 @@ class Activity extends BaseEntity {
   @Column({ default: false })
   @Field()
   is_made_in_france: boolean;
+  
+  @Column({ default: ""})
+  @Field({ nullable: true })
+  category: ActivityCategory;
 
-  @ManyToOne(() => ActivityType, (activityType) => activityType.id)
-  @Field(() => ActivityType)
-  activityType: ActivityType;
+  // @ManyToOne(() => ActivityType, (activityType) => activityType.id)
+  // @Field(() => ActivityType)
+  // activityType: ActivityType;
 
   @Column()
   @Field()
@@ -149,8 +161,8 @@ export class UpdateActivityInput {
   @Field()
   is_made_in_france: boolean;
 
-  @Field(() => ObjectId)
-  activityType: ObjectId;
+  // @Field(() => ObjectId)
+  // activityType: ObjectId;
 }
 
 export default Activity;

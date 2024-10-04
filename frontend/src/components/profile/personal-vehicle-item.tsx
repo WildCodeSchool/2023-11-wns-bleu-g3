@@ -11,17 +11,11 @@ const PersonalVehicleItem = () => {
     null
   );
 
-  const { data } = useGetPersonalVehiclesQuery();
+  const { data } = useGetPersonalVehiclesQuery({
+    pollInterval: 1000,
+  });
 
   const personalVehicles = data?.getPersonalVehicles;
-
-  const convertDate = (isoString: string) => {
-    const date = new Date(isoString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
 
   return (
     <>
@@ -34,7 +28,7 @@ const PersonalVehicleItem = () => {
             <div className="grid grid-cols-3 md:grid-cols-4 w-full">
               <p className="text-start md:col-span-2">{vehicle.name}</p>
               <p className="opacity-75 font-normal">
-                {convertDate(vehicle.created_at)}
+                {vehicle.emissionByKm} g/km
               </p>
               <p className="">{vehicle.vehicle_category}</p>
             </div>
