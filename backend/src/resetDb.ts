@@ -78,6 +78,8 @@ async function main() {
     password: "4dminAdmin@!",
     role: UserRole.Admin,
     emailVerified: true,
+    avatarUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS87FpEHh7b1IAE-l9u-QyhqzZdT6b3Kr8HSQ&s",
   });
   await admin.save();
 

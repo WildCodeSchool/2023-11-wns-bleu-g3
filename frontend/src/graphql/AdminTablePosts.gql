@@ -1,0 +1,14 @@
+query GetPostsPagination($offset: Int, $limit: Int) {
+  getPostsPagination(offset: $offset, limit: $limit) {
+    id
+    created_at
+    nbOfLikes
+    title
+    imageUrl
+    content
+    user {
+      id,
+      nickname
+    }
+  }
+}

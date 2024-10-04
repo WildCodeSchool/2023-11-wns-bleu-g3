@@ -17,6 +17,7 @@ import PersonalVehicle from "./PersonalVehicle";
 import Post from "./Post";
 import Like from "./Like";
 import Donation from "./Donation";
+import Report from "./Report";
 
 export enum UserRole {
   Admin = "admin",
@@ -114,6 +115,11 @@ class User extends BaseEntity {
   @OneToMany(() => Like, (like) => like.user)
   @Field(() => [Like])
   likes: Like[];
+
+  @OneToMany(() => Report, (report) => report.user)
+  @Field(() => [Report])
+  reports: Report[];
+
   @Field()
   @Column({ default: false })
   isBlocked: boolean;

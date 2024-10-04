@@ -18,8 +18,8 @@ import {
   useGetVehicleTypesQuery,
   useUpdateActivityTypeMutation,
 } from "@/graphql/generated/schema";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { updateSourceFile } from "typescript";
 
 export default function newActivType() {
@@ -185,7 +185,7 @@ export default function newActivType() {
             Emissions CO<sub>2</sub>
           </label>
           <input
-            type="text"
+            type="number"
             name="emissions"
             id="emissions"
             pattern="^\d*\.?\d*$"

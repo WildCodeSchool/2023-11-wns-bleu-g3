@@ -4,10 +4,9 @@ import {
   useToggleBlockUserMutation,
 } from "@/graphql/generated/schema";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import ModalBin from "../modalBin";
-import { time } from "console";
+import ModalBin from "./modalBin";
+import formatTimestamp from "./formatTimestamp";
 
 const PAGE_SIZE = 6;
 
@@ -52,16 +51,6 @@ export default function TableAdminUsers() {
   const changeMenu = () => {
     setDropMenu(!dropMenu);
   };
-
-  function formatTimestamp(timestamp: string): string {
-    const timestamp2 = parseInt(timestamp, 10);
-    const date = new Date(timestamp2);
-
-    const y = date.getFullYear();
-    const m = (date.getMonth() + 1).toString().padStart(2, "0"); //getmonth() returns 0-11
-    const d = date.getDate().toString().padStart(2, "0");
-    return `${d}/${m}/${y}`;
-  }
 
   return (
     <div className="m-auto w-4/5 mt-8">
@@ -206,7 +195,6 @@ export default function TableAdminUsers() {
                 />
                 <div className="ps-3">
                   <div className="text-base font-semibold text-reef">
-                    {" "}
                     {user.nickname}
                   </div>
                   <div className="font-normal text-gray-500">{user.email}</div>
@@ -229,23 +217,37 @@ export default function TableAdminUsers() {
               </td>
               <td className="py-4">{formatTimestamp(user.createdAt)}</td>
               <td className="px-6 py-4">{user.role}</td>
-              <td className="px-6  flex gap-x-8">
-                <ModalBin
-                  operation={() =>
-                    blockToggle({
-                      variables: {
-                        userIds: [user.id],
-                      },
-                    }).then(() => window.location.reload())
-                  }
-                  expression={user.isBlocked ? "debloquer" : "bloquer"}
-                  mappedVar={user}
-                />
-                <ModalBin
-                  operation=""
-                  expression="supprimer"
-                  mappedVar={user}
-                />
+              <td className="px-6 py-4 ">
+                <div className="flex gap-x-4">
+                  <ModalBin
+                    operation={() =>
+                      blockToggle({
+                        variables: {
+                          userIds: [user.id],
+                        },
+                      }).then(() => window.location.reload())
+                    }
+                    expression={
+                      user.role !== "admin"
+                        ? user.isBlocked
+                          ? "debloquer"
+                          : "bloquer"
+                        : "empty"
+                    }
+                    mappedVar={user}
+                  />
+                  <ModalBin
+                    expression="supprimer"
+                    mappedVar={user}
+                    operation={() =>
+                      deleteUser({
+                        variables: {
+                          userId: user.id,
+                        },
+                      }).then(() => window.location.reload())
+                    }
+                  />
+                </div>
               </td>
             </tr>
           ))}

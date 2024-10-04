@@ -7,6 +7,7 @@ import PersonalVehicle from "./entities/PersonalVehicle";
 import Post from "./entities/Post";
 import Like from "./entities/Like";
 import Donation from "./entities/Donation";
+import Report from "./entities/Report";
 
 const db = new DataSource({
   type: "postgres",
@@ -22,6 +23,7 @@ const db = new DataSource({
     PersonalVehicle,
     Post,
     Like,
+    Report,
     Donation,
   ],
   synchronize: true,

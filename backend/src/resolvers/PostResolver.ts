@@ -1,4 +1,12 @@
-import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Authorized,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  Int,
+} from "type-graphql";
 import { GraphQLError } from "graphql";
 import { Context } from "../types";
 import { UserRole } from "../entities/User";
@@ -34,6 +42,26 @@ class PostResolver {
     const posts = await Post.find({
       relations: { user: true, likes: true },
       where: { title: title ? ILike(`%${title}%`) : undefined },
+    });
+
+    for (const post of posts) {
+      const likeCount = await Like.count({ where: { post: { id: post.id } } });
+      post.nbOfLikes = likeCount;
+    }
+
+    return posts;
+  }
+
+  @Query(() => [Post])
+  async getPostsPagination(
+    @Arg("offset", () => Int, { nullable: true, defaultValue: 0 })
+    offset: number,
+    @Arg("limit", () => Int, { nullable: true, defaultValue: 8 }) limit: number
+  ) {
+    const posts = await Post.find({
+      relations: { user: true, likes: true },
+      skip: offset,
+      take: limit,
     });
 
     for (const post of posts) {
