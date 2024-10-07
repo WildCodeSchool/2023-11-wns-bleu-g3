@@ -10,7 +10,7 @@ import { GraphQLError } from "graphql";
 import ActivityType, { Category } from "../entities/ActivityType";
 import PersonalVehicle from "../entities/PersonalVehicle";
 import { FuelType, MotoEngine } from "../entities/Enums/Vehicle_Attributes";
-import { ILike } from "typeorm";
+import { Between, ILike } from "typeorm";
 
 enum SortingOrder {
   ASC = "ASC",
@@ -42,9 +42,31 @@ class ActivityResolver {
     }
 
     const activities = await Activity.find({
-      relations: { user: true/*, activityType: true */},
+      relations: { user: true },
       where: { user: { id: userIdToFetch } },
     });
+    return activities;
+  }
+
+  @Authorized()
+  @Query(() => [Activity])
+  async getGraphActivities(
+    @Ctx() ctx: Context,
+    @Arg("userId", { nullable: true }) userId?: number
+  ): Promise<Activity[]> {
+    if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
+
+    const userIdToFetch = userId ?? ctx.currentUser.id;
+
+    const currentDate = new Date()
+    const firstDayToDisplay = new Date()
+    firstDayToDisplay.setFullYear(currentDate.getFullYear() - 1)
+
+    const activities = await Activity.find({
+      relations: { user: true },
+      where: { user: { id: userIdToFetch }, starts_at: Between(firstDayToDisplay, currentDate) },
+    });
+
     return activities;
   }
 
@@ -120,24 +142,24 @@ class ActivityResolver {
           if (activityType.category === Category.Clothing) {
             newActivity.category = ActivityCategory.Clothing;
           if (newActivity.is_secondhand) {
-          newActivity.emissionPerMonth = Math.round(
-            newActivity.emissionPerMonth * 0.16
-          );
-        }
+            newActivity.emissionPerMonth = Math.round(
+              newActivity.emissionPerMonth * 0.16
+            );
+          }
           if (newActivity.is_made_in_france) {
-          newActivity.emissionPerMonth = Math.round(
-            newActivity.emissionPerMonth * 0.5
-          );
-        }
+            newActivity.emissionPerMonth = Math.round(
+              newActivity.emissionPerMonth * 0.5
+            );
+          }
             }
         if (activityType.category === Category.Electronics) {
             newActivity.category = ActivityCategory.Electronics;
           if (newActivity.is_secondhand) {
-          newActivity.emissionPerMonth = Math.round(
-            newActivity.emissionPerMonth * 0.13
-          );
+            newActivity.emissionPerMonth = Math.round(
+              newActivity.emissionPerMonth * 0.13
+            );
           }
-        }
+              }
         if (activityType.category === Category.Heating) {
           newActivity.category = ActivityCategory.Heating;
           newActivity.emissionPerMonth = Math.round(

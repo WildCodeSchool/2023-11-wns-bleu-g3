@@ -1,0 +1,8 @@
+query GetGraphActivities($userId: Float) {
+  getGraphActivities(userId: $userId) {
+    id
+    starts_at
+    category
+    emissionPerMonth
+  }
+}
