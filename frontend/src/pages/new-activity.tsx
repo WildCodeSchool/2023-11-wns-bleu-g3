@@ -18,7 +18,6 @@ import { TrainTypeEnum } from "@/enums/TrainTypeEnum";
 import { MotoTypeEnum } from "@/enums/MotoTypeEnum";
 import { CarTypeEnum } from "@/enums/CarTypeEnum";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
 
 export default function NewActivity() {
@@ -80,7 +79,7 @@ export default function NewActivity() {
     setError("");
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const formJSON: any = Object.fromEntries(formData.entries());    
+    const formJSON: any = Object.fromEntries(formData.entries());
     formJSON.quantity = formJSON.quantity ? parseInt(formJSON.quantity) : 1;
     formJSON.is_reccurent = formJSON.is_reccurent === "on" ? true : false;
     formJSON.is_secondhand = formJSON.is_secondhand === "on" ? true : false;
@@ -98,22 +97,20 @@ export default function NewActivity() {
         startAtDate[2],
         startAtDate[1] - 1,
         startAtDate[0]
-       
-      )
-      formJSON.starts_at = addMinutes(formJSON.starts_at, -formJSON.starts_at.getTimezoneOffset())
-
+      );
+      formJSON.starts_at = addMinutes(
+        formJSON.starts_at,
+        -formJSON.starts_at.getTimezoneOffset()
+      );
     } else formJSON.starts_at = new Date().toISOString();
     if (formJSON.ends_at) {
       const endAtDate = formJSON.ends_at.split("/");
-      formJSON.ends_at = new Date(
-        endAtDate[2],
-        endAtDate[1] - 1,
-        endAtDate[0]
+      formJSON.ends_at = new Date(endAtDate[2], endAtDate[1] - 1, endAtDate[0]);
+      formJSON.ends_at = addMinutes(
+        formJSON.ends_at,
+        -formJSON.ends_at.getTimezoneOffset()
       );
-      formJSON.ends_at = addMinutes(formJSON.ends_at, -formJSON.ends_at.getTimezoneOffset())
     } else formJSON.ends_at = null;
-    console.log("🚀 ~ handleSubmit ~ formJSON:", formJSON)
-    console.log("🚀 ~ awaitcreateActivity ~ data:", data)
 
     try {
       await newActivitySchema.validate(formJSON, { abortEarly: false });
@@ -128,7 +125,6 @@ export default function NewActivity() {
         }
       });
     } catch (e: any) {
-      console.log(e.errors);
       if (e.errors !== undefined) {
         setError(e.errors.join(", \n"));
       }

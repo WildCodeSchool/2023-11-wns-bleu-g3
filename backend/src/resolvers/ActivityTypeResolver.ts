@@ -64,6 +64,7 @@ class ActivityTypeResolver {
   }
 
   //MUTATIONS
+
   @Authorized([UserRole.Admin])
   @Mutation(() => ActivityType)
   async createActivityType(

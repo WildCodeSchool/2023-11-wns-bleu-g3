@@ -23,7 +23,7 @@ import crypto from "crypto";
 import mailer from "../mailer";
 import { hash } from "argon2";
 import { UserRole } from "../entities/User";
-import { IsNull } from "typeorm";
+import { Brackets, IsNull } from "typeorm";
 
 @Resolver()
 class UserResolver {
@@ -115,6 +115,11 @@ class UserResolver {
 
     if (findUser.isBlocked === true)
       throw new GraphQLError("This account has been suspended.");
+
+    if (findUser.emailVerified === false)
+      throw new GraphQLError(
+        "You need to verify your email address by clicking on the link sent before you can log in to your account."
+      );
 
     const token = jwt.sign(
       {
@@ -237,24 +242,30 @@ class UserResolver {
 
   @Authorized()
   @Query(() => [User])
-  async searchUser(@Ctx() ctx: Context, @Arg("name") name: string) {
-    if (!ctx.currentUser)
-      throw new GraphQLError("You need to be logged in to search user");
+  async searchUser(
+    @Ctx() ctx: Context,
+    @Arg("name") name: string
+  ): Promise<User[]> {
+    if (!ctx.currentUser) {
+      throw new GraphQLError("You must be logged in");
+    }
 
-    if (!name) throw new GraphQLError("You need add search query");
+    if (!name.trim()) {
+      throw new GraphQLError("Query cannot be empty");
+    }
 
     const users = await User.createQueryBuilder("user")
-      .where(
-        "user.firstName ILIKE :name OR user.lastName ILIKE :name OR user.nickname ILIKE :name",
-        { name: `%${name}%` }
+      .where("user.id != :id", { id: ctx.currentUser.id })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where("user.firstName ILIKE :name", { name: `%${name}%` })
+            .orWhere("user.lastName ILIKE :name", { name: `%${name}%` })
+            .orWhere("user.nickname ILIKE :name", { name: `%${name}%` });
+        })
       )
-      .andWhere("user.id != :id", { id: ctx.currentUser.id })
       .getMany();
-    if (users.length > 0) {
-      return users;
-    } else {
-      throw new GraphQLError("Users not found");
-    }
+
+    return users;
   }
 
   //table users backoffice

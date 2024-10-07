@@ -1,24 +1,26 @@
-import Icon from "@/components/icon";
 import {
   useDeleteActivityTypeMutation,
-  useGetActivitiesTypesPaginationQuery,
+  useGetPostsPaginationQuery,
 } from "@/graphql/generated/schema";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+
 import ModalBin from "./modalBin";
+import ModalPost from "./modalPost";
 import { useRouter } from "next/router";
+
+import { useDeletePostMutation } from "@/graphql/generated/schema";
 
 const PAGE_SIZE = 8;
 
-export default function TableActivities() {
+export default function TableAdminPosts() {
   const router = useRouter();
   // pagination offset limit
   const [page, setPage] = useState(0);
   const [notEndPage, setNotEndPage] = useState(true);
 
-  const [deleteActiv] = useDeleteActivityTypeMutation();
+  const [deletepost] = useDeletePostMutation();
 
-  const { data, loading, error } = useGetActivitiesTypesPaginationQuery({
+  const { data, loading, error } = useGetPostsPaginationQuery({
     variables: {
       limit: PAGE_SIZE,
       offset: page * PAGE_SIZE,
@@ -27,7 +29,7 @@ export default function TableActivities() {
 
   useEffect(() => {
     if (data) {
-      setNotEndPage(data.getActivitiesTypesPagination.length === PAGE_SIZE);
+      setNotEndPage(data.getPostsPagination.length === PAGE_SIZE);
     }
   }, [data]);
 
@@ -43,7 +45,7 @@ export default function TableActivities() {
     return <p>Error: {error.message}</p>;
   }
 
-  const activities = data?.getActivitiesTypesPagination || [];
+  const posts = data?.getPostsPagination || [];
 
   return (
     <div className="relative overflow-x-auto shadow-md m-auto my-6 sm:rounded-lg w-4/5">
@@ -53,26 +55,41 @@ export default function TableActivities() {
       >
         <thead className="text-xs uppercase bg-shore text-anchor">
           <tr>
-            <th scope="col" className="px-2 py-1 md:px-6 md:py-3">
-              Nom
+            <th
+              scope="col"
+              className="px-2 py-1 md:px-6 md:py-3 hidden md:table-cell"
+            >
+              Image
             </th>
             <th
               scope="col"
               className="px-2 py-1 md:px-6 md:py-3 hidden md:table-cell"
             >
-              Catégorie
+              Titre
             </th>
             <th
               scope="col"
               className="px-2 py-1 md:px-6 md:py-3 hidden md:table-cell"
             >
-              Emissions
+              Utilisateur
             </th>
             <th
               scope="col"
               className="px-2 py-1 md:px-6 md:py-3 hidden md:table-cell"
             >
-              Unité
+              Date Publication
+            </th>
+            <th
+              scope="col"
+              className="px-2 py-1 md:px-6 md:py-3 hidden md:table-cell"
+            >
+              Signaler
+            </th>
+            <th
+              scope="col"
+              className="px-2 py-1 md:px-6 md:py-3 hidden md:table-cell"
+            >
+              Likes
             </th>
             <th scope="col" className="px-1 py-1 md:px-2 md:py-3">
               Actions
@@ -80,44 +97,66 @@ export default function TableActivities() {
           </tr>
         </thead>
         <tbody>
-          {activities.map((activity) => (
+          {posts.map((post) => (
             <tr
-              key={activity.id}
+              key={post.imageUrl}
               className="border-t border-gray-500 bg-pearl text-reef hover:bg-shore hover:text-anchor"
             >
-              <th
-                scope="row"
-                className="px-2 py-1 md:px-6 md:py-4 font-medium whitespace-nowrap"
-              >
-                {activity.name}
+              <th scope="row" className="px-2 py-1 md:px-6 md:py-4">
+                {post.imageUrl ? (
+                  <img
+                    className="w-14 h-14 object-cover rounded-sm  bg-shore"
+                    src={post.imageUrl}
+                    alt=""
+                  />
+                ) : (
+                  <span className="text-center material-icons text-neutral-500 text-[2.5rem] pl-2">
+                    article
+                  </span>
+                )}
               </th>
-              <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
-                {activity.category}
+              <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell max-w-[28ch] truncate">
+                {post.title}
               </td>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
-                {activity.emissions}
+                {post.user.nickname}
               </td>
               <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
-                {activity.unit}
+                {post.created_at.split("T")[0]}
               </td>
-              <td className="px-1 py-1 md:px-2 md:py-4 flex space-x-1 md:space-x-2">
-                <Link
-                  href={`/admin/upd_activity/${activity.id}`}
-                  className="font-medium text-anchor hover:underline"
-                >
-                  <Icon name="edit" size="" color="reef" />
-                </Link>
-                <ModalBin
-                  operation={() =>
-                    deleteActiv({
-                      variables: {
-                        activityTypeId: activity.id,
-                      },
-                    }).then(() => window.location.reload())
-                  }
-                  expression="supprimer"
-                  mappedVar={activity}
-                />
+              <td className="  px-2 py-1 md:px-6 md:py-4 hidden md:table-cell">
+                <div className="flex gap-x-2">
+                  <span className="text-xl">0</span>
+                  <span className="material-icons ">flag</span>
+                </div>
+              </td>
+              <td className="px-2 py-1 md:px-6 md:py-4 hidden md:table-cell ">
+                <div className="flex gap-x-2">
+                  <span className="text-xl">{post.nbOfLikes}</span>
+                  <span className="material-icons ">favorite</span>
+                </div>
+              </td>
+              <td className="px-1 py-1 md:px-2 md:py-4  space-x-1 md:space-x-2">
+                <div className="flex gap-x-1">
+                  <ModalPost
+                    title={post.title}
+                    content={post.content}
+                    imgUrl={post.imageUrl}
+                  />
+
+                  <ModalBin
+                    expression="supprimer"
+                    mappedVar={post}
+                    operation={() =>
+                      deletepost({
+                        variables: {
+                          postId: post.id,
+                          userId: post.user.id,
+                        },
+                      }).then(() => window.location.reload())
+                    }
+                  />
+                </div>
               </td>
             </tr>
           ))}

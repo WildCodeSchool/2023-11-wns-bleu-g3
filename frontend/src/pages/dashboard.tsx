@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { Bar, Pie } from "react-chartjs-2";
 import useScreenSize from "@/hooks/useScreenSize";
+import { Activity, useGetGraphActivitiesQuery } from "@/graphql/generated/schema";
 
 ChartJS.register(
   CategoryScale,
@@ -26,13 +27,16 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 export default function Dashboard() {
   const screenSize = useScreenSize();
 
+  const { data } = useGetGraphActivitiesQuery()
+  const activities = data?.getGraphActivities || []
+
   const options = {
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     responsive: true,
     plugins: {
       title: {
         display: true,
-        text: "Détails de mes émissions de CO2 par mois",
+        text: "Détails de mes émissions de CO2 par mois, en kg",
       },
     },
     scales: {
@@ -59,75 +63,86 @@ export default function Dashboard() {
     "Novembre",
     "Décembre",
   ];
+
   const currentMonthIndex = new Date().getMonth();
   const labels = [
     ...monthNames.slice(currentMonthIndex + 1),
     ...monthNames.slice(0, currentMonthIndex + 1),
   ];
 
-  const data = {
+  const dataToDisplay: Array<Array<Activity>> = []
+  for (let i = 0; i < labels.length; i++) {
+    for (let j = 0; j < monthNames.length; j++) {
+      if (monthNames[j] === labels[i]) {
+        dataToDisplay.push(activities.filter(activity => new Date(activity.starts_at).getMonth() === j) as Array<Activity>)
+      }
+    }
+  }
+    
+  const desktopData = {
     labels,
     datasets: [
       {
         label: "Déplacements",
-        data: [967, 59, 80, 810, 56, 55, 40, 650, 59, 80, 81, 56],
+        data: dataToDisplay.map((activity) => activity.filter(activity => activity.category === "Déplacement").map((activity) => activity.emissionPerMonth/1000).reduce((acc, curr) => acc + curr, 0)),
         backgroundColor: "rgb(255, 99, 132)",
       },
       {
         label: "Chauffage",
-        data: [347, 59, 800, 81, 56, 550, 40, 65, 59, 80, 81, 56],
+        data: dataToDisplay.map((activity) => activity.filter((activity) => activity.category === "Chauffage").map((activity) => activity.emissionPerMonth/1000).reduce((acc, curr) => acc + curr, 0)),
         backgroundColor: "rgb(75, 192, 192)",
       },
       {
         label: "Achat vêtements",
-        data: [800, 100, 200, 300, 400, 500, 600, 150, 100, 200, 300, 400],
+        data: dataToDisplay.map((activity) => activity.filter((activity) => activity.category === "Achat vêtement").map((activity) => activity.emissionPerMonth/1000).reduce((acc, curr) => acc + curr, 0)),
         backgroundColor: "rgb(53, 162, 235)",
-      },
-      {
+        },
+        {
         label: "Achat électronique",
-        data: [524, 100, 200, 300, 400, 500, 600, 150, 100, 200, 300, 400],
+        data: dataToDisplay.map((activity) => activity.filter((activity) => activity.category === "Achat électronique").map((activity) => activity.emissionPerMonth/1000).reduce((acc, curr) => acc + curr, 0)),
         backgroundColor: "#2D7487",
       },
       {
         label: "Autre",
-        data: [150, 100, 200, 300, 400, 500, 600, 150, 100, 200, 300, 400],
+        data: dataToDisplay.map((activity) => activity.filter((activity) => activity.category === "Autre").map((activity) => activity.emissionPerMonth/1000).reduce((acc, curr) => acc + curr, 0)),
         backgroundColor: "#C0D6D8",
       },
     ],
   };
+
 
   const mobileData = {
     labels: labels.slice(6),
     datasets: [
       {
         label: "Déplacements",
-        data: [40, 650, 59, 80, 81, 56],
+        data: desktopData.datasets[0].data.slice(-6),
         backgroundColor: "rgb(255, 99, 132)",
       },
       {
         label: "Chauffage",
-        data: [40, 65, 59, 80, 81, 56],
+        data: desktopData.datasets[1].data.slice(-6),
         backgroundColor: "rgb(75, 192, 192)",
       },
       {
         label: "Achat vêtements",
-        data: [600, 150, 100, 200, 300, 400],
+        data: desktopData.datasets[2].data.slice(-6),
         backgroundColor: "rgb(53, 162, 235)",
       },
       {
         label: "Achat électronique",
-        data: [600, 150, 100, 200, 300, 400],
+        data: desktopData.datasets[3].data.slice(-6),
         backgroundColor: "#2D7487",
       },
       {
         label: "Autre",
-        data: [600, 150, 100, 200, 300, 400],
+        data: desktopData.datasets[4].data.slice(-6),
         backgroundColor: "#C0D6D8",
       },
     ],
   };
 
-  const totalByType = data.datasets.map((dataset) =>
+  const totalByType = desktopData.datasets.map((dataset) =>
     dataset.data.reduce((acc, curr) => acc + curr, 0)
   );
   const total = totalByType.reduce((acc, curr) => acc + curr, 0);
@@ -175,7 +190,7 @@ export default function Dashboard() {
             <Bar
               className="mx-auto w-full"
               options={options}
-              data={screenSize.width > 768 ? data : mobileData}
+              data={screenSize.width > 768 ? desktopData : mobileData}
             />
           </div>
         }

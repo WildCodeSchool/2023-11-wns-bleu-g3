@@ -1,4 +1,4 @@
-import { Min, Length } from "class-validator";
+import { Min } from "class-validator";
 import {
   Field,
   InputType,
@@ -8,11 +8,9 @@ import {
 } from "type-graphql";
 import {
   BaseEntity,
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -21,15 +19,7 @@ import {
   Vehicle_Attr,
   Vehicle_Attr_Input,
 } from "./Vehicle_Attributes";
-import Activity from "./Activity";
-import {
-  Attr,
-  Attr_Input,
-  Update_Attr_Input,
-  MadeInFrance,
-  SecondHandClothes,
-  SecondHandPhones,
-} from "./Attributes";
+import { Attr, Attr_Input, Update_Attr_Input } from "./Attributes";
 
 export enum Unit {
   Weight = "grammes de CO2",
@@ -114,10 +104,6 @@ class ActivityType extends BaseEntity {
   @Column(() => Vehicle_Attr)
   @Field(() => Vehicle_Attr, { nullable: true })
   vehicleAttributes?: Vehicle_Attr;
-
-  // @OneToMany(() => Activity, (activity) => activity.activityType)
-  // @Field(() => [Activity])
-  // activities: Activity[];
 }
 
 @InputType()

@@ -51,11 +51,11 @@ class PersonalVehicleResolver {
       },
     });
 
-    if(!activity){
+    if (!activity) {
       throw new GraphQLError("data doesn't exist in database");
     }
 
-    newVehicle.emissionByKm = activity.emissions
+    newVehicle.emissionByKm = activity.emissions;
 
     const newPersonalVehicle = await newVehicle.save();
     return newPersonalVehicle;
@@ -111,7 +111,8 @@ class PersonalVehicleResolver {
     const activity = await ActivityType.findOne({
       relations: { vehicleAttributes: true },
       where: {
-        category: personalVehicleToUpdate.vehicle_category as unknown as Category,
+        category:
+          personalVehicleToUpdate.vehicle_category as unknown as Category,
         vehicleAttributes: {
           fuelType:
             typeof personalVehicleToUpdate.fuel_type === "string" &&
@@ -137,11 +138,11 @@ class PersonalVehicleResolver {
       },
     });
 
-    if(!activity){
+    if (!activity) {
       throw new GraphQLError("data doesn't exist in database");
     }
 
-    personalVehicleToUpdate.emissionByKm = activity.emissions
+    personalVehicleToUpdate.emissionByKm = activity.emissions;
 
     await personalVehicleToUpdate.save();
 

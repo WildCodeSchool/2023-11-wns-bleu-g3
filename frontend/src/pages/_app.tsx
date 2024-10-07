@@ -1,5 +1,5 @@
 import client from "@/graphql/client";
-
+import "react-toastify/dist/ReactToastify.css";
 import "@/styles/globals.css";
 import { ApolloProvider } from "@apollo/client";
 import type { AppProps } from "next/app";
