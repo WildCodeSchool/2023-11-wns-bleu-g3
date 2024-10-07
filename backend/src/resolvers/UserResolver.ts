@@ -178,12 +178,6 @@ class UserResolver {
   ) {
     if (!ctx.currentUser) throw new GraphQLError("You must be authenticated");
 
-    if (ctx.currentUser.role !== "admin" && ctx.currentUser.id !== id) {
-      throw new GraphQLError(
-        "You do not have permission to delete other users"
-      );
-    }
-
     if (!id) {
       const userToDelete = await User.findOneBy({ id: ctx.currentUser.id });
       if (!userToDelete) throw new GraphQLError("User not found");
