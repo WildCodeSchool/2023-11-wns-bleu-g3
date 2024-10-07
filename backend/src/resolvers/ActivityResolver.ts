@@ -172,7 +172,7 @@ class ActivityResolver {
               newActivity.emissionPerMonth * 0.13
             );
           }
-        }
+              }
         if (activityType.category === Category.Heating) {
           newActivity.category = ActivityCategory.Heating;
           newActivity.emissionPerMonth = Math.round(
