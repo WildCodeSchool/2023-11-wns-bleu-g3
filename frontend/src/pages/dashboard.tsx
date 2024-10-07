@@ -1,206 +1,94 @@
+import React, { useState } from "react";
 import LayoutLoggedInUser from "@/layouts/layout-logged-in-user";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-} from "chart.js";
-import { Bar, Pie } from "react-chartjs-2";
-import useScreenSize from "@/hooks/useScreenSize";
-import { Activity, useGetGraphActivitiesQuery } from "@/graphql/generated/schema";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-ChartJS.register(ArcElement, Tooltip, Legend);
+  Activity,
+  useGetGraphActivitiesQuery,
+} from "@/graphql/generated/schema";
+import EmissionBarChart from "@/components/charts/emissionBarCharts";
+import EmissionPieChart from "@/components/charts/emissionPieCharts";
 
 export default function Dashboard() {
-  const screenSize = useScreenSize();
+  const { data } = useGetGraphActivitiesQuery();
+  const activities = data?.getGraphActivities || [];
 
-  const { data } = useGetGraphActivitiesQuery()
-  const activities = data?.getGraphActivities || []
+  const totalEmission = (
+    activities.reduce(
+      (sum, activity) => sum + activity.emissionPerMonth / 1000,
+      0
+    ) / 1000
+  ).toFixed(2);
 
-  const options = {
-    maintainAspectRatio: true,
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: "Détails de mes émissions de CO2 par mois, en kg",
-      },
-    },
-    scales: {
-      x: {
-        stacked: true,
-      },
-      y: {
-        stacked: true,
-      },
-    },
-  };
-
-  const monthNames = [
-    "Janvier",
-    "Février",
-    "Mars",
-    "Avril",
-    "Mai",
-    "Juin",
-    "Juillet",
-    "Août",
-    "Septembre",
-    "Octobre",
-    "Novembre",
-    "Décembre",
-  ];
-
-  const currentMonthIndex = new Date().getMonth();
-  const labels = [
-    ...monthNames.slice(currentMonthIndex + 1),
-    ...monthNames.slice(0, currentMonthIndex + 1),
-  ];
-
-  const dataToDisplay: Array<Array<Activity>> = []
-  for (let i = 0; i < labels.length; i++) {
-    for (let j = 0; j < monthNames.length; j++) {
-      if (monthNames[j] === labels[i]) {
-        dataToDisplay.push(activities.filter(activity => new Date(activity.starts_at).getMonth() === j) as Array<Activity>)
-      }
-    }
-  }
-    
-  const desktopData = {
-    labels,
-    datasets: [
-      {
-        label: "Déplacements",
-        data: dataToDisplay.map((activity) => activity.filter(activity => activity.category === "Déplacement").map((activity) => activity.emissionPerMonth/1000).reduce((acc, curr) => acc + curr, 0)),
-        backgroundColor: "rgb(255, 99, 132)",
-      },
-      {
-        label: "Chauffage",
-        data: dataToDisplay.map((activity) => activity.filter((activity) => activity.category === "Chauffage").map((activity) => activity.emissionPerMonth/1000).reduce((acc, curr) => acc + curr, 0)),
-        backgroundColor: "rgb(75, 192, 192)",
-      },
-      {
-        label: "Achat vêtements",
-        data: dataToDisplay.map((activity) => activity.filter((activity) => activity.category === "Achat vêtement").map((activity) => activity.emissionPerMonth/1000).reduce((acc, curr) => acc + curr, 0)),
-        backgroundColor: "rgb(53, 162, 235)",
-        },
-        {
-        label: "Achat électronique",
-        data: dataToDisplay.map((activity) => activity.filter((activity) => activity.category === "Achat électronique").map((activity) => activity.emissionPerMonth/1000).reduce((acc, curr) => acc + curr, 0)),
-        backgroundColor: "#2D7487",
-      },
-      {
-        label: "Autre",
-        data: dataToDisplay.map((activity) => activity.filter((activity) => activity.category === "Autre").map((activity) => activity.emissionPerMonth/1000).reduce((acc, curr) => acc + curr, 0)),
-        backgroundColor: "#C0D6D8",
-      },
-    ],
-  };
-
-
-  const mobileData = {
-    labels: labels.slice(6),
-    datasets: [
-      {
-        label: "Déplacements",
-        data: desktopData.datasets[0].data.slice(-6),
-        backgroundColor: "rgb(255, 99, 132)",
-      },
-      {
-        label: "Chauffage",
-        data: desktopData.datasets[1].data.slice(-6),
-        backgroundColor: "rgb(75, 192, 192)",
-      },
-      {
-        label: "Achat vêtements",
-        data: desktopData.datasets[2].data.slice(-6),
-        backgroundColor: "rgb(53, 162, 235)",
-      },
-      {
-        label: "Achat électronique",
-        data: desktopData.datasets[3].data.slice(-6),
-        backgroundColor: "#2D7487",
-      },
-      {
-        label: "Autre",
-        data: desktopData.datasets[4].data.slice(-6),
-        backgroundColor: "#C0D6D8",
-      },
-    ],
-  };
-
-  const totalByType = desktopData.datasets.map((dataset) =>
-    dataset.data.reduce((acc, curr) => acc + curr, 0)
-  );
-  const total = totalByType.reduce((acc, curr) => acc + curr, 0);
-  const totalByTypeInTons = totalByType.map((total) =>
-    (total / 1000).toFixed(2)
-  );
-
-  const dataPie = {
-    labels: [
-      "Déplacements",
-      "Chauffage",
-      "Achat vêtements",
-      "Achat électronique",
-      "Autre",
-    ],
-    datasets: [
-      {
-        label: "Tonnes de CO2/an",
-        data: totalByTypeInTons,
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(75, 192, 192)",
-          "rgb(53, 162, 235)",
-          "#2D7487",
-          "#C0D6D8",
-        ],
-      },
-    ],
-  };
+  const [showBarChart, setShowBarChart] = useState(true);
 
   return (
     <LayoutLoggedInUser>
-      <h1 className="mb-2 mx-10 text-lg md:text-xl lg:text-2xl">
+      <h1 className="mb-4 mx-4 text-2xl font-semibold text-center lg:text-left">
         Mon tableau de bord
       </h1>
-      <div className="lg:flex h-80 justify-center gap-x-10 items-center mb-10">
-        <div className="mx-auto lg:w-60 lg:h-60 md:w-44 md:h-44 w-32 h-32 rounded-full bg-reef flex justify-center items-center flex-col">
-          <h2 className="font-bold text-lightPearl md:text-2xl">
-            {(total / 1000).toFixed(2)} Tonnes
+
+      <div className="flex flex-col items-center gap-4 mb-6 px-4">
+        <div className="w-32 h-32 md:w-44 md:h-44 lg:w-60 lg:h-60 rounded-full bg-reef flex justify-center items-center flex-col">
+          <h2 className="font-bold text-lightPearl text-lg md:text-2xl lg:text-3xl">
+            {totalEmission} Tonnes
           </h2>
-          <p className="text-lightPearl">de CO2/an</p>
+          <p className="text-lightPearl text-sm md:text-base lg:text-lg">
+            de CO₂/an
+          </p>
         </div>
-        {
-          <div className="mx-auto h-full lg:w-3/5">
-            <Bar
-              className="mx-auto w-full"
-              options={options}
-              data={screenSize.width > 768 ? desktopData : mobileData}
-            />
-          </div>
-        }
       </div>
-      <div className="lg:flex h-80 justify-center gap-x-10 items-center">
-        <h2 className="mx-auto bg-anchor text-lightPearl text-center">
-          Mes dernières dépenses
-        </h2>
-        <div className="mx-auto h-full lg:w-3/5">
-          <Pie className="mx-auto" data={dataPie} />
+
+      <div className="flex justify-center mb-6">
+        <button
+          className={`px-4 py-2 mx-2 ${
+            showBarChart ? "bg-reef text-white" : "bg-gray-200"
+          } rounded`}
+          onClick={() => setShowBarChart(true)}
+        >
+          Voir le graphique en barres
+        </button>
+        <button
+          className={`px-4 py-2 mx-2 ${
+            !showBarChart ? "bg-reef text-white" : "bg-gray-200"
+          } rounded`}
+          onClick={() => setShowBarChart(false)}
+        >
+          Voir le graphique en secteurs
+        </button>
+      </div>
+
+      <div className="flex justify-center items-center mb-10 px-4">
+        {showBarChart ? (
+          <EmissionBarChart activities={activities as Activity[]} />
+        ) : (
+          <EmissionPieChart activities={activities as Activity[]} />
+        )}
+      </div>
+
+      <div className="mb-10 px-4">
+        <h2 className="text-xl font-semibold mb-4">Tableau des émissions</h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border-b">Date</th>
+                <th className="py-2 px-4 border-b">Catégorie</th>
+                <th className="py-2 px-4 border-b">Émission (kg CO₂)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {activities.map((activity) => (
+                <tr key={activity.id}>
+                  <td className="py-2 px-4 border-b">
+                    {new Date(activity.starts_at).toLocaleDateString()}
+                  </td>
+                  <td className="py-2 px-4 border-b">{activity.category}</td>
+                  <td className="py-2 px-4 border-b">
+                    {(activity.emissionPerMonth / 1000).toFixed(2)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </LayoutLoggedInUser>
