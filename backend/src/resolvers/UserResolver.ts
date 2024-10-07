@@ -128,6 +128,7 @@ class UserResolver {
     const token = jwt.sign(
       {
         userId: findUser.id,
+        role: findUser.role,
       },
       env.JWT_PRIVATE_KEY,
       { expiresIn: "30d" }
