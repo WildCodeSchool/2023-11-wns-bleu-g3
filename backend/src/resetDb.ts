@@ -267,7 +267,7 @@ async function main() {
 
   const donation5 = new Donation();
   Object.assign(donation5, {
-    amount: 10,
+    amount: 1600,
     user: user3,
     dateOfDonation: "2024-02-02T07:19:22.111Z",
   });
@@ -283,7 +283,7 @@ async function main() {
 
   const donation7 = new Donation();
   Object.assign(donation7, {
-    amount: 10,
+    amount: 1230,
     user: user2,
     dateOfDonation: "2024-07-02T07:19:22.111Z",
   });

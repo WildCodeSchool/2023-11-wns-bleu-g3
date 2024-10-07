@@ -5,7 +5,9 @@ import LayoutLoggedInUser from "@/layouts/layout-logged-in-user";
 import Link from "next/link";
 
 export default function Donation() {
-  const { data } = useGetDonationsQuery();
+  const { data } = useGetDonationsQuery({
+    pollInterval: 1000,
+  });
   const donations = data?.getDonations || [];
 
   const totalAmountDonated = donations.reduce(
