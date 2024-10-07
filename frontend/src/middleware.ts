@@ -16,18 +16,15 @@ export async function middleware(request: NextRequest) {
   try {
     const { payload } = await jwtVerify(token, JWT_PRIVATE_KEY);
 
-    if (
-      request.nextUrl.pathname.startsWith("/admin") &&
-      payload.role === "admin"
-    ) {
-      return NextResponse.next();
+    if (request.nextUrl.pathname.startsWith("/admin")) {
+      if (payload.role === "admin") {
+        return NextResponse.next();
+      } else {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
     }
 
-    if (token) {
-      try {
-        if (payload.userId) return NextResponse.next();
-      } catch (e) {}
-    }
+    if (payload.userId) return NextResponse.next();
 
     return NextResponse.redirect(new URL("/", request.url));
   } catch (error) {

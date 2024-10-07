@@ -84,7 +84,7 @@ export default function TopbarAdmin({
 
       <div className="flex gap-x-3">
         <div className="relative mx-2">
-          <div className="hidden md:block" ref={menuRef}>
+          {/* <div className="hidden md:block" ref={menuRef}>
             <button
               onClick={handleOpenMenu2}
               className="hover:bg-black focus:bg-opacity-60 px-1 rounded-full    "
@@ -101,7 +101,7 @@ export default function TopbarAdmin({
                 <NotifDropdown />
               </div>
             )}
-          </div>
+          </div> */}
         </div>
         {isOpen2 === false ? (
           <button onClick={() => setIsOpen2(true)} className="md:hidden">
