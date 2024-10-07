@@ -29,8 +29,12 @@ import { Brackets, IsNull } from "typeorm";
 class UserResolver {
   @Mutation(() => User)
   async createUser(@Arg("data", { validate: true }) data: NewUserInput) {
-    const existingUser = await User.findOneBy({ email: data.email });
-    if (existingUser !== null) throw new GraphQLError("EMAIL_ALREADY_TAKEN");
+    const existingEmail = await User.findOneBy({ email: data.email });
+    if (existingEmail !== null) throw new GraphQLError("EMAIL_ALREADY_TAKEN");
+
+    const existingNickname = await User.findOneBy({ nickname: data.nickname });
+    if (existingNickname !== null)
+      throw new GraphQLError("NICKNAME_ALREADY_TAKEN");
 
     const newUser = new User();
     Object.assign(newUser, data);
@@ -173,12 +177,6 @@ class UserResolver {
     @Arg("userId", { nullable: true }) id?: number
   ) {
     if (!ctx.currentUser) throw new GraphQLError("You must be authenticated");
-
-    if (ctx.currentUser.role !== "admin") {
-      throw new GraphQLError(
-        "You do not have permission to delete other users"
-      );
-    }
 
     if (!id) {
       const userToDelete = await User.findOneBy({ id: ctx.currentUser.id });
