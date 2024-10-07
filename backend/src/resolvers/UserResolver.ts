@@ -222,6 +222,7 @@ class UserResolver {
             user.isBlocked = true;
             user.blocked_at = new Date();
             await user.save();
+            ctx.res.clearCookie("token");
 
             return "User blocked and logged out of his account.";
 
