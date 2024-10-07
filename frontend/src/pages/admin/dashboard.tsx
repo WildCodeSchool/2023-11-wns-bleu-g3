@@ -126,7 +126,7 @@ export default function Dashboard() {
                   </div>
                   <div className="text-right justify-end ml-4 mt-2">
                     <a
-                      href="/admin/donations"
+                      href="/admin/users"
                       className="p-3 text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm   text-center inline-flex items-center focus:ring-gray-500 "
                     >
                       <svg
