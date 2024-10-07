@@ -39,11 +39,11 @@ class User extends BaseEntity {
   id: number;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   nickname: string;
 
   @Field({ nullable: true })
