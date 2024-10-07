@@ -79,7 +79,7 @@ export default function NewActivity() {
     setError("");
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const formJSON: any = Object.fromEntries(formData.entries());    
+    const formJSON: any = Object.fromEntries(formData.entries());
     formJSON.quantity = formJSON.quantity ? parseInt(formJSON.quantity) : 1;
     formJSON.is_reccurent = formJSON.is_reccurent === "on" ? true : false;
     formJSON.is_secondhand = formJSON.is_secondhand === "on" ? true : false;
@@ -97,19 +97,19 @@ export default function NewActivity() {
         startAtDate[2],
         startAtDate[1] - 1,
         startAtDate[0]
-       
-      )
-      formJSON.starts_at = addMinutes(formJSON.starts_at, -formJSON.starts_at.getTimezoneOffset())
-
+      );
+      formJSON.starts_at = addMinutes(
+        formJSON.starts_at,
+        -formJSON.starts_at.getTimezoneOffset()
+      );
     } else formJSON.starts_at = new Date().toISOString();
     if (formJSON.ends_at) {
       const endAtDate = formJSON.ends_at.split("/");
-      formJSON.ends_at = new Date(
-        endAtDate[2],
-        endAtDate[1] - 1,
-        endAtDate[0]
+      formJSON.ends_at = new Date(endAtDate[2], endAtDate[1] - 1, endAtDate[0]);
+      formJSON.ends_at = addMinutes(
+        formJSON.ends_at,
+        -formJSON.ends_at.getTimezoneOffset()
       );
-      formJSON.ends_at = addMinutes(formJSON.ends_at, -formJSON.ends_at.getTimezoneOffset())
     } else formJSON.ends_at = null;
 
     try {

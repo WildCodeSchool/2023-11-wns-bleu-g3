@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Arg, Authorized, Ctx, Int } from "type-graphql";
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Arg,
+  Authorized,
+  Ctx,
+  Int,
+} from "type-graphql";
 import Activity, {
   ActivityCategory,
   ReccurenceInterval,
@@ -14,14 +22,14 @@ import { Between, ILike } from "typeorm";
 
 enum SortingOrder {
   ASC = "ASC",
-  DESC = "DESC"
+  DESC = "DESC",
 }
 
 enum ActivityOrderBy {
   NAME = "name",
   CATEGORY = "category",
   STARTSAT = "starts_at",
-  EMISSIONPERMONTH = "emissionPerMonth"
+  EMISSIONPERMONTH = "emissionPerMonth",
 }
 
 @Resolver(Activity)
@@ -58,13 +66,16 @@ class ActivityResolver {
 
     const userIdToFetch = userId ?? ctx.currentUser.id;
 
-    const currentDate = new Date()
-    const firstDayToDisplay = new Date()
-    firstDayToDisplay.setFullYear(currentDate.getFullYear() - 1)
+    const currentDate = new Date();
+    const firstDayToDisplay = new Date();
+    firstDayToDisplay.setFullYear(currentDate.getFullYear() - 1);
 
     const activities = await Activity.find({
       relations: { user: true },
-      where: { user: { id: userIdToFetch }, starts_at: Between(firstDayToDisplay, currentDate) },
+      where: {
+        user: { id: userIdToFetch },
+        starts_at: Between(firstDayToDisplay, currentDate),
+      },
     });
 
     return activities;
@@ -74,15 +85,17 @@ class ActivityResolver {
   @Query(() => [Activity])
   async getUserActivities(
     @Ctx() ctx: Context,
-    @Arg("offset", () => Int, { nullable: true, defaultValue: 0 }) offset: number,
+    @Arg("offset", () => Int, { nullable: true, defaultValue: 0 })
+    offset: number,
     @Arg("limit", () => Int, { nullable: true, defaultValue: 9 }) limit: number,
-    @Arg("orderBy", { nullable: true, defaultValue: 9 }) orderBy: ActivityOrderBy,
+    @Arg("orderBy", { nullable: true, defaultValue: 9 })
+    orderBy: ActivityOrderBy,
     @Arg("orderDir", { nullable: true }) orderDir: SortingOrder,
     @Arg("userId", { nullable: true }) userId?: number,
     @Arg("name", { nullable: true }) name?: string,
-    @Arg("category", () => String, { nullable: true }) category?: ActivityCategory
+    @Arg("category", () => String, { nullable: true })
+    category?: ActivityCategory
   ): Promise<Activity[]> {
-
     if (!ctx.currentUser) throw new GraphQLError("You need to be logged in!");
 
     const userIdToFetch = userId ?? ctx.currentUser.id;
@@ -92,17 +105,17 @@ class ActivityResolver {
     }
 
     const activities = await Activity.find({
-      order: {[orderBy] : orderDir},
+      order: { [orderBy]: orderDir },
       skip: offset,
       take: limit,
-      relations: { user: true},
-      where: { 
+      relations: { user: true },
+      where: {
         user: { id: userIdToFetch },
         name: name ? ILike(`%${name}%`) : undefined,
-        category: category? category : undefined
-       },
+        category: category ? category : undefined,
+      },
     });
-    return activities
+    return activities;
   }
 
   //MUTATIONS
@@ -139,8 +152,8 @@ class ActivityResolver {
       if (activityType) {
         newActivity.emissionPerMonth =
           (newActivity.quantity || 1) * activityType.emissions;
-          if (activityType.category === Category.Clothing) {
-            newActivity.category = ActivityCategory.Clothing;
+        if (activityType.category === Category.Clothing) {
+          newActivity.category = ActivityCategory.Clothing;
           if (newActivity.is_secondhand) {
             newActivity.emissionPerMonth = Math.round(
               newActivity.emissionPerMonth * 0.16
@@ -151,15 +164,15 @@ class ActivityResolver {
               newActivity.emissionPerMonth * 0.5
             );
           }
-            }
+        }
         if (activityType.category === Category.Electronics) {
-            newActivity.category = ActivityCategory.Electronics;
+          newActivity.category = ActivityCategory.Electronics;
           if (newActivity.is_secondhand) {
             newActivity.emissionPerMonth = Math.round(
               newActivity.emissionPerMonth * 0.13
             );
           }
-              }
+        }
         if (activityType.category === Category.Heating) {
           newActivity.category = ActivityCategory.Heating;
           newActivity.emissionPerMonth = Math.round(
@@ -208,7 +221,11 @@ class ActivityResolver {
               newActivity.emissionPerMonth =
                 boat.emissions * newActivity.quantity;
             }
-          } else if (data.type === MotoEngine.Engine125orless || data.type === MotoEngine.Engine125to500 || data.type === MotoEngine.Engine500plus){
+          } else if (
+            data.type === MotoEngine.Engine125orless ||
+            data.type === MotoEngine.Engine125to500 ||
+            data.type === MotoEngine.Engine500plus
+          ) {
             const moto = await ActivityType.findOne({
               where: {
                 category: Category.Moto,
@@ -220,7 +237,11 @@ class ActivityResolver {
               newActivity.emissionPerMonth =
                 moto.emissions * newActivity.quantity;
             }
-          } else if (data.type === FuelType.Diesel || data.type === FuelType.Electric || data.type === FuelType.Petrol){
+          } else if (
+            data.type === FuelType.Diesel ||
+            data.type === FuelType.Electric ||
+            data.type === FuelType.Petrol
+          ) {
             const car = await ActivityType.findOne({
               where: {
                 category: Category.Car,
@@ -231,7 +252,7 @@ class ActivityResolver {
             if (car) {
               newActivity.category = ActivityCategory.Shifting;
               newActivity.emissionPerMonth =
-              car.emissions * newActivity.quantity;
+                car.emissions * newActivity.quantity;
             }
           } else {
             newActivity.category = ActivityCategory.Other;
@@ -278,7 +299,7 @@ class ActivityResolver {
       const month = newActivity.starts_at.getMonth();
       newActivity.starts_at.setMonth(i === 0 ? month : month + 1);
       await newActivity.save();
-      totalEmission = totalEmission + newActivity.emissionPerMonth
+      totalEmission = totalEmission + newActivity.emissionPerMonth;
     }
     return totalEmission;
   }

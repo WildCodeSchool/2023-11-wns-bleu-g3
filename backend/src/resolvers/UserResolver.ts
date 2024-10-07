@@ -117,7 +117,9 @@ class UserResolver {
       throw new GraphQLError("This account has been suspended.");
 
     if (findUser.emailVerified === false)
-      throw new GraphQLError("You need to verify your email address by clicking on the link sent before you can log in to your account.");
+      throw new GraphQLError(
+        "You need to verify your email address by clicking on the link sent before you can log in to your account."
+      );
 
     const token = jwt.sign(
       {
@@ -292,7 +294,7 @@ class UserResolver {
     return findusers;
   }
 
-  @Authorized()
+  @Authorized([UserRole.User])
   @Query(() => User, { nullable: true })
   async getUserByNickname(
     @Ctx() ctx: Context,

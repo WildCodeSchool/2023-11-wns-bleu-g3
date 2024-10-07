@@ -19,11 +19,7 @@ import {
   Vehicle_Attr,
   Vehicle_Attr_Input,
 } from "./Vehicle_Attributes";
-import {
-  Attr,
-  Attr_Input,
-  Update_Attr_Input,
-} from "./Attributes";
+import { Attr, Attr_Input, Update_Attr_Input } from "./Attributes";
 
 export enum Unit {
   Weight = "grammes de CO2",
