@@ -174,7 +174,7 @@ class UserResolver {
   ) {
     if (!ctx.currentUser) throw new GraphQLError("You must be authenticated");
 
-    if (ctx.currentUser.role !== "admin") {
+    if (ctx.currentUser.role !== "admin" || ctx.currentUser.id !== id) {
       throw new GraphQLError(
         "You do not have permission to delete other users"
       );
