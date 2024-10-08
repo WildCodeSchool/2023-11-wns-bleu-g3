@@ -21,8 +21,7 @@ export default function Dashboard() {
   const [showBarChart, setShowBarChart] = useState(true);
 
   const lastFiveActivities = activities.slice(-5).reverse();
-  console.log(lastFiveActivities);
-
+  
   return (
     <LayoutLoggedInUser>
       <h1 className="mb-4 mx-4 text-2xl font-semibold text-center lg:text-left">
