@@ -125,7 +125,10 @@ export default function Dashboard() {
 
   const roundedPercentage = Math.round(percentage * 100) / 100;
 
-  const percentageBar = `${roundedPercentage}%`;
+  //limits percentage to 100% max
+  const limitPercentage = Math.min(roundedPercentage, 100);
+
+  const percentageBar = `${limitPercentage}%`;
 
   const notifs = [
     {
