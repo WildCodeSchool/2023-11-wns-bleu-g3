@@ -20,6 +20,9 @@ export default function Dashboard() {
 
   const [showBarChart, setShowBarChart] = useState(true);
 
+  const lastFiveActivities = activities.slice(-5).reverse();
+  console.log(lastFiveActivities);
+
   return (
     <LayoutLoggedInUser>
       <h1 className="mb-4 mx-4 text-2xl font-semibold text-center lg:text-left">
@@ -65,7 +68,7 @@ export default function Dashboard() {
       </div>
 
       <div className="mb-10 px-4">
-        <h2 className="text-xl font-semibold mb-4">Tableau des émissions</h2>
+        <h2 className="text-xl font-semibold mb-4">Mes 5 dernières dépenses</h2>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white">
             <thead>
@@ -76,7 +79,7 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {activities.map((activity) => (
+              {lastFiveActivities.map((activity) => (
                 <tr key={activity.id}>
                   <td className="py-2 px-4 border-b">
                     {new Date(activity.starts_at).toLocaleDateString()}
