@@ -59,7 +59,7 @@ export default function Profile() {
     return (
       <LayoutLoggedInUser>
         <div className="mx-10">
-          <h1 className="mb-10">
+          <h1 className="mb-10 text-[2.5rem] text-anchor font-medium">
             Mon compte
             <button
               className="ml-4"
@@ -86,7 +86,7 @@ export default function Profile() {
     return (
       <LayoutLoggedInUser>
         <div className="mx-6">
-          <h1 className="mb-6 text-center md:text-left">
+          <h1 className="mb-6 text-center md:text-left text-[2.5rem] text-anchor font-medium">
             Mon compte
             <button
               className="ml-4 hidden lg:flex"

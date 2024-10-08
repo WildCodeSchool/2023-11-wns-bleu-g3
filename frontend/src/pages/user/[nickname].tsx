@@ -1,10 +1,12 @@
-/* eslint-disable @next/next/no-img-element */
+import EmissionBarChart from "@/components/charts/emissionBarCharts";
 import Loading from "@/components/loading";
 import {
   useGetUserByNicknameQuery,
   useFollowMutation,
   useUnfollowMutation,
   useProfileQuery,
+  useGetGraphActivitiesQuery,
+  Activity,
 } from "@/graphql/generated/schema";
 import LayoutLoggedInUser from "@/layouts/layout-logged-in-user";
 import { useParams } from "next/navigation";
@@ -31,6 +33,11 @@ export default function Profile() {
     variables: { nickname },
     skip: !nickname,
   });
+
+  const { data: graphActivitiesData } = useGetGraphActivitiesQuery({
+    variables: { userId: data?.getUserByNickname?.id },
+  });
+  const activities = graphActivitiesData?.getGraphActivities || [];
 
   const [follow] = useFollowMutation({
     onCompleted: () => {
@@ -157,13 +164,7 @@ export default function Profile() {
           <h3 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">
             Ses dépenses carbones
           </h3>
-          <p className="text-base text-gray-700 leading-relaxed">
-            Ici il y aura les dépenses carbone du user <br />
-            Ici il y aura les dépenses carbone du user <br />
-            Ici il y aura les dépenses carbone du user <br />
-            Ici il y aura les dépenses carbone du user <br />
-            Ici il y aura les dépenses carbone du user <br />
-          </p>
+          <EmissionBarChart activities={activities as Activity[]} />
         </div>
       </div>
     </LayoutLoggedInUser>

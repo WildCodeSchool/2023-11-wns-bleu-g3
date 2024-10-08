@@ -1,11 +1,8 @@
 import LayoutAdmin from "@/layouts/layout-admin";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
-import Activities from "../activities";
 import {
   GetActivityTypesByIdDocument,
-  UpdateActivityTypeDocument,
   UpdateActivityTypeInput,
   useGetActivityTypesByIdQuery,
   useGetCategoriesQuery,
@@ -16,9 +13,6 @@ import {
   useGetVehicleTypesQuery,
   useUpdateActivityTypeMutation,
 } from "@/graphql/generated/schema";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-
-import { updateSourceFile } from "typescript";
 
 export default function UpdateActivity() {
   const [error, setError] = useState({ message: "", errorInput: "" });
@@ -196,7 +190,7 @@ export default function UpdateActivity() {
             defaultValue={activity?.unit || ""}
           >
             {units.map((unit) => (
-              <option value={unit}>{unit}</option>
+              <option key={unit} value={unit}>{unit}</option>
             ))}
           </select>
         </div>
@@ -216,7 +210,7 @@ export default function UpdateActivity() {
               defaultValue={activity?.vehicleAttributes?.vehicleType || ""}
             >
               {vehiclestypes.map((type) => (
-                <option value={type}>{type}</option>
+                <option key={type} value={type}>{type}</option>
               ))}
             </select>
           </div>
@@ -237,7 +231,7 @@ export default function UpdateActivity() {
               defaultValue={activity?.vehicleAttributes?.fuelType || ""}
             >
               {fuels.map((fuel) => (
-                <option value={fuel}>{fuel}</option>
+                <option key={fuel} value={fuel}>{fuel}</option>
               ))}
             </select>
           </div>
@@ -258,7 +252,7 @@ export default function UpdateActivity() {
               defaultValue={activity?.vehicleAttributes?.vehicleDecade || ""}
             >
               {decades.map((decade) => (
-                <option value={decade}>{decade}</option>
+                <option key={decade} value={decade}>{decade}</option>
               ))}
             </select>
           </div>
@@ -279,7 +273,7 @@ export default function UpdateActivity() {
               defaultValue={activity?.vehicleAttributes?.motoEngine || ""}
             >
               {motoengines.map((type) => (
-                <option value={type}>{type}</option>
+                <option key={type} value={type}>{type}</option>
               ))}
             </select>
           </div>

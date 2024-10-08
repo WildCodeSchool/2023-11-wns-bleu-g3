@@ -128,6 +128,7 @@ class UserResolver {
     const token = jwt.sign(
       {
         userId: findUser.id,
+        role: findUser.role,
       },
       env.JWT_PRIVATE_KEY,
       { expiresIn: "30d" }
@@ -292,7 +293,7 @@ class UserResolver {
     return findusers;
   }
 
-  @Authorized([UserRole.User])
+  @Authorized()
   @Query(() => User, { nullable: true })
   async getUserByNickname(
     @Ctx() ctx: Context,

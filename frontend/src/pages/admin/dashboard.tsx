@@ -1,4 +1,8 @@
 import LayoutAdmin from "@/layouts/layout-admin";
+import {
+  useGetDonationsQuery,
+  useGetPostsQuery,
+} from "@/graphql/generated/schema";
 import { Doughnut, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -24,7 +28,40 @@ ChartJS.register(
 );
 
 export default function Dashboard() {
-  const data = {
+  // DONATIONS HOOK
+
+  const { data } = useGetDonationsQuery();
+  const donations = data?.getDonations || [];
+
+  const { data: postsData } = useGetPostsQuery() || [];
+  const totalPosts = postsData?.getPosts?.length ?? 0;
+
+  const totalAmountDonated = donations.reduce(
+    (sum, donation) => sum + donation.amount,
+    0
+  );
+
+  function mostGenerous(
+    donations: { amount: number; user: { nickname: string | undefined } }[]
+  ): { amount: number; nickname: string } {
+    const highestDon = Math.max(
+      ...donations.map((donation) => donation.amount)
+    );
+    const mostGenerous = donations.find(
+      (donation) => donation.amount === highestDon
+    );
+
+    return {
+      amount: highestDon,
+      nickname: mostGenerous?.user.nickname || "anonyme",
+    };
+  }
+
+  const goal = 10000;
+
+  //charts
+
+  const data2 = {
     labels: [
       "Positif < 2 tonnes de CO2 par an ",
       "Acceptable Entre 2 et 6 tonnes de CO2 par an",
@@ -83,7 +120,12 @@ export default function Dashboard() {
   };
 
   //examples notifications
-  const percentage = "73%";
+  // const percentage = "73%";
+  const percentage = (totalAmountDonated / goal) * 100;
+
+  const roundedPercentage = Math.round(percentage * 100) / 100;
+
+  const percentageBar = `${roundedPercentage}%`;
 
   const notifs = [
     {
@@ -111,22 +153,22 @@ export default function Dashboard() {
                 <div className="justify-between  flex w-full">
                   <div className="ml-4 mt-2 pb-2">
                     <h2 className="text-xl font-semibold ">
-                      Dons totaux: 3450€
+                      Dons totaux: {totalAmountDonated}€
                     </h2>
                     <p className="text-lg py-2 ">
                       <span className="text-lg font-semibold ">Objectif: </span>
-                      10000€ jusqu'au 01/01/2025
+                      {goal}€ jusqu'au 01/01/2025
                     </p>
                     <p className="text-md  ">
                       <span className="text-md font-semibold ">
-                        Plus haute donation:{" "}
+                        Plus haute donation: {mostGenerous(donations).amount}
                       </span>
-                      230 € par NicoEcolo
+                      € par {mostGenerous(donations).nickname}
                     </p>
                   </div>
                   <div className="text-right justify-end ml-4 mt-2">
                     <a
-                      href="/admin/donations"
+                      href="/admin/users"
                       className="p-3 text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm   text-center inline-flex items-center focus:ring-gray-500 "
                     >
                       <svg
@@ -153,15 +195,15 @@ export default function Dashboard() {
               <div className="w-full rounded-full bg-pearl mt-5">
                 <div
                   className="bg-reef text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-                  style={{ width: percentage }}
+                  style={{ width: percentageBar }}
                 >
-                  {percentage}
+                  {roundedPercentage}
                 </div>
               </div>
               <div className="flex justify-between">
                 <div className="m-4 p-2 ">
                   <h2 className="text-xl">Contributions</h2>
-                  <p>53 dons</p>
+                  <p>{donations.length} dons</p>
                 </div>
                 <div className="m-4 p-2 ">
                   <h2 className="text-xl">Nº Greenfooters</h2>
@@ -169,7 +211,7 @@ export default function Dashboard() {
                 </div>
                 <div className="m-4 p-2 ">
                   <h2 className="text-xl">Réseau Social</h2>
-                  <p>345 publications totales</p>
+                  <p>{totalPosts} publications totales</p>
                 </div>
               </div>
             </div>
@@ -181,7 +223,7 @@ export default function Dashboard() {
                 <sub>2</sub> Moyenne des Utilisateurs de GreenFoot
               </h2>
               <div className="mt-4 h-[22vh] w-[25vw]  items-start justify-left">
-                <Doughnut data={data} options={options} />
+                <Doughnut data={data2} options={options} />
               </div>
             </div>
           </div>
@@ -198,6 +240,7 @@ export default function Dashboard() {
               <h2 className="text-xl font-semibold mb-4">Notifications</h2>
               {notifs.map((notif) => (
                 <a
+                key={notif.message}
                   href="#"
                   className="block w-full p-2 mt-5 bg-pearl border border-gray-200 rounded-lg shadow-lg hover:bg-gray-100"
                 >
