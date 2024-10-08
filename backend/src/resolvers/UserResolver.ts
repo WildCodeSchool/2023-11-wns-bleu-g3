@@ -293,7 +293,7 @@ class UserResolver {
     return findusers;
   }
 
-  @Authorized([UserRole.User])
+  @Authorized()
   @Query(() => User, { nullable: true })
   async getUserByNickname(
     @Ctx() ctx: Context,
