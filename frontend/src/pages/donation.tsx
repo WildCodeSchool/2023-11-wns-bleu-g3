@@ -68,7 +68,7 @@ export default function Donation() {
 
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-0">
           <div className="lg:w-2/4">
-            <h2 className="text-center lg:text-left mb-4">
+            <h2 className="text-center lg:text-left mb-4 text-[1.4rem] text-anchor font-medium">
               Nos valeurs et missions
             </h2>
 
@@ -108,7 +108,9 @@ export default function Donation() {
             </p>
           </div>
           <div className="flex flex-col gap-4 items-center lg:w-2/4 mb-12 lg:mb-0">
-            <h2>Ils ont récemment contribué</h2>
+            <h2 className="text-[1.4rem] text-anchor font-medium">
+              Ils ont récemment contribué
+            </h2>
             {donations.length === 0 ? (
               <p>Nous n&apos;avons pas encore reçu de donation.</p>
             ) : (

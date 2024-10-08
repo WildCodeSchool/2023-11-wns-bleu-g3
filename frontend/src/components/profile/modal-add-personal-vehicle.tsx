@@ -54,7 +54,9 @@ const ModalAddPersonalVehicle = ({
                   <Icon name="close" />
                 </button>
                 <div className="flex flex-col p-4 gap-6">
-                  <h2 className="text-center">Ajouter un véhicule</h2>
+                  <h2 className="text-center text-[1.4rem] text-anchor font-medium">
+                    Ajouter un véhicule
+                  </h2>
                   <form
                     onSubmit={handleCreateNewPersonalVehicle}
                     className="text-reef font-semibold flex flex-col gap-6"

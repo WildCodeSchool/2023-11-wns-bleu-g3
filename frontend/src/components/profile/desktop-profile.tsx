@@ -62,7 +62,9 @@ const DesktopProfile = ({ user }: { user: any }) => {
           />
         </label>
         <div className="my-6">
-          <h2 className="mb-4">Mes véhicules personnels</h2>
+          <h2 className="mb-4 text-[1.4rem] text-anchor font-medium">
+            Mes véhicules personnels
+          </h2>
           <PersonalVehicleItem />
           <div className="flex justify-end items-center gap-4">
             <p

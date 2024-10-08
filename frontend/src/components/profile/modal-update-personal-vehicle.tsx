@@ -51,7 +51,9 @@ export default function ModalUpdatePersonalVehicle({
               <Icon name="close" />
             </button>
             <div className="flex flex-col p-4 gap-6">
-              <h2 className="text-center">{vehicle.name}</h2>
+              <h2 className="text-center text-[1.4rem] text-anchor font-medium">
+                {vehicle.name}
+              </h2>
               <form onSubmit={handleUpdateVehicle}>
                 <label htmlFor="name">
                   Nom
