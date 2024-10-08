@@ -8,9 +8,9 @@ export default function Activities() {
         <h2 className="text-2xl  font-semibold mt-5">Liste Type Activités</h2>
         <br />
         <p>
-          Ici, vous avez le choix de visualiser les types d'activités que
-          l'utilisateur peut enregistrer sur son compte avec leurs émissions de
-          CO2.{" "}
+          Ici, vous avez le choix de visualiser les types d&apos;activités que
+          l&apos;utilisateur peut enregistrer sur son compte avec leurs émissions de
+          CO2.
         </p>
         <p>Vous pouvez les visualiser, les modifier ou les supprimer.</p>
       </div>
