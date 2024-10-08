@@ -32,7 +32,9 @@ export default function MostLikedPosts() {
 
   return (
     <div className="max-w-[22rem] bg-pearl border-shore border-2 rounded-lg px-8 py-6 mt-8">
-      <h2 className="mb-4 text-center">Les posts les plus likés</h2>
+      <h2 className="mb-4 text-center text-[1.4rem] text-anchor font-medium">
+        Les posts les plus likés
+      </h2>
       <div className="bg-pearl border-shore border-2 rounded-lg p-8">
         {sortedPosts.map((post) => (
           <div

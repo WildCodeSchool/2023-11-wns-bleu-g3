@@ -15,7 +15,7 @@ export default function Feed() {
       <div className="lg:mx-10">
         <div className="flex flex-col lg:flex-row mb-10 justify-between">
           <p className="lg:hidden flex text-sm">Tableau de bord / Bon plans</p>
-          <h1>Bon plans</h1>
+          <h1 className="text-[2.5rem] text-anchor font-medium">Bon plans</h1>
           <div
             className="hidden lg:flex lg:justify-end lg:items-center lg:gap-4 lg:cursor-pointer"
             onClick={openNewVehicleModal}

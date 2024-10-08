@@ -47,7 +47,7 @@ export default function MakeDonation() {
           className="flex flex-col lg:flex-row gap-24"
         >
           <div className="flex flex-col lg:lg:w-2/4 text-anchor text-opacity-85">
-            <h2>Donation</h2>
+            <h2 className="text-[1.4rem] text-anchor font-medium">Donation</h2>
             <p className="mt-4 mb-8 text-reef font-semibold">
               {user?.profile.firstName} {user?.profile.lastName}
             </p>
@@ -79,7 +79,9 @@ export default function MakeDonation() {
           </div>
 
           <div className="flex flex-col lg:w-2/4 text-reef">
-            <h2>Coordonnées bancaires</h2>
+            <h2 className="text-[1.4rem] text-anchor font-medium">
+              Coordonnées bancaires
+            </h2>
             <div className="my-8 flex gap-8 border-2 border-pearl font-normal text-sm rounded-lg bg-white">
               <p className="p-3.5 font-semibold w-1/4">Email</p>
               <p className="p-3.5 w-3/4">{user?.profile.email}</p>
