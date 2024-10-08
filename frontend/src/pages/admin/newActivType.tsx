@@ -14,6 +14,9 @@ import {
   useUpdateActivityTypeMutation,
 } from "@/graphql/generated/schema";
 
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+import { updateSourceFile } from "typescript";
+
 export default function NewActivType() {
   const [error, setError] = useState({ message: "", errorInput: "" });
   const router = useRouter();

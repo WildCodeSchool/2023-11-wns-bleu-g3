@@ -2,7 +2,6 @@ import LayoutAdmin from "@/layouts/layout-admin";
 import {
   useGetDonationsQuery,
   useGetPostsQuery,
-  useGetUsersPaginationQuery,
 } from "@/graphql/generated/schema";
 import { Doughnut, Line } from "react-chartjs-2";
 import {
@@ -158,7 +157,7 @@ export default function Dashboard() {
                     </h2>
                     <p className="text-lg py-2 ">
                       <span className="text-lg font-semibold ">Objectif: </span>
-                      10000€ jusqu&apos;au 01/01/2025
+                      {goal}€ jusqu'au 01/01/2025
                     </p>
                     <p className="text-md  ">
                       <span className="text-md font-semibold ">
@@ -241,7 +240,7 @@ export default function Dashboard() {
               <h2 className="text-xl font-semibold mb-4">Notifications</h2>
               {notifs.map((notif) => (
                 <a
-                  key={notif.message}
+                key={notif.message}
                   href="#"
                   className="block w-full p-2 mt-5 bg-pearl border border-gray-200 rounded-lg shadow-lg hover:bg-gray-100"
                 >

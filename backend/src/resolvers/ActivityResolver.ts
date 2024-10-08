@@ -172,7 +172,12 @@ class ActivityResolver {
               newActivity.emissionPerMonth * 0.13
             );
           }
-              }
+        }
+        if (activityType.category === Category.Train || activityType.category === Category.Bus) {
+          newActivity.category = ActivityCategory.Shifting;
+          newActivity.emissionPerMonth =
+            newActivity.quantity * activityType.emissions;
+        }
         if (activityType.category === Category.Heating) {
           newActivity.category = ActivityCategory.Heating;
           newActivity.emissionPerMonth = Math.round(
