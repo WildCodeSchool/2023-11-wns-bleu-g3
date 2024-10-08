@@ -322,6 +322,18 @@ export default function NewActivity() {
         {emissionType === ActivityTypeEnum.Heating && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-7 pb-6">
             <div className="flex flex-col">
+              <label htmlFor="starts_at"> Date de début </label>
+              <DatePicker
+                selected={startAt}
+                onChange={(date) => setStartAt(date as Date)}
+                locale={fr}
+                dateFormat="dd/MM/yyyy"
+                className="border-2 border-pearl text-anchor text-sm rounded-lg focus:ring-reef outline-reef focus:border-reef block w-full p-2.5"
+                name="starts_at"
+                id="starts_at"
+              />
+            </div>
+            <div className="flex flex-col">
               <label htmlFor="type"> Type de chauffage </label>
               <select
                 className="select-lg select-arrow"
