@@ -83,17 +83,18 @@ const PostItem = ({ post }: { post: any }) => {
         <div className="flex gap-x-4">
           <p className="mt-1">{convertDate(post.created_at)}</p>
           <div className="hidden md:block" ref={menuRef}>
-            <button
+            {/* the report feature is commented until notice */}
+            {/* <button
               className="hover:bg-slate-300 focus:bg-slate-300 rounded-full px-1"
               onClick={handleOpenMenu}
             >
               <Icon name="more_vert" size="xl" />
-            </button>
-            {menuIsOpen && (
+            </button> */}
+            {/* {menuIsOpen && (
               <div className="relative">
                 <ReportDropdown mappedVar="post" />
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>

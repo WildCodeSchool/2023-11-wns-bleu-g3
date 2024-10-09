@@ -94,7 +94,7 @@ export default function NewActivType() {
     try {
       await createActivityType({ variables: { data: object } });
       setError({ message: "", errorInput: "" }); //error reset
-      toast.success("Type d'activité modifié avec succès");
+      toast.success("Nouveau type d'activité créé avec succès.");
       router.push(`/admin/activities`);
     } catch (e) {
       setError({
