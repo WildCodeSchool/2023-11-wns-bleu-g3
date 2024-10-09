@@ -235,9 +235,9 @@ async function main() {
 
   const donation1 = new Donation();
   Object.assign(donation1, {
-    amount: 10,
+    amount: 125,
     user: user,
-    dateOfDonation: "2023-03-12T07:19:22.111Z",
+    dateOfDonation: "2024-03-12T07:19:22.111Z",
   });
   await donation1.save();
 
@@ -245,7 +245,7 @@ async function main() {
   Object.assign(donation2, {
     amount: 120,
     user: user1,
-    dateOfDonation: "2023-07-02T07:19:22.111Z",
+    dateOfDonation: "2024-07-02T07:19:22.111Z",
   });
   await donation2.save();
 
@@ -253,29 +253,29 @@ async function main() {
   Object.assign(donation3, {
     amount: 170,
     user: user5,
-    dateOfDonation: "2023-11-20T07:19:22.111Z",
+    dateOfDonation: "2024-11-20T07:19:22.111Z",
   });
   await donation3.save();
 
   const donation4 = new Donation();
   Object.assign(donation4, {
-    amount: 500,
+    amount: 100,
     user: user7,
-    dateOfDonation: "2023-12-25T07:19:22.111Z",
+    dateOfDonation: "2024-02-25T07:19:22.111Z",
   });
   await donation4.save();
 
   const donation5 = new Donation();
   Object.assign(donation5, {
-    amount: 1600,
+    amount: 100,
     user: user3,
-    dateOfDonation: "2024-02-02T07:19:22.111Z",
+    dateOfDonation: "2024-01-02T07:19:22.111Z",
   });
   await donation5.save();
 
   const donation6 = new Donation();
   Object.assign(donation6, {
-    amount: 10,
+    amount: 300,
     user: user6,
     dateOfDonation: "2024-06-28T07:19:22.111Z",
   });
@@ -283,9 +283,9 @@ async function main() {
 
   const donation7 = new Donation();
   Object.assign(donation7, {
-    amount: 1230,
+    amount: 100,
     user: user2,
-    dateOfDonation: "2024-07-02T07:19:22.111Z",
+    dateOfDonation: "2024-09-02T07:19:22.111Z",
   });
   await donation7.save();
 

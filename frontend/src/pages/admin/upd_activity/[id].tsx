@@ -1,6 +1,7 @@
 import LayoutAdmin from "@/layouts/layout-admin";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
   GetActivityTypesByIdDocument,
   UpdateActivityTypeInput,
@@ -60,10 +61,6 @@ export default function UpdateActivity() {
   };
 
   // update mutation
-  // const activId = parseInt( id as string);
-
-  // const activId = parseInt( id as string);
-
   const [updateActivityType] = useUpdateActivityTypeMutation();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -109,6 +106,7 @@ export default function UpdateActivity() {
         ],
       });
       setError({ message: "", errorInput: "" });
+      toast.success("Type d'activité modifié avec succès");
       router.push(`/admin/activities`);
     } catch (e) {
       setError({ message: "Une erreur est survenue.", errorInput: "general" });
@@ -190,7 +188,9 @@ export default function UpdateActivity() {
             defaultValue={activity?.unit || ""}
           >
             {units.map((unit) => (
-              <option key={unit} value={unit}>{unit}</option>
+              <option key={unit} value={unit}>
+                {unit}
+              </option>
             ))}
           </select>
         </div>
@@ -210,7 +210,9 @@ export default function UpdateActivity() {
               defaultValue={activity?.vehicleAttributes?.vehicleType || ""}
             >
               {vehiclestypes.map((type) => (
-                <option key={type} value={type}>{type}</option>
+                <option key={type} value={type}>
+                  {type}
+                </option>
               ))}
             </select>
           </div>
@@ -231,7 +233,9 @@ export default function UpdateActivity() {
               defaultValue={activity?.vehicleAttributes?.fuelType || ""}
             >
               {fuels.map((fuel) => (
-                <option key={fuel} value={fuel}>{fuel}</option>
+                <option key={fuel} value={fuel}>
+                  {fuel}
+                </option>
               ))}
             </select>
           </div>
@@ -252,7 +256,9 @@ export default function UpdateActivity() {
               defaultValue={activity?.vehicleAttributes?.vehicleDecade || ""}
             >
               {decades.map((decade) => (
-                <option key={decade} value={decade}>{decade}</option>
+                <option key={decade} value={decade}>
+                  {decade}
+                </option>
               ))}
             </select>
           </div>
@@ -273,7 +279,9 @@ export default function UpdateActivity() {
               defaultValue={activity?.vehicleAttributes?.motoEngine || ""}
             >
               {motoengines.map((type) => (
-                <option key={type} value={type}>{type}</option>
+                <option key={type} value={type}>
+                  {type}
+                </option>
               ))}
             </select>
           </div>

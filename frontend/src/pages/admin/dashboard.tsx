@@ -2,6 +2,8 @@ import LayoutAdmin from "@/layouts/layout-admin";
 import {
   useGetDonationsQuery,
   useGetPostsQuery,
+  useGetUsersPaginationQuery,
+  useGetUsersPaginationSuspenseQuery,
 } from "@/graphql/generated/schema";
 import { Doughnut, Line } from "react-chartjs-2";
 import {
@@ -15,6 +17,7 @@ import {
   LineElement,
   Title,
 } from "chart.js";
+import formatTimestamp from "@/components/backoffice/formatTimestamp";
 
 ChartJS.register(
   ArcElement,
@@ -30,17 +33,60 @@ ChartJS.register(
 export default function Dashboard() {
   // DONATIONS HOOK
 
-  const { data } = useGetDonationsQuery();
+  const { data, loading: loadingDons } = useGetDonationsQuery();
   const donations = data?.getDonations || [];
+  const lastDons = data?.getDonations.slice(-4).reverse() || [];
 
-  const { data: postsData } = useGetPostsQuery() || [];
+  const donsPerMonth = donations.reduce((acc, donation) => {
+    //get month and year
+    const [date] = donation.dateOfDonation.split("T");
+    const [year, month] = date.split("-");
+    const monthYear = `${year}-${month}`;
+
+    acc[monthYear] = (acc[monthYear] || 0) + donation.amount;
+    return acc;
+  }, {} as any);
+
+  const { data: postsData, loading: loadingPosts } = useGetPostsQuery() || [];
   const totalPosts = postsData?.getPosts?.length ?? 0;
 
+  // USERS HOOK
+
+  const { data: usersData, loading: loadingUsers } = useGetUsersPaginationQuery(
+    {
+      variables: {
+        limit: 10000000,
+        offset: 0,
+      },
+    }
+  );
+
+  const users = usersData?.getUsersPagination || [];
+  const totalUsers = users.length;
+
+  // new users per month
+  const newUsersPerMonth = users?.reduce((acc, user) => {
+    //get month and year
+    const date = formatTimestamp(user.createdAt);
+    const [day, month, year] = date.split("/");
+    const monthYear = `${year}-${month}`;
+
+    acc[monthYear] = (acc[monthYear] || 0) + 1;
+    return acc;
+  }, {} as any);
+
+  //in case too much data is being loaded
+  if (loadingUsers || loadingPosts || loadingDons) {
+    return <p>...</p>;
+  }
+
+  //total donated
   const totalAmountDonated = donations.reduce(
     (sum, donation) => sum + donation.amount,
     0
   );
 
+  //most generous
   function mostGenerous(
     donations: { amount: number; user: { nickname: string | undefined } }[]
   ): { amount: number; nickname: string } {
@@ -57,9 +103,9 @@ export default function Dashboard() {
     };
   }
 
-  const goal = 10000;
+  const goal = 6000;
 
-  //charts
+  //CHARTS
 
   const data2 = {
     labels: [
@@ -86,57 +132,112 @@ export default function Dashboard() {
   };
   // second chart
 
-  const lineData = {
-    labels: ["Avr", "May", "June", "Jull", "Aout", "Sept"],
-    datasets: [
-      {
-        label: "Utilisateurs",
-        data: [4, 3.8, 3.5, 3.2, 2.8, 2.5],
-        backgroundColor: "rgba(58, 141, 166, 1)",
-        tension: 0.8,
-        fill: true,
-      },
-      {
-        label: "Donations (par K)",
-        data: [3.5, 3.2, 2.3, 3.8, 3.2, 2.8],
-        backgroundColor: "rgba(192, 214, 216, 1)",
-      },
-    ],
-  };
+  const currDate = new Date();
+  const currYear = currDate.getFullYear();
+  const monthNames = [
+    "Jan",
+    "Fev",
+    "Mars",
+    "Avr",
+    "Mai",
+    "Jun",
+    "Juil",
+    "Aout",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  // COUNTS FOR GRAPH
+
+  const donationCounts = monthNames.map((_, index) => {
+    const monthYear = `${currYear}-${String(index + 1).padStart(2, "0")}`;
+    return donsPerMonth[monthYear] || 0;
+  });
+
+  const inscriptionsCounts = monthNames.map((_, index) => {
+    const monthYear = `${currYear}-${String(index + 1).padStart(2, "0")}`;
+    return newUsersPerMonth[monthYear] || 0;
+  });
+
+  // GRAPH DATA CONFIG
 
   const lineOptions = {
     responsive: true,
+    interaction: {
+      mode: "index" as const,
+      intersect: false,
+    },
+    stacked: false,
     plugins: {
       title: {
         display: true,
-        text: "Nouveaux Utilisateurs",
+        text: "Évolution mensuelle: Nouveaux Utilisateurs vs Dons",
       },
-      scales: {
-        y: {
-          beginAtZero: true, //y-axis
+      legend: {
+        position: "top" as const,
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Mois",
+        },
+      },
+      y: {
+        type: "linear" as const,
+        display: true,
+        position: "left" as const,
+        title: {
+          display: true,
+          text: "Dons (€)",
+        },
+        beginAtZero: true,
+      },
+      y2: {
+        type: "linear" as const,
+        display: false,
+        position: "right" as const,
+        grid: {
+          drawOnChartArea: false,
         },
       },
     },
   };
 
-  //examples notifications
-  // const percentage = "73%";
-  const percentage = (totalAmountDonated / goal) * 100;
+  const lineData = {
+    labels: monthNames,
+    datasets: [
+      {
+        label: "Utilisateurs",
+        data: inscriptionsCounts,
+        backgroundColor: "rgba(58, 141, 166, 1)",
+        tension: 0.2,
+        fill: true,
+        yAxisID: "y2",
+      },
+      {
+        label: "Donations",
+        data: donationCounts,
+        backgroundColor: "rgba(192, 214, 216, 1)",
+        tension: 0.2,
+        fill: true,
+        yAxisID: "y",
+      },
+    ],
+  };
 
+  //DONATIONS GOAL
+
+  const percentage = (totalAmountDonated / goal) * 100;
   const roundedPercentage = Math.round(percentage * 100) / 100;
 
-  const percentageBar = `${roundedPercentage}%`;
+  //limits percentage to 100% max due to UI issue when surpassed
+  const limitPercentage = Math.min(roundedPercentage, 100);
 
-  const notifs = [
-    {
-      message: "NicoEcolo vient de signalé la publication de AntoineArbre. ❌",
-      date: "03/04/2024",
-    },
-    {
-      message: "PhilipeForet vient de faire une contribuition de 35€. 🎉",
-      date: "03/04/2024",
-    },
-  ];
+  const percentageBar = `${limitPercentage}%`;
 
   return (
     <LayoutAdmin>
@@ -207,7 +308,7 @@ export default function Dashboard() {
                 </div>
                 <div className="m-4 p-2 ">
                   <h2 className="text-xl">Nº Greenfooters</h2>
-                  <p>87 inscriptions totales</p>
+                  <p>{totalUsers} inscriptions totales</p>
                 </div>
                 <div className="m-4 p-2 ">
                   <h2 className="text-xl">Réseau Social</h2>
@@ -236,43 +337,31 @@ export default function Dashboard() {
             </div>
           </div>
           <div className=" w-[60%] ">
-            <div className="bg-white shadow-lg rounded-lg p-6 h-[35vh]">
-              <h2 className="text-xl font-semibold mb-4">Notifications</h2>
-              {notifs.map((notif) => (
-                <a
-                key={notif.message}
-                  href="#"
-                  className="block w-full p-2 mt-5 bg-pearl border border-gray-200 rounded-lg shadow-lg hover:bg-gray-100"
-                >
+            <div className="bg-white shadow-lg rounded-lg p-4 h-[35vh]">
+              <h2 className="text-xl font-semibold mb-4">Dérniere Donations</h2>
+              {lastDons.map((donation) => (
+                <span className="block w-full p-2 mt-5 bg-gray-100 border border-gray-200 rounded-lg shadow-lg hover:bg-gray-200">
                   {" "}
                   <div className="flex justify-between">
-                    <p className="pl-4 font-normal text-anchor ">
-                      {notif.message}
+                    {/* simple random text effect */}
+                    <p className="pl-4 font-normal text-anchor flex justify-between">
+                      {donation.user.nickname}{" "}
+                      {
+                        [
+                          "vient de faire un don de ",
+                          "a contribué 💖 chez nous avec ",
+                          "nous soutient 🤝 avec ",
+                          "renforce notre cause avec ",
+                          "est un vrai greenfooter, il donne ",
+                        ][Math.floor(Math.random() * 5)]
+                      }
+                      {donation.amount}€
                     </p>
-                    <button
-                      type="button"
-                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                      data-modal-hide="default-modal"
-                    >
-                      <svg
-                        className="w-3 h-3"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 14 14"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                        />
-                      </svg>
-                      <span className="sr-only">Close modal</span>
-                    </button>
+                    <p className="px-2 bg-pearl rounded-lg">
+                      {donation.dateOfDonation.split("T")[0]}
+                    </p>
                   </div>
-                </a>
+                </span>
               ))}
             </div>
           </div>

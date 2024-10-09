@@ -1,6 +1,7 @@
 import LayoutAdmin from "@/layouts/layout-admin";
 import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 // import Activities from "../activities";
 import {
   ActivityTypeInput,
@@ -11,11 +12,7 @@ import {
   useGetUnitsQuery,
   useGetVehicleDecadeQuery,
   useGetVehicleTypesQuery,
-  useUpdateActivityTypeMutation,
 } from "@/graphql/generated/schema";
-
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-import { updateSourceFile } from "typescript";
 
 export default function NewActivType() {
   const [error, setError] = useState({ message: "", errorInput: "" });
@@ -97,6 +94,7 @@ export default function NewActivType() {
     try {
       await createActivityType({ variables: { data: object } });
       setError({ message: "", errorInput: "" }); //error reset
+      toast.success("Nouveau type d'activité créé avec succès.");
       router.push(`/admin/activities`);
     } catch (e) {
       setError({
@@ -120,8 +118,8 @@ export default function NewActivType() {
           <p className="text-sm text-gray-600 mb-4">
             Vous avez la possibilité de créer un nouveau type d&apos;activité.
             Assurez-vous de bien remplir les valeurs pour la catégorie, la
-            valeur d&apos;émission de CO<sub>2</sub>, et l&apos;unité de mesure, en
-            veillant à ce que ces attributs soient conformes aux valeurs les
+            valeur d&apos;émission de CO<sub>2</sub>, et l&apos;unité de mesure,
+            en veillant à ce que ces attributs soient conformes aux valeurs les
             plus acceptables par la communauté écologique.
           </p>
         </div>
@@ -210,7 +208,9 @@ export default function NewActivType() {
           >
             <option value="default" hidden></option>
             {units.map((unit) => (
-              <option key={unit} value={unit}>{unit}</option>
+              <option key={unit} value={unit}>
+                {unit}
+              </option>
             ))}
           </select>
         </div>
@@ -232,7 +232,9 @@ export default function NewActivType() {
             >
               <option value="default" hidden></option>
               {vehiclestypes.map((type) => (
-                <option key={type} value={type}>{type}</option>
+                <option key={type} value={type}>
+                  {type}
+                </option>
               ))}
             </select>
           </div>
@@ -255,7 +257,9 @@ export default function NewActivType() {
             >
               <option value="default" hidden></option>
               {fuels.map((fuel) => (
-                <option key={fuel} value={fuel}>{fuel}</option>
+                <option key={fuel} value={fuel}>
+                  {fuel}
+                </option>
               ))}
             </select>
           </div>
@@ -278,7 +282,9 @@ export default function NewActivType() {
             >
               <option value="default" hidden></option>
               {decades.map((decade) => (
-                <option key={decade} value={decade}>{decade}</option>
+                <option key={decade} value={decade}>
+                  {decade}
+                </option>
               ))}
             </select>
           </div>
@@ -301,7 +307,9 @@ export default function NewActivType() {
             >
               <option value="default" hidden></option>
               {motoengines.map((type) => (
-                <option key={type} value={type}>{type}</option>
+                <option key={type} value={type}>
+                  {type}
+                </option>
               ))}
             </select>
           </div>
