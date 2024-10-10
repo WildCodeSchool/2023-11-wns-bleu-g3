@@ -33,6 +33,7 @@ ChartJS.register(
 export default function Dashboard() {
   // DONATIONS HOOK
 
+
   const { data, loading: loadingDons } = useGetDonationsQuery();
   const donations = data?.getDonations || [];
   const lastDons = data?.getDonations.slice(-4).reverse() || [];
@@ -81,12 +82,15 @@ export default function Dashboard() {
   }
 
   //total donated
+
   const totalAmountDonated = donations.reduce(
     (sum, donation) => sum + donation.amount,
     0
   );
 
+
   //most generous
+
   function mostGenerous(
     donations: { amount: number; user: { nickname: string | undefined } }[]
   ): { amount: number; nickname: string } {
@@ -103,9 +107,11 @@ export default function Dashboard() {
     };
   }
 
+
   const goal = 6000;
 
   //CHARTS
+
 
   const data2 = {
     labels: [
@@ -230,6 +236,7 @@ export default function Dashboard() {
   };
 
   //DONATIONS GOAL
+
 
   const percentage = (totalAmountDonated / goal) * 100;
   const roundedPercentage = Math.round(percentage * 100) / 100;
