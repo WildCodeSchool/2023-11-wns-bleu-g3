@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ModalBin from "./modalBin";
 import formatTimestamp from "./formatTimestamp";
+import { toast } from "react-toastify";
 
 const PAGE_SIZE = 6;
 
@@ -244,7 +245,22 @@ export default function TableAdminUsers() {
                         variables: {
                           userId: user.id,
                         },
-                      }).then(() => window.location.reload())
+                      })
+                        .then((result) => {
+                          if (result.data?.deleteUser) {
+                            toast.success("Utilisateur bien supprimé."),
+                              window.location.reload();
+                          } else {
+                            toast.error(
+                              "Erreur sur suppression de l'Utilisateur."
+                            );
+                          }
+                        })
+                        .catch((error) => {
+                          toast.error(
+                            "Erreur sur suppression de l'Utilisateur."
+                          );
+                        })
                     }
                   />
                 </div>
